@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+apps/web/node_modules/
+apps/studio/node_modules/
+
+# Env files
+.env*
+!.env.example
+
+# Build outputs
+apps/web/.next/
+apps/web/out/
+apps/studio/dist/
+
+# IDE files
+.vscode/
+.DS_Store
+
+# Logs
+*.log
