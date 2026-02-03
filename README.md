@@ -1,12 +1,10 @@
-# Quouir
+# Qu'ouir
 
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
 ![PNPM](https://img.shields.io/badge/pnpm-%3E%3D10.0.0-blue)
 ![Vercel](https://img.shields.io/badge/deploy-vercel-black)
 
-Quouir is a **work-in-progress** web project built with **Next.js** and **Sanity**.  
-This monorepo contains:
-
+Qu'ouir is a **work-in-progress** web project for the Qu'ouir collective, built with **Next.js** and **Sanity**.This monorepo contains:
 - `apps/web` – Next.js frontend
 - `apps/studio` – Sanity Studio (CMS)
 
