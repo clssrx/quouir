@@ -8,13 +8,23 @@ export const authorType = defineType({
     defineField({
       name: 'name',
       type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'bio',
       type: 'text',
     }),
     defineField({
-      name: 'photo',
+      name: 'image',
       type: 'image',
     }),
   ],
