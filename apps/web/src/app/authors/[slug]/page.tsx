@@ -2,12 +2,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getAuthorBySlug } from '@/sanity/authors';
 import { urlForImage } from '@/sanity/image';
-import { REVALIDATE_INTERVAL } from '@/constants/revalidate';
 
 import { AuthorPageProps, PostsSectionProps } from '@/types/pages';
 import { AUTHOR_QUERY_RESULT } from '@/sanity/types';
 
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = 86400; // Revalidate every 24 hours
 
 const PostsSection = ({ posts }: PostsSectionProps) => {
 	return posts.length === 0 ? (
