@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { getLatestPosts } from '@/sanity/posts';
 
-export const revalidate = 86400; // Revalidate every 24 hours
 export default async function IndexPage() {
 	const posts = await getLatestPosts();
 
