@@ -7,6 +7,8 @@ import { getPostBySlug } from '@/sanity/posts';
 import { urlForImage } from '@/sanity/image';
 import { PostPageProps } from '@/types/pages';
 
+export const revalidate = 30;
+
 export default async function PostPage({ params }: PostPageProps) {
 	const { slug } = await params;
 
