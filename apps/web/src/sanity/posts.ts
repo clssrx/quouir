@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity';
-import { client } from '@/sanity/client';
 import { POSTS_QUERY_RESULT, POST_QUERY_RESULT } from './types';
+import { sanityFetch } from './live';
 
 export const POSTS_QUERY = groq`
   *[
@@ -30,14 +30,14 @@ export const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]{
   author->{_id, name, slug}
 }`;
 
-const options = { next: { revalidate: 30 } };
-
 export async function getLatestPosts(): Promise<POSTS_QUERY_RESULT> {
-	return client.fetch<POSTS_QUERY_RESULT>(POSTS_QUERY, {}, options);
+	const { data } = await sanityFetch({ query: POSTS_QUERY, params: {} });
+	return data;
 }
 
 export async function getPostBySlug(
 	slug: string,
 ): Promise<POST_QUERY_RESULT | null> {
-	return client.fetch<POST_QUERY_RESULT>(POST_QUERY, { slug: slug }, options);
+	const { data } = await sanityFetch({ query: POST_QUERY, params: { slug } });
+	return data;
 }
