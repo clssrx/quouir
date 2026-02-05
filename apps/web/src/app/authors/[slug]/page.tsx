@@ -1,27 +1,19 @@
-import { client } from '@/sanity/client';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import imageUrlBuilder from '@sanity/image-url';
-
-import { AuthorPageData, AuthorPageProps } from '@/types/pages';
-import { Post } from '@/types/sanity';
 import { getAuthorBySlug } from '@/sanity/authors';
+import { urlForImage } from '@/sanity/image';
 
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-	projectId && dataset
-		? imageUrlBuilder({ projectId, dataset }).image(source)
-		: null;
+import { AuthorPageProps, PostsSectionProps } from '@/types/pages';
+import { AUTHOR_QUERY_RESULT } from '@/sanity/types';
 
-const PostsSection = (posts: Post[]) => {
+const PostsSection = ({ posts }: PostsSectionProps) => {
 	return posts.length === 0 ? (
 		<p>No posts found.</p>
 	) : (
 		posts.map((post) => {
 			const postImageUrl = post.image
-				? urlFor(post.image)?.width(200).height(200).url()
-				: null;
+				? urlForImage(post.image)?.width(200).height(200).url()
+				: undefined;
 
 			return (
 				<li key={post._id}>
@@ -32,7 +24,7 @@ const PostsSection = (posts: Post[]) => {
 						{postImageUrl && (
 							<Image
 								src={postImageUrl}
-								alt={post.title}
+								alt={post.title || 'Post image'}
 								width={200}
 								height={200}
 								className='mt-2 rounded-lg'
@@ -48,7 +40,7 @@ const PostsSection = (posts: Post[]) => {
 export default async function AuthorPage({ params }: AuthorPageProps) {
 	const { slug } = await params;
 
-	const data: AuthorPageData = await getAuthorBySlug(slug);
+	const data: AUTHOR_QUERY_RESULT = await getAuthorBySlug(slug);
 
 	const { author, posts } = data;
 
@@ -57,8 +49,8 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 	}
 
 	const authorImageUrl = author.image
-		? urlFor(author.image)?.width(300).height(300).url()
-		: null;
+		? urlForImage(author.image)?.width(300).height(300).url()
+		: '/images/author-placeholder-image.jpg';
 
 	return (
 		<main className='container mx-auto max-w-3xl p-8'>
@@ -68,7 +60,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 				{authorImageUrl && (
 					<Image
 						src={authorImageUrl}
-						alt={author.name}
+						alt={author.name || 'Author image'}
 						width={250}
 						height={250}
 						className='rounded-full shrink-0'
@@ -83,7 +75,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 			</div>
 
 			<h2 className='mt-10 text-2xl font-semibold'>Posts</h2>
-			<ul className='mt-4 space-y-4'>{PostsSection(posts)}</ul>
+			<ul className='mt-4 space-y-4'>
+				<PostsSection posts={posts} />
+			</ul>
 		</main>
 	);
 }

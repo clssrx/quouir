@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity';
 import { client } from '@/sanity/client';
-import { Post, SanitySlug } from '@/types/sanity';
+import { POSTS_QUERY_RESULT, POST_QUERY_RESULT } from './types';
 
 export const POSTS_QUERY = groq`
   *[
@@ -13,13 +13,14 @@ export const POSTS_QUERY = groq`
     slug,
     publishedAt,
     author->{
+      _id,
       name,
       slug,
     }
   }
 `;
 
-export const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
+export const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]{
   _id,
   title,
   slug,
@@ -31,10 +32,12 @@ export const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
 
 const options = { next: { revalidate: 30 } };
 
-export async function getLatestPosts(): Promise<Post[]> {
-	return client.fetch(POSTS_QUERY, {}, options);
+export async function getLatestPosts(): Promise<POSTS_QUERY_RESULT> {
+	return client.fetch<POSTS_QUERY_RESULT>(POSTS_QUERY, {}, options);
 }
 
-export async function getPostBySlug(slug: SanitySlug): Promise<Post | null> {
-	return client.fetch<Post>(POST_QUERY, slug, options);
+export async function getPostBySlug(
+	slug: string,
+): Promise<POST_QUERY_RESULT | null> {
+	return client.fetch<POST_QUERY_RESULT>(POST_QUERY, { slug: slug }, options);
 }
