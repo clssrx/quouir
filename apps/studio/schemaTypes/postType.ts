@@ -39,7 +39,7 @@ export const postType = defineType({
     defineField({
       name: 'image',
       type: 'image',
-      validation: (rule) => rule.required(),
+      options: {hotspot: true},
     }),
     defineField({
       name: 'body',

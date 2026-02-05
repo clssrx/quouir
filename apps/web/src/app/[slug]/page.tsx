@@ -1,24 +1,16 @@
 import { PortableText } from 'next-sanity';
-import imageUrlBuilder from '@sanity/image-url';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import { client } from '@/sanity/client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Post, SanitySlug } from '@/types/sanity';
+
+import { POST_QUERY_RESULT } from '@/sanity/types';
 import { getPostBySlug } from '@/sanity/posts';
+import { urlForImage } from '@/sanity/image';
+import { PostPageProps } from '@/types/pages';
 
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-	projectId && dataset
-		? imageUrlBuilder({ projectId, dataset }).image(source)
-		: null;
+export default async function PostPage({ params }: PostPageProps) {
+	const { slug } = await params;
 
-export default async function PostPage({
-	params,
-}: {
-	params: Promise<SanitySlug>;
-}) {
-	const post: Post | null = await getPostBySlug(await params);
+	const post: POST_QUERY_RESULT | null = await getPostBySlug(slug);
 
 	if (!post) {
 		return <p>Post not found.</p>;
@@ -26,8 +18,8 @@ export default async function PostPage({
 
 	const { title, body = [], publishedAt, image, author } = post;
 	const postImageUrl = image
-		? urlFor(image)?.width(550).height(310).url()
-		: null;
+		? urlForImage(image)?.width(550).height(310).url()
+		: undefined;
 
 	return (
 		<main className='container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4'>
@@ -44,11 +36,12 @@ export default async function PostPage({
 				</h3>
 			</Link>
 
-			<p>{new Date(publishedAt).toLocaleDateString()}</p>
+			{publishedAt && <p>{new Date(publishedAt).toLocaleDateString()}</p>}
+
 			{postImageUrl && (
 				<Image
 					src={postImageUrl}
-					alt={title}
+					alt={title || 'Post image'}
 					className='aspect-video rounded-xl'
 					width={550}
 					height={310}
