@@ -6,6 +6,8 @@ import { urlForImage } from '@/sanity/image';
 import { AuthorPageProps, PostsSectionProps } from '@/types/pages';
 import { AUTHOR_QUERY_RESULT } from '@/sanity/types';
 
+export const revalidate = 86400; // Revalidate every 24 hours
+
 const PostsSection = ({ posts }: PostsSectionProps) => {
 	return posts.length === 0 ? (
 		<p>No posts found.</p>

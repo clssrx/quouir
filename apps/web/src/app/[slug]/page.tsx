@@ -7,6 +7,8 @@ import { getPostBySlug } from '@/sanity/posts';
 import { urlForImage } from '@/sanity/image';
 import { PostPageProps } from '@/types/pages';
 
+export const revalidate = 86400; // Revalidate every 24 hours (86400 seconds)
+
 export default async function PostPage({ params }: PostPageProps) {
 	const { slug } = await params;
 
