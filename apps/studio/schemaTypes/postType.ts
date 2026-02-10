@@ -10,12 +10,19 @@ export const postType = defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
+
     defineField({
       name: 'slug',
       type: 'slug',
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),
+
+    defineField({
+      name: 'subtitle',
+      type: 'string',
+    }),
+
     defineField({
       name: 'author',
       title: 'Author',
@@ -23,6 +30,7 @@ export const postType = defineType({
       to: [{type: 'author'}],
       validation: (rule) => rule.required(),
     }),
+
     defineField({
       name: 'category',
       title: 'Category',

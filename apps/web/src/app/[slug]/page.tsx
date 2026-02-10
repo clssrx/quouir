@@ -16,7 +16,7 @@ export default async function PostPage({ params }: PostPageProps) {
 		return <p>Post not found.</p>;
 	}
 
-	const { title, body = [], publishedAt, image, author } = post;
+	const { title, body = [], subtitle, publishedAt, image, author } = post;
 	const postImageUrl = image
 		? urlForImage(image)?.width(550).height(310).url()
 		: undefined;
@@ -26,7 +26,11 @@ export default async function PostPage({ params }: PostPageProps) {
 			<Link href='/' className='hover:underline'>
 				← Back to posts
 			</Link>
-			<h1 className='text-4xl font-bold '>{title}</h1>
+
+			<h1 className='text-4xl font-bold '>{title?.toUpperCase()}</h1>
+
+			<h3 className='text-lg'>{subtitle}</h3>
+
 			<Link
 				href={author?.slug ? `/authors/${author.slug.current}` : '#'}
 				className='hover:underline'

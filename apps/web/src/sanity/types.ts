@@ -42,6 +42,7 @@ export type Post = {
   _rev: string;
   title?: string;
   slug?: Slug;
+  subtitle?: string;
   author?: AuthorReference;
   category?: CategoryReference;
   publishedAt?: string;
@@ -296,11 +297,12 @@ export type POSTS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/posts.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0]{  _id,  title,  slug,  publishedAt,  body,	image,  author->{_id, name, slug}}
+// Query: *[_type == "post" && slug.current == $slug][0]{  _id,  title,  slug,  subtitle,  publishedAt,  body,	image,  author->{_id, name, slug}}
 export type POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
   slug: Slug | null;
+  subtitle: string | null;
   publishedAt: string | null;
   body: Array<{
     children?: Array<{
@@ -340,6 +342,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '{\n  "author": *[_type == "author" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image,\n    slug\n  },\n  "posts": *[\n    _type == "post" &&\n    defined(author) &&\n    references(*[_type=="author" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n\t\timage\n  }\n}': AUTHOR_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    author->{\n      _id,\n      name,\n      slug,\n    }\n  }\n': POSTS_QUERY_RESULT;
-    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  publishedAt,\n  body,\n\timage,\n  author->{_id, name, slug}\n}': POST_QUERY_RESULT;
+    '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage,\n  author->{_id, name, slug}\n}': POST_QUERY_RESULT;
   }
 }
