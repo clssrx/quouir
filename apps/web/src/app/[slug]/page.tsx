@@ -1,4 +1,3 @@
-import { PortableText } from 'next-sanity';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -6,6 +5,8 @@ import { POST_QUERY_RESULT } from '@/sanity/types';
 import { getPostBySlug } from '@/sanity/posts';
 import { urlForImage } from '@/sanity/image';
 import { PostPageProps } from '@/types/pages';
+import { FootnotePortableText } from '@/sanity/footnotePortableText';
+import { PortableTextBlock } from 'next-sanity';
 
 export default async function PostPage({ params }: PostPageProps) {
 	const { slug } = await params;
@@ -51,8 +52,13 @@ export default async function PostPage({ params }: PostPageProps) {
 					height={310}
 				/>
 			)}
+
 			<div className='prose text-justify'>
-				{Array.isArray(body) && <PortableText value={body} />}
+				{Array.isArray(body) && (
+					<>
+						<FootnotePortableText value={body as PortableTextBlock[]} />
+					</>
+				)}
 			</div>
 		</main>
 	);
