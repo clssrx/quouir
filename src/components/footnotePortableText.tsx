@@ -6,14 +6,10 @@ import {
 	PortableTextComponents,
 	PortableTextBlock,
 } from '@portabletext/react';
-import { urlFor } from './lib/image';
+import { urlFor } from '@/sanity/lib/image';
 
-interface Footnote {
-	id: number;
-	text: string;
-}
+import { Footnote } from '@/types/components';
 
-// Helper to extract footnotes from PortableText blocks
 const extractFootnotes = (blocks: PortableTextBlock[]): Footnote[] => {
 	const footnotesMap = new Map<string, number>();
 	let counter = 1;

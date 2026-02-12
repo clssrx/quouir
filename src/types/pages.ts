@@ -1,11 +1,11 @@
-import type { AUTHOR_QUERY_RESULT } from '@/sanity/types';
+import type { AUTHOR_QUERYResult } from '@/sanity/types';
 export interface AuthorPageProps {
 	params: {
 		slug: string;
 	};
 }
 
-export type AuthorPosts = AUTHOR_QUERY_RESULT['posts'];
+export type AuthorPosts = AUTHOR_QUERYResult['posts'];
 
 export type PostsSectionProps = {
 	posts: AuthorPosts;

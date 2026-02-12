@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { POST_QUERY_RESULT } from '@/sanity/types';
-import { getPostBySlug } from '@/sanity/posts';
+import { POST_QUERYResult } from '@/sanity/types';
+import { getPostBySlug } from '@/sanity/queries/posts';
 import { urlFor } from '@/sanity/lib/image';
 import { PostPageProps } from '@/types/pages';
-import { FootnotePortableText } from '@/sanity/footnotePortableText';
+import { FootnotePortableText } from '@/components/footnotePortableText';
 import { PortableTextBlock } from 'next-sanity';
 
 export default async function PostPage({ params }: PostPageProps) {
 	const { slug } = await params;
 
-	const post: POST_QUERY_RESULT | null = await getPostBySlug(slug);
+	const post: POST_QUERYResult | null = await getPostBySlug(slug);
 
 	if (!post) {
 		return <p>Post not found.</p>;

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getLatestPosts } from '@/sanity/posts';
+import { getLatestPosts } from '@/sanity/queries/posts';
 
 export default async function IndexPage() {
 	const posts = await getLatestPosts();

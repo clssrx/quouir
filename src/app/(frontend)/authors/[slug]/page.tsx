@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAuthorBySlug } from '@/sanity/authors';
+import { getAuthorBySlug } from '@/sanity/queries/authors';
 import { urlFor } from '@/sanity/lib/image';
 
 import { AuthorPageProps, PostsSectionProps } from '@/types/pages';
-import { AUTHOR_QUERY_RESULT } from '@/sanity/types';
+import { AUTHOR_QUERYResult } from '@/sanity/types';
 
 const PostsSection = ({ posts }: PostsSectionProps) => {
 	return posts.length === 0 ? (
@@ -40,7 +40,7 @@ const PostsSection = ({ posts }: PostsSectionProps) => {
 export default async function AuthorPage({ params }: AuthorPageProps) {
 	const { slug } = await params;
 
-	const data: AUTHOR_QUERY_RESULT = await getAuthorBySlug(slug);
+	const data: AUTHOR_QUERYResult = await getAuthorBySlug(slug);
 
 	const { author, posts } = data;
 
