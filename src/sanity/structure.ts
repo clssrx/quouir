@@ -6,6 +6,7 @@ export const structure: StructureResolver = (S) =>
 		.items([
 			S.listItem()
 				.title('Posts by category')
+				.icon(() => '💾')
 				.child(
 					S.documentTypeList('category')
 						.title('Categories')
@@ -20,6 +21,20 @@ export const structure: StructureResolver = (S) =>
 									}),
 								]),
 						),
+				),
+
+			// S.listItem()
+			// 	.title('Home Page')
+			// 	.icon(() => '🏠')
+			// 	.child(
+			// 		S.document().schemaType('homePage').documentId('homePage'), // fixed ID, singleton pattern
+			// 	),
+
+			S.listItem()
+				.title('Site Settings')
+				.icon(() => '⚙️')
+				.child(
+					S.document().schemaType('siteSettings').documentId('siteSettings'),
 				),
 
 			S.divider(),
