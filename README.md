@@ -12,6 +12,7 @@ This project now uses a **single-app structure** with the Sanity Studio embedded
 
 ## Project Structure
 
+```
 quouir/
 ├─ src/
 │ ├─ app/ # Next.js App Router pages
@@ -23,7 +24,7 @@ quouir/
 ├─ README.md
 
 - Studio is accessible at `/studio` in the running Next.js app.
-
+```
 ---
 
 ## Features
