@@ -19,7 +19,8 @@ export const AUTHOR_QUERY = groq`{
     title,
     slug,
     publishedAt,
-		image
+		image,
+    category->{title, slug},
   }
 }`;
 
