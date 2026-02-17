@@ -300,7 +300,7 @@ export type AllSanitySchemaTypes = SiteSettings | SanityImageCrop | SanityImageH
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries/authors.ts
 // Variable: AUTHOR_QUERY
-// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image,    slug  },  "posts": *[    _type == "post" &&    defined(author) &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,		image  }}
+// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image,    slug  },  "posts": *[    _type == "post" &&    defined(author) &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,		image,    category->{title, slug},  }}
 export type AUTHOR_QUERYResult = {
   author: {
     _id: string;
@@ -337,8 +337,21 @@ export type AUTHOR_QUERYResult = {
       crop?: SanityImageCrop;
       _type: "image";
     } | null;
+    category: {
+      title: null;
+      slug: Slug;
+    };
   }>;
 };
+
+// Source: ./src/sanity/queries/categories.ts
+// Variable: CATEGORIES_LIST_QUERY
+// Query: *[_type == "category"]{  _id,  title,  slug}
+export type CATEGORIES_LIST_QUERYResult = Array<{
+  _id: string;
+  title: null;
+  slug: Slug;
+}>;
 
 // Source: ./src/sanity/queries/posts.ts
 // Variable: POSTS_QUERY
@@ -354,9 +367,9 @@ export type POSTS_QUERYResult = Array<{
     slug: Slug;
   };
 }>;
-// Variable: POST_QUERY
+// Variable: POST_BY_SLUG_QUERY
 // Query: *[_type == "post" && slug.current == $slug][0]{  _id,  title,  slug,  subtitle,  publishedAt,  body,	image,  author->{_id, name, slug}}
-export type POST_QUERYResult = {
+export type POST_BY_SLUG_QUERYResult = {
   _id: string;
   title: string;
   slug: Slug;
@@ -415,6 +428,96 @@ export type POST_QUERYResult = {
     slug: Slug;
   };
 } | null;
+// Variable: POST_BY_CATEGORY_AND_SLUG_QUERY
+// Query: *[    _type == "post" &&    slug.current == $slug &&    category->slug.current == $category  ][0]{    _id,    title,    slug,    subtitle,    publishedAt,    body,    image,    author->{_id, name, slug},    category->{_id, title, slug}  }
+export type POST_BY_CATEGORY_AND_SLUG_QUERYResult = {
+  _id: string;
+  title: string;
+  slug: Slug;
+  subtitle: string | null;
+  publishedAt: string;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      text?: string;
+      id?: string;
+      _type: "footnote";
+      _key: string;
+    } | {
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  author: {
+    _id: string;
+    name: string;
+    slug: Slug;
+  };
+  category: {
+    _id: string;
+    title: null;
+    slug: Slug;
+  };
+} | null;
+// Variable: POSTS_BY_CATEGORY_QUERY
+// Query: *[    _type == "post" &&    defined(slug.current) &&    category->slug.current == $category  ]  | order(publishedAt desc)[0...12]{    _id,    title,    slug,    publishedAt,    author->{      _id,      name,      slug,    },    category->{      _id,      title,      slug    }  }
+export type POSTS_BY_CATEGORY_QUERYResult = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  publishedAt: string;
+  author: {
+    _id: string;
+    name: string;
+    slug: Slug;
+  };
+  category: {
+    _id: string;
+    title: null;
+    slug: Slug;
+  };
+}>;
+// Variable: ALL_POSTS_WITH_CATEGORY_QUERY
+// Query: *[_type == "post"]{    "slug": slug.current,    "category": category->slug.current  }
+export type ALL_POSTS_WITH_CATEGORY_QUERYResult = Array<{
+  slug: string;
+  category: string;
+}>;
 
 // Source: ./src/sanity/queries/siteSettings.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -482,9 +585,13 @@ export type LICENSE_TEXT_QUERYResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "{\n  \"author\": *[_type == \"author\" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image,\n    slug\n  },\n  \"posts\": *[\n    _type == \"post\" &&\n    defined(author) &&\n    references(*[_type==\"author\" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n\t\timage\n  }\n}": AUTHOR_QUERYResult;
+    "{\n  \"author\": *[_type == \"author\" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image,\n    slug\n  },\n  \"posts\": *[\n    _type == \"post\" &&\n    defined(author) &&\n    references(*[_type==\"author\" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n\t\timage,\n    category->{title, slug},\n  }\n}": AUTHOR_QUERYResult;
+    "*[_type == \"category\"]{\n  _id,\n  title,\n  slug\n}\n": CATEGORIES_LIST_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    author->{\n      _id,\n      name,\n      slug,\n    }\n  }\n": POSTS_QUERYResult;
-    "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage,\n  author->{_id, name, slug}\n}": POST_QUERYResult;
+    "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage,\n  author->{_id, name, slug}\n}": POST_BY_SLUG_QUERYResult;
+    "\n  *[\n    _type == \"post\" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image,\n    author->{_id, name, slug},\n    category->{_id, title, slug}\n  }\n": POST_BY_CATEGORY_AND_SLUG_QUERYResult;
+    "\n  *[\n    _type == \"post\" &&\n    defined(slug.current) &&\n    category->slug.current == $category\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    author->{\n      _id,\n      name,\n      slug,\n    },\n    category->{\n      _id,\n      title,\n      slug\n    }\n  }\n": POSTS_BY_CATEGORY_QUERYResult;
+    "\n  *[_type == \"post\"]{\n    \"slug\": slug.current,\n    \"category\": category->slug.current\n  }\n": ALL_POSTS_WITH_CATEGORY_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n  title,\n  aboutUsText,\n  logo,\n  contactEmail,\n  facebookUrl,\n  instagramUrl,\n}\n": SITE_SETTINGS_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n  licenseText,\n}\n": LICENSE_TEXT_QUERYResult;
   }

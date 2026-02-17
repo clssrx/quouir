@@ -1,8 +1,8 @@
 import type { AUTHOR_QUERYResult } from '@/sanity/types';
 export interface AuthorPageProps {
-	params: {
+	params: Promise<{
 		slug: string;
-	};
+	}>;
 }
 
 export type AuthorPosts = AUTHOR_QUERYResult['posts'];
@@ -12,7 +12,14 @@ export type PostsSectionProps = {
 };
 
 export interface PostPageProps {
-	params: {
+	params: Promise<{
+		category: string;
 		slug: string;
-	};
+	}>;
+}
+
+export interface CategoryPageProps {
+	params: Promise<{
+		category: string;
+	}>;
 }

@@ -12,7 +12,7 @@ export default async function FrontendLayout({
 		<>
 			{/* <Navbar /> */}
 
-			<main className='mx-auto max-w-5xl px-6'>{children}</main>
+			<main className='mx-auto max-w-5xl px-6 min-h-screen'>{children}</main>
 
 			<SanityLive />
 			<Footer licenseText={licenseText} />
