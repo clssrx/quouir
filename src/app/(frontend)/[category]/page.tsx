@@ -1,3 +1,4 @@
+import { PostCard } from '@/components/PostCard';
 import { getAllCategories } from '@/sanity/queries/categories';
 import { getPostsByCategory } from '@/sanity/queries/posts';
 import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
@@ -21,19 +22,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 	const postsByCategory: POSTS_BY_CATEGORY_QUERYResult =
 		await getPostsByCategory(category);
 
-	if (postsByCategory.length === 0) {
+	if (!postsByCategory.length) {
 		return (
-			<main className='container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4'>
-				<h1 className='text-3xl font-bold'>{category.toUpperCase()}</h1>
-				<p>No posts found for this category.</p>
+			<main className='container mx-auto py-32 text-center'>
+				<h2 className='text-2xl mb-4'>No posts in this category yet.</h2>
+				<Link href='/' className='underline'>
+					Back to homepage
+				</Link>
 			</main>
 		);
 	}
 
 	return (
-		<main className='container mx-auto max-w-3xl p-8 flex flex-col gap-4'>
+		<main className='container mx-auto max-w-4xl p-6 gap-4'>
 			<h1 className='text-4xl font-bold mb-8'>{category.toUpperCase()}</h1>
-			<ul className='flex flex-col gap-y-4'>
+			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
 				{postsByCategory.map((post) => {
 					const postSlug = post.slug?.current || '';
 					const authorName = post.author?.name || 'Unknown Author';
@@ -42,21 +45,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 					const postId = post._id;
 
 					return (
-						<li key={postId} className='flex flex-col gap-1'>
-							<Link href={`/${category}/${postSlug}`}>
-								<h2 className='text-xl font-semibold hover:underline'>
-									{post.title}
-								</h2>
-								<p>{new Date(postPublishedAt).toLocaleDateString()}</p>
-							</Link>
-							{post.author && (
-								<Link
-									href={`/authors/${authorSlug}`}
-									className='text-sm text-gray-600 hover:underline'
-								>
-									{authorName}
-								</Link>
-							)}
+						<li key={post._id} className='h-full'>
+							<PostCard
+								key={postId}
+								title={post.title}
+								categorySlug={category}
+								image={post.thumbnailImage || post.image}
+								publishedAt={postPublishedAt}
+								authorName={authorName}
+								authorSlug={authorSlug}
+								postSlug={postSlug}
+								excerpt={post.excerpt}
+							/>
 						</li>
 					);
 				})}

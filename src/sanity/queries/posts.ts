@@ -67,6 +67,10 @@ export const POSTS_BY_CATEGORY_QUERY = groq`
     title,
     slug,
     publishedAt,
+    subtitle,
+    image,
+    thumbnailImage,
+    excerpt,
     author->{
       _id,
       name,
