@@ -1,20 +1,36 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { POST_QUERYResult } from '@/sanity/types';
-import { getPostBySlug } from '@/sanity/queries/posts';
+import { POST_BY_CATEGORY_AND_SLUG_QUERYResult } from '@/sanity/types';
+import {
+	getAllPostsWithCategoryForStaticParams,
+	getPostByCategoryAndSlug,
+} from '@/sanity/queries/posts';
 import { urlFor } from '@/sanity/lib/image';
 import { PostPageProps } from '@/types/pages';
 import { FootnotePortableText } from '@/components/footnotePortableText';
 import { PortableTextBlock } from 'next-sanity';
 
-export default async function PostPage({ params }: PostPageProps) {
-	const { slug } = await params;
+export const revalidate = 86400;
 
-	const post: POST_QUERYResult | null = await getPostBySlug(slug);
+export async function generateStaticParams() {
+	const posts = await getAllPostsWithCategoryForStaticParams();
+
+	return posts.map((post) => ({
+		category: post.category,
+		slug: post.slug,
+	}));
+}
+
+export default async function PostPage({ params }: PostPageProps) {
+	const { category, slug } = await params;
+
+	const post: POST_BY_CATEGORY_AND_SLUG_QUERYResult | null =
+		await getPostByCategoryAndSlug(category, slug);
 
 	if (!post) {
 		return <p>Post not found.</p>;
+		// notFound();
 	}
 
 	const { title, body = [], subtitle, publishedAt, image, author } = post;

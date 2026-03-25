@@ -7,34 +7,34 @@ import { AuthorPageProps, PostsSectionProps } from '@/types/pages';
 import { AUTHOR_QUERYResult } from '@/sanity/types';
 
 const PostsSection = ({ posts }: PostsSectionProps) => {
-	return posts.length === 0 ? (
-		<p>No posts found.</p>
-	) : (
-		posts.map((post) => {
-			const postImageUrl = post.image
-				? urlFor(post.image)?.width(200).height(200).url()
-				: undefined;
+	if (posts.length === 0) {
+		return <p>No post found.</p>;
+	}
 
-			return (
-				<li key={post._id}>
-					<Link href={`/${post.slug?.current || ''}`}>
-						<h4 className='text-md font-medium hover:underline'>
-							{post.title}
-						</h4>
-						{postImageUrl && (
-							<Image
-								src={postImageUrl}
-								alt={post.title || 'Post image'}
-								width={200}
-								height={200}
-								className='mt-2 rounded-lg'
-							/>
-						)}
-					</Link>
-				</li>
-			);
-		})
-	);
+	return posts.map((post) => {
+		const postImageUrl = post.image
+			? urlFor(post.image)?.width(200).height(200).url()
+			: undefined;
+
+		return (
+			<li key={post._id}>
+				<Link
+					href={`/${post.category?.slug?.current || ''}/${post.slug?.current || ''}`}
+				>
+					<h4 className='text-md font-medium hover:underline'>{post.title}</h4>
+					{postImageUrl && (
+						<Image
+							src={postImageUrl}
+							alt={post.title || 'Post image'}
+							width={200}
+							height={200}
+							className='mt-2 rounded-lg'
+						/>
+					)}
+				</Link>
+			</li>
+		);
+	});
 };
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
