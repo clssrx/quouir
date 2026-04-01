@@ -143,7 +143,7 @@ export type Post = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "blockquote";
+    style?: "normal" | "h1" | "h2" | "h3" | "blockquote" | "indented";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -395,7 +395,7 @@ export type POST_BY_SLUG_QUERYResult = {
       _type: "span";
       _key: string;
     }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "normal";
+    style?: "blockquote" | "h1" | "h2" | "h3" | "indented" | "normal";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       text?: string;
@@ -456,7 +456,7 @@ export type POST_BY_CATEGORY_AND_SLUG_QUERYResult = {
       _type: "span";
       _key: string;
     }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "normal";
+    style?: "blockquote" | "h1" | "h2" | "h3" | "indented" | "normal";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       text?: string;
