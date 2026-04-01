@@ -34,32 +34,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 	}
 
 	return (
-		<main className='container mx-auto max-w-4xl p-6 gap-4'>
+		<main className='container mx-auto max-w-4xl px-6'>
 			<h1 className='text-4xl font-bold mb-8'>{category.toUpperCase()}</h1>
 			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
-				{postsByCategory.map((post) => {
-					const postSlug = post.slug?.current || '';
-					const authorName = post.author?.name || 'Unknown Author';
-					const authorSlug = post.author?.slug?.current || '';
-					const postPublishedAt = post.publishedAt || '';
-					const postId = post._id;
-
-					return (
-						<li key={post._id} className='h-full'>
-							<PostCard
-								key={postId}
-								title={post.title}
-								categorySlug={category}
-								image={post.thumbnailImage || post.image}
-								publishedAt={postPublishedAt}
-								authorName={authorName}
-								authorSlug={authorSlug}
-								postSlug={postSlug}
-								excerpt={post.excerpt}
-							/>
-						</li>
-					);
-				})}
+				{postsByCategory.map((post) => (
+					<li key={post._id} className='h-full'>
+						<PostCard post={post} categorySlug={category} />
+					</li>
+				))}
 			</ul>
 		</main>
 	);

@@ -1,29 +1,21 @@
 import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
+import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
 
 export interface PostCardProps {
-	title: string;
-	subtitle?: string;
-	publishedAt?: string;
-	image?: string;
-	authorName: string;
-	authorSlug: string;
-	postSlug: string;
+	post: POSTS_BY_CATEGORY_QUERYResult[0];
 	categorySlug: string;
-	excerpt?: string;
 }
 
-export const PostCard = ({
-	title,
-	publishedAt,
-	image,
-	authorName,
-	authorSlug,
-	postSlug,
-	categorySlug,
-	excerpt,
-}: PostCardProps) => {
+export const PostCard = ({ post, categorySlug }: PostCardProps) => {
+	const title = post.title || '';
+	const publishedAt = post.publishedAt;
+	const image = post.thumbnailImage || post.image;
+	const authorName = post.author?.name || 'Unknown Author';
+	const authorSlug = post.author?.slug?.current || '';
+	const postSlug = post.slug?.current || '';
+	const excerpt = post.excerpt || null;
 	const imageUrl = image
 		? urlFor(image).width(600).height(600).url()
 		: undefined;
