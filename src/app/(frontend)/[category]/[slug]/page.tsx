@@ -10,6 +10,7 @@ import { urlFor } from '@/sanity/lib/image';
 import { PostPageProps } from '@/types/pages';
 import { FootnotePortableText } from '@/components/footnotePortableText';
 import { PortableTextBlock } from 'next-sanity';
+import { notFound } from 'next/navigation';
 
 export const revalidate = 86400;
 
@@ -29,8 +30,7 @@ export default async function PostPage({ params }: PostPageProps) {
 		await getPostByCategoryAndSlug(category, slug);
 
 	if (!post) {
-		return <p>Post not found.</p>;
-		// notFound();
+		notFound();
 	}
 
 	const { title, body = [], subtitle, publishedAt, image, author } = post;
@@ -40,8 +40,8 @@ export default async function PostPage({ params }: PostPageProps) {
 
 	return (
 		<main className='container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4'>
-			<Link href='/' className='hover:underline'>
-				← Back to posts
+			<Link href={`/${category}`} className='hover:underline'>
+				← Back to {category.toUpperCase()}
 			</Link>
 
 			<h1 className='text-4xl font-bold '>{title?.toUpperCase()}</h1>
