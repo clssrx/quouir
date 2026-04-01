@@ -26,8 +26,6 @@ export async function generateStaticParams() {
 export default async function PostPage({ params }: PostPageProps) {
 	const { category, slug } = await params;
 
-	console.log(category);
-
 	const post: POST_BY_CATEGORY_AND_SLUG_QUERYResult | null =
 		await getPostByCategoryAndSlug(category, slug);
 
