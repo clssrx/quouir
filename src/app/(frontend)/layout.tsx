@@ -31,7 +31,7 @@ const Footer = ({ licenseText }: { licenseText?: PortableTextBlock[] }) => {
 		<footer className='mt-4 border-t border-white/10'>
 			<div className='mx-auto max-w-3xl px-6 py-8 text-center'>
 				<p className='text-sm text-white/50'>
-					© {new Date().getFullYear()} QU'OUÏR
+					© {new Date().getFullYear()} QU&apos;OUÏR
 				</p>
 
 				<div className='mt-4 text-sm text-white/60 leading-relaxed text-justify sm:text-center'>

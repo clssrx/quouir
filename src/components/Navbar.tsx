@@ -18,7 +18,7 @@ export default function Navbar({ categories }: NavbarProps) {
 			<div className='container mx-auto max-w-5xl px-6 py-4 flex items-center justify-between'>
 				{/* Logo */}
 				<Link href='/' className='text-xl font-bold'>
-					QU'OUÏR
+					QU&apos;OUÏR
 				</Link>
 
 				{/* Desktop Menu */}
@@ -36,7 +36,6 @@ export default function Navbar({ categories }: NavbarProps) {
 						))}
 				</div>
 
-				{/* Mobile Hamburger */}
 				<button
 					onClick={() => setIsOpen(!isOpen)}
 					className='md:hidden flex flex-col gap-1'
