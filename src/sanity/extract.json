@@ -905,6 +905,10 @@
                         {
                           "type": "string",
                           "value": "blockquote"
+                        },
+                        {
+                          "type": "string",
+                          "value": "indented"
                         }
                       ]
                     },
