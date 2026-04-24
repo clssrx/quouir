@@ -30,14 +30,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 				aria-labelledby='no-posts-heading'
 			>
 				<h2 id='no-posts-heading' className='text-2xl mb-4'>
-					No posts in this category yet.
+					Non ci sono ancora post in questa categoria.
 				</h2>
 				<Link
 					href='/'
 					className='underline focus-visible:outline-2 focus-visible:outline-offset-2'
 					aria-label='Back to homepage'
 				>
-					Back to homepage
+					Torna alla homepage
 				</Link>
 			</main>
 		);

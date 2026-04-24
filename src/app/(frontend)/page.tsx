@@ -1,69 +1,79 @@
 import Image from 'next/image';
+import { PortableText, PortableTextBlock } from 'next-sanity';
+
 import { getSiteSettings } from '@/sanity/queries/siteSettings';
 import { SITE_SETTINGS_QUERYResult } from '@/sanity/types';
-import { PortableTextBlock } from 'next-sanity';
 import { urlFor } from '@/sanity/lib/image';
-
 import SocialLinks from '@/components/SocialLinks';
 
 export default async function HomePage() {
 	const data: SITE_SETTINGS_QUERYResult | null = await getSiteSettings();
 
-	//change here for a fallback homepage content if the query fails
 	if (!data) {
-		return <p>Site settings not found.</p>;
+		return (
+			<main className='min-h-screen px-4 py-12 text-center'>
+				<p>Impostazioni del sito non trovate.</p>
+			</main>
+		);
 	}
 
 	const { title, aboutUsText, logo, contactEmail, facebookUrl, instagramUrl } =
 		data;
 
-	const logoUrl = logo ? urlFor(logo)?.width(250).height(250).url() : undefined;
+	const logoUrl = logo
+		? urlFor(logo).width(320).height(320).fit('crop').url()
+		: undefined;
 
 	return (
-		<div className='min-h-screen flex flex-col'>
-			<main className='flex-1'>
-				<div className='container mx-auto px-4 sm:px-10  sm:py-[12 1] flex flex-col gap-8 xs:px-8'>
-					<h1 className='text-4xl font-bold text-center justify-self-center'>
-						{title.toUpperCase()}
-					</h1>
-					<div className='flex justify-center'>
-						{logoUrl && (
-							<Image
-								src={logoUrl}
-								alt={"qu'ouir logo"}
-								width={250}
-								height={250}
-								className='rounded-full'
-							/>
-						)}
-					</div>
-					<MainText aboutUsText={aboutUsText as PortableTextBlock[]} />
+		<main className='min-h-screen px-4 pb-16 md:pt-2 '>
+			<section className='mx-auto flex max-w-3xl flex-col items-center gap-8 text-center'>
+				<h1 className='text-4xl font-bold tracking-tight md:text-6xl'>
+					{title}
+				</h1>
 
-					<SocialLinks
-						contactEmail={contactEmail ?? undefined}
-						facebookUrl={facebookUrl ?? undefined}
-						instagramUrl={instagramUrl ?? undefined}
-					/>
-				</div>
-			</main>
-		</div>
+				{logoUrl && (
+					<div className='overflow-hidden rounded-full  p-2'>
+						<Image
+							src={logoUrl}
+							alt="Logo Qu'ouir"
+							width={260}
+							height={260}
+							priority
+							sizes='260px'
+							className='rounded-full'
+						/>
+					</div>
+				)}
+
+				<MainText aboutUsText={aboutUsText as PortableTextBlock[]} />
+
+				<SocialLinks
+					contactEmail={contactEmail ?? undefined}
+					facebookUrl={facebookUrl ?? undefined}
+					instagramUrl={instagramUrl ?? undefined}
+				/>
+			</section>
+		</main>
 	);
 }
 
-const MainText = ({ aboutUsText }: { aboutUsText: PortableTextBlock[] }) => {
+const MainText = ({ aboutUsText }: { aboutUsText?: PortableTextBlock[] }) => {
+	if (!aboutUsText?.length) {
+		return <p className='text-white/60'>About us text not available.</p>;
+	}
+
 	return (
-		<div className='flex flex-col gap-6'>
-			<p className='max-w-3xl mx-auto text-lg leading-8 text-justify'>
-				{aboutUsText ? (
-					aboutUsText.map((block, index) => (
-						<span key={index}>
-							{block.children.map((child) => child.text).join(' ')}
-						</span>
-					))
-				) : (
-					<span>About us text not available.</span>
-				)}
-			</p>
+		<div className='max-w-3xl text-left text-lg leading-8 text-white/80 md:text-xl md:leading-9'>
+			<PortableText
+				value={aboutUsText}
+				components={{
+					block: {
+						normal: ({ children }) => (
+							<p className='mb-6 text-justify'>{children}</p>
+						),
+					},
+				}}
+			/>
 		</div>
 	);
 };
