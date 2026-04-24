@@ -8,19 +8,26 @@ export const postType = defineType({
 	fields: [
 		defineField({
 			name: 'title',
+			title: 'Article title',
+			description: 'The main title shown on the website.',
 			type: 'string',
-			validation: (rule) => rule.required(),
+			validation: (rule) => rule.required().error('Please add a title.'),
 		}),
-
 		defineField({
 			name: 'slug',
+			title: 'Page URL',
+			description:
+				'Generated from the title. Click “Generate” after writing the title.',
 			type: 'slug',
-			options: { source: 'title' },
-			validation: (rule) => rule.required(),
+			options: { source: 'title', maxLength: 96 },
+			validation: (rule) =>
+				rule.required().error('Please generate a page URL.'),
 		}),
 
 		defineField({
 			name: 'subtitle',
+			title: 'Subtitle',
+			description: 'Optional short line shown under the title.',
 			type: 'string',
 		}),
 
@@ -42,26 +49,36 @@ export const postType = defineType({
 
 		defineField({
 			name: 'publishedAt',
-			type: 'datetime',
-			initialValue: () => new Date().toISOString(),
+			title: 'Publication date',
+			description: 'Used to order posts on the website.',
+			type: 'date',
+			initialValue: () => new Date().toISOString().split('T')[0],
 			validation: (rule) => rule.required(),
 		}),
 
 		defineField({
 			name: 'image',
+			title: 'Main image',
+			description: 'Large image shown on the article page.',
+			type: 'image',
+			options: { hotspot: true },
+		}),
+
+		defineField({
+			name: 'thumbnailImage',
+			title: 'Preview image',
+			description: 'Small image used in article cards and previews.',
 			type: 'image',
 			options: { hotspot: true },
 		}),
 		defineField({
 			name: 'excerpt',
+			title: 'Short summary',
+			description: 'Shown in previews. Keep it short.',
 			type: 'text',
-			validation: (rule) => rule.max(500),
-		}),
-
-		defineField({
-			name: 'thumbnailImage',
-			type: 'image',
-			options: { hotspot: true },
+			rows: 3,
+			validation: (rule) =>
+				rule.max(500).warning('Try to keep this under 500 characters.'),
 		}),
 
 		defineField({
@@ -74,11 +91,9 @@ export const postType = defineType({
 					type: 'block',
 					styles: [
 						{ title: 'Normal', value: 'normal' },
-						{ title: 'H1', value: 'h1' },
-						{ title: 'H2', value: 'h2' },
-						{ title: 'H3', value: 'h3' },
+						{ title: 'Heading', value: 'h2' },
+						{ title: 'Small heading', value: 'h3' },
 						{ title: 'Quote', value: 'blockquote' },
-						{ title: 'Indented', value: 'indented' },
 					],
 					lists: [
 						{ title: 'Bullet', value: 'bullet' },
@@ -135,4 +150,11 @@ export const postType = defineType({
 			],
 		}),
 	],
+	preview: {
+		select: {
+			title: 'title',
+			subtitle: 'category.title',
+			media: 'thumbnailImage',
+		},
+	},
 });

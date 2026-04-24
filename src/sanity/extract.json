@@ -748,13 +748,6 @@
         },
         "optional": true
       },
-      "excerpt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
       "thumbnailImage": {
         "type": "objectAttribute",
         "value": {
@@ -821,6 +814,13 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "excerpt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       },
@@ -892,10 +892,6 @@
                         },
                         {
                           "type": "string",
-                          "value": "h1"
-                        },
-                        {
-                          "type": "string",
                           "value": "h2"
                         },
                         {
@@ -905,10 +901,6 @@
                         {
                           "type": "string",
                           "value": "blockquote"
-                        },
-                        {
-                          "type": "string",
-                          "value": "indented"
                         }
                       ]
                     },

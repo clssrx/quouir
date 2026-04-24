@@ -2,7 +2,7 @@ import { defineType, defineField, defineArrayMember } from 'sanity';
 
 export const siteSettingsType = defineType({
 	name: 'siteSettings',
-	title: 'Site Settings',
+	title: 'Website Settings',
 	type: 'document',
 	fields: [
 		defineField({
@@ -13,7 +13,7 @@ export const siteSettingsType = defineType({
 		}),
 		defineField({
 			name: 'logo',
-			title: 'Site Logo',
+			title: 'Website Logo',
 			type: 'image',
 			options: { hotspot: true },
 		}),
@@ -105,8 +105,12 @@ export const siteSettingsType = defineType({
 		}),
 		defineField({
 			name: 'contactEmail',
-			title: 'Contact Email',
+			title: 'Contact email',
 			type: 'string',
+			validation: (rule) =>
+				rule
+					.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+					.warning('Please enter a valid email.'),
 		}),
 		defineField({
 			name: 'facebookUrl',
@@ -119,4 +123,12 @@ export const siteSettingsType = defineType({
 			type: 'url',
 		}),
 	],
+	preview: {
+		prepare() {
+			return {
+				title: 'Website Settings',
+				subtitle: 'Global content used across the site',
+			};
+		},
+	},
 });

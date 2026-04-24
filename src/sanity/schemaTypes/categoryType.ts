@@ -7,21 +7,30 @@ export const categoryType = defineType({
 	fields: [
 		defineField({
 			name: 'title',
-			title: 'Title',
+			title: 'Category name',
 			type: 'string',
 			validation: (rule) => rule.required(),
 		}),
 		defineField({
 			name: 'slug',
-			title: 'Slug',
+			title: 'Category URL',
+			description: 'Generated from the category name.',
 			type: 'slug',
-			options: { source: 'title' },
+			options: { source: 'title', maxLength: 96 },
 			validation: (rule) => rule.required(),
 		}),
 		defineField({
 			name: 'description',
-			title: 'Description',
+			title: 'Category description',
+			description: 'Optional internal note or public description.',
 			type: 'text',
+			rows: 3,
 		}),
 	],
+	preview: {
+		select: {
+			title: 'title',
+			subtitle: 'description',
+		},
+	},
 });
