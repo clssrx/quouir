@@ -3,113 +3,107 @@ import { ImageIcon, DocumentTextIcon } from '@sanity/icons';
 
 export const postType = defineType({
 	name: 'post',
-	title: 'Post',
+	title: 'Articolo',
 	type: 'document',
 	fields: [
 		defineField({
 			name: 'title',
-			title: 'Article title',
-			description: 'The main title shown on the website.',
+			title: "Titolo dell'articolo",
+			description: 'Il titolo principale mostrato sul sito.',
 			type: 'string',
-			validation: (rule) => rule.required().error('Please add a title.'),
+			validation: (rule) => rule.required().error('Inserisci un titolo.'),
 		}),
 		defineField({
 			name: 'slug',
-			title: 'Page URL',
+			title: 'URL della pagina',
 			description:
-				'Generated from the title. Click “Generate” after writing the title.',
+				"Dopo aver scritto il titolo, clicca su “Generate” per creare automaticamente l'URL.",
 			type: 'slug',
 			options: { source: 'title', maxLength: 96 },
-			validation: (rule) =>
-				rule.required().error('Please generate a page URL.'),
+			validation: (rule) => rule.required().error('Genera l’URL della pagina.'),
 		}),
-
 		defineField({
 			name: 'subtitle',
-			title: 'Subtitle',
-			description: 'Optional short line shown under the title.',
+			title: 'Sottotitolo',
+			description: 'Breve frase opzionale mostrata sotto il titolo.',
 			type: 'string',
 		}),
-
 		defineField({
 			name: 'author',
-			title: 'Author',
+			title: 'Autore',
 			type: 'reference',
 			to: [{ type: 'author' }],
-			validation: (rule) => rule.required(),
+			validation: (rule) => rule.required().error('Seleziona un autore.'),
 		}),
-
 		defineField({
 			name: 'category',
-			title: 'Category',
+			title: 'Categoria',
 			type: 'reference',
 			to: [{ type: 'category' }],
-			validation: (rule) => rule.required(),
+			validation: (rule) => rule.required().error('Seleziona una categoria.'),
 		}),
-
 		defineField({
 			name: 'publishedAt',
-			title: 'Publication date',
-			description: 'Used to order posts on the website.',
+			title: 'Data di pubblicazione',
+			description: 'Usata per ordinare gli articoli sul sito.',
 			type: 'date',
 			initialValue: () => new Date().toISOString().split('T')[0],
-			validation: (rule) => rule.required(),
+			validation: (rule) =>
+				rule.required().error('Inserisci una data di pubblicazione.'),
 		}),
-
 		defineField({
 			name: 'image',
-			title: 'Main image',
-			description: 'Large image shown on the article page.',
+			title: 'Immagine principale',
+			description: "Immagine grande mostrata nella pagina dell'articolo.",
 			type: 'image',
 			options: { hotspot: true },
 		}),
-
 		defineField({
 			name: 'thumbnailImage',
-			title: 'Preview image',
-			description: 'Small image used in article cards and previews.',
+			title: 'Immagine di anteprima',
+			description: 'Immagine piccola usata nelle liste e nelle anteprime.',
 			type: 'image',
 			options: { hotspot: true },
 		}),
 		defineField({
 			name: 'excerpt',
-			title: 'Short summary',
-			description: 'Shown in previews. Keep it short.',
+			title: 'Riassunto breve',
+			description: 'Mostrato nelle anteprime. Meglio tenerlo breve.',
 			type: 'text',
 			rows: 3,
 			validation: (rule) =>
-				rule.max(500).warning('Try to keep this under 500 characters.'),
+				rule.max(500).warning('Meglio restare sotto i 500 caratteri.'),
 		}),
-
 		defineField({
 			name: 'body',
-			title: 'Body',
+			title: "Contenuto dell'articolo",
 			type: 'array',
-			validation: (rule) => rule.required(),
+			validation: (rule) =>
+				rule.required().error("Inserisci il contenuto dell'articolo."),
 			of: [
 				defineArrayMember({
 					type: 'block',
 					styles: [
-						{ title: 'Normal', value: 'normal' },
-						{ title: 'Heading', value: 'h2' },
-						{ title: 'Small heading', value: 'h3' },
-						{ title: 'Quote', value: 'blockquote' },
+						{ title: 'Testo normale', value: 'normal' },
+						{ title: 'Titolo sezione', value: 'h2' },
+						{ title: 'Sottotitolo sezione', value: 'h3' },
+						{ title: 'Citazione', value: 'blockquote' },
 					],
 					lists: [
-						{ title: 'Bullet', value: 'bullet' },
-						{ title: 'Numbered', value: 'number' },
+						{ title: 'Elenco puntato', value: 'bullet' },
+						{ title: 'Elenco numerato', value: 'number' },
 					],
 					marks: {
 						decorators: [
-							{ title: 'Strong', value: 'strong' },
-							{ title: 'Emphasis', value: 'em' },
-							{ title: 'Code', value: 'code' },
+							{ title: 'Grassetto', value: 'strong' },
+							{ title: 'Corsivo', value: 'em' },
+							{ title: 'Codice', value: 'code' },
 						],
 						annotations: [
 							{
 								name: 'link',
 								type: 'object',
-								title: 'URL',
+								title: 'Link',
 								fields: [
 									defineField({
 										name: 'href',
@@ -120,22 +114,22 @@ export const postType = defineType({
 							},
 							{
 								name: 'footnote',
-								title: 'Footnote',
+								title: 'Nota a piè di pagina',
 								type: 'object',
 								icon: DocumentTextIcon,
 								fields: [
 									defineField({
 										name: 'text',
-										title: 'Footnote text',
+										title: 'Testo della nota',
 										type: 'text',
 										rows: 3,
 									}),
 									defineField({
 										name: 'id',
-										title: 'id',
+										title: 'ID nota',
 										type: 'string',
 										description:
-											'Unique identifier for this footnote (e.g. "footnote-1")',
+											'Identificativo unico per questa nota, per esempio “nota-1”.',
 									}),
 								],
 							},
@@ -144,6 +138,7 @@ export const postType = defineType({
 				}),
 				defineArrayMember({
 					type: 'image',
+					title: 'Immagine',
 					icon: ImageIcon,
 					options: { hotspot: true },
 				}),

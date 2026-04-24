@@ -6,21 +6,21 @@ const EmojiIcon = ({ emoji }: { emoji: string }) => {
 
 export const structure: StructureResolver = (S) =>
 	S.list()
-		.title("Qu'ouir Studio")
+		.title("Qu'ouïr Studio")
 		.items([
 			S.documentTypeListItem('post')
-				.title('Articles / Posts')
+				.title('Articoli')
 				.icon(() => <EmojiIcon emoji='📝' />),
 
 			S.listItem()
-				.title('Posts by category')
+				.title('Articoli per categoria')
 				.icon(() => <EmojiIcon emoji='🗂️' />)
 				.child(
 					S.documentTypeList('category')
-						.title('Choose a category')
+						.title('Scegli una categoria')
 						.child((categoryId) =>
 							S.documentList()
-								.title('Posts in this category')
+								.title('Articoli in questa categoria')
 								.filter('_type == "post" && category._ref == $categoryId')
 								.params({ categoryId }),
 						),
@@ -29,19 +29,22 @@ export const structure: StructureResolver = (S) =>
 			S.divider(),
 
 			S.documentTypeListItem('category')
-				.title('Categories')
+				.title('Categorie')
 				.icon(() => <EmojiIcon emoji='🏷️' />),
 
 			S.documentTypeListItem('author')
-				.title('Authors')
+				.title('Autori')
 				.icon(() => <EmojiIcon emoji='👤' />),
 
 			S.divider(),
 
 			S.listItem()
-				.title('Site Settings')
+				.title('Impostazioni sito')
 				.icon(() => <EmojiIcon emoji='⚙️' />)
 				.child(
-					S.document().schemaType('siteSettings').documentId('siteSettings'),
+					S.document()
+						.schemaType('siteSettings')
+						.documentId('siteSettings')
+						.title('Impostazioni sito'),
 				),
 		]);
