@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { PortableTextBlock } from 'next-sanity';
 
 import { POST_BY_CATEGORY_AND_SLUG_QUERYResult } from '@/sanity/types';
 import {
@@ -9,8 +11,6 @@ import {
 import { urlFor } from '@/sanity/lib/image';
 import { PostPageProps } from '@/types/pages';
 import { FootnotePortableText } from '@/components/footnotePortableText';
-import { PortableTextBlock } from 'next-sanity';
-import { notFound } from 'next/navigation';
 
 export const revalidate = 86400;
 
@@ -34,48 +34,94 @@ export default async function PostPage({ params }: PostPageProps) {
 	}
 
 	const { title, body = [], subtitle, publishedAt, image, author } = post;
+
 	const postImageUrl = image
-		? urlFor(image)?.width(550).height(310).url()
+		? urlFor(image).width(1200).height(675).fit('crop').url()
 		: undefined;
 
+	const formattedDate = publishedAt
+		? new Intl.DateTimeFormat('it-IT', {
+				day: 'numeric',
+				month: 'long',
+				year: 'numeric',
+			}).format(new Date(publishedAt))
+		: null;
+
 	return (
-		<main className='container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4'>
-			<Link href={`/${category}`} className='hover:underline'>
-				← Back to {category.toUpperCase()}
-			</Link>
+		<main className='min-h-screen px-4 pb-8 pt-0 md:px-5 md:pb-16 md:pt-2'>
+			<article className='mx-auto max-w-3xl'>
+				<Link
+					href={`/${category}`}
+					className='mb-4 inline-flex text-sm opacity-70 transition hover:opacity-100 md:mb-6'
+				>
+					← Torna a {category}
+				</Link>
 
-			<h1 className='text-4xl font-bold '>{title?.toUpperCase()}</h1>
+				<header className='mb-10'>
+					<p className='mb-4 text-sm uppercase tracking-[0.22em] opacity-50'>
+						{category}
+					</p>
 
-			<h3 className='text-lg'>{subtitle}</h3>
+					<h1 className='text-4xl font-semibold leading-tight tracking-tight md:text-6xl'>
+						{title}
+					</h1>
 
-			<Link
-				href={author?.slug ? `/authors/${author.slug.current}` : '#'}
-				className='hover:underline'
-			>
-				<h3 className='text-lg text-gray-600'>
-					{author?.name || 'Unknown Author'}
-				</h3>
-			</Link>
+					{subtitle && (
+						<p className='mt-5 text-lg leading-8 opacity-75 md:text-xl '>
+							{subtitle}
+						</p>
+					)}
 
-			{publishedAt && <p>{new Date(publishedAt).toLocaleDateString()}</p>}
+					<div className='mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm opacity-60'>
+						{author?.name && author?.slug?.current ? (
+							<Link
+								href={`/authors/${author.slug.current}`}
+								className='hover:underline'
+							>
+								{author.name}
+							</Link>
+						) : (
+							<span>{author?.name || 'Autore sconosciuto'}</span>
+						)}
 
-			{postImageUrl && (
-				<Image
-					src={postImageUrl}
-					alt={title || 'Post image'}
-					className='aspect-video rounded-xl'
-					width={550}
-					height={310}
-				/>
-			)}
+						{formattedDate && (
+							<>
+								<span>·</span>
+								<time dateTime={publishedAt ?? undefined}>{formattedDate}</time>
+							</>
+						)}
+					</div>
+				</header>
 
-			<div className='prose text-justify'>
-				{Array.isArray(body) && (
-					<>
-						<FootnotePortableText value={body as PortableTextBlock[]} />
-					</>
+				{postImageUrl && (
+					<div className='mb-12 overflow-hidden rounded-2xl'>
+						<Image
+							src={postImageUrl}
+							alt={title || 'Immagine articolo'}
+							width={1200}
+							height={675}
+							sizes='(min-width: 768px) 768px, 100vw'
+							priority
+							className='aspect-video w-full object-cover'
+						/>
+					</div>
 				)}
-			</div>
+
+				<div className='prose prose-neutral max-w-none text-pretty prose-p:leading-8 prose-img:rounded-xl text-justify'>
+					{Array.isArray(body) && (
+						<FootnotePortableText value={body as PortableTextBlock[]} />
+					)}
+				</div>
+
+				<footer className='mt-16 border-t pt-8'>
+					<Link
+						href={`/${category}`}
+						className='text-sm opacity-70 transition hover:opacity-100 hover:underline'
+					>
+						← Altri articoli in {category}
+					</Link>
+				</footer>
+			</article>
 		</main>
 	);
 }
