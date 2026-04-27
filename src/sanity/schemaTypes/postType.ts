@@ -144,6 +144,16 @@ export const postType = defineType({
 				}),
 			],
 		}),
+		defineField({
+			name: 'pdf',
+			title: 'PDF da scaricare',
+			description:
+				"Carica il file PDF dell'articolo che le persone potranno scaricare",
+			type: 'file',
+			options: {
+				accept: 'application/pdf',
+			},
+		}),
 	],
 	preview: {
 		select: {
