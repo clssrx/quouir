@@ -33,7 +33,26 @@ export default async function PostPage({ params }: PostPageProps) {
 		notFound();
 	}
 
-	const { title, body = [], subtitle, publishedAt, image, author } = post;
+	const {
+		title,
+		body = [],
+		subtitle,
+		publishedAt,
+		image,
+		author,
+		pdfUrl,
+	} = post;
+
+	const pdfName = `${title || 'documento'}-${author?.name || 'autore'}`
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/\s+/g, '-')
+		.replace(/[^\w-]/g, '')
+		.concat('.pdf');
+
+	const pdfDownloadUrl = `${pdfUrl}?dl=${encodeURIComponent(pdfName)}`;
+	console.log(pdfName);
 
 	const postImageUrl = image
 		? urlFor(image).width(1200).height(675).fit('crop').url()
@@ -56,7 +75,6 @@ export default async function PostPage({ params }: PostPageProps) {
 				>
 					← Torna a {category}
 				</Link>
-
 				<header className='mb-10'>
 					<p className='mb-4 text-sm uppercase tracking-[0.22em] opacity-50'>
 						{category}
@@ -92,7 +110,6 @@ export default async function PostPage({ params }: PostPageProps) {
 						)}
 					</div>
 				</header>
-
 				{postImageUrl && (
 					<div className='mb-12 overflow-hidden rounded-2xl'>
 						<Image
@@ -106,12 +123,30 @@ export default async function PostPage({ params }: PostPageProps) {
 						/>
 					</div>
 				)}
-
 				<div className='prose prose-neutral max-w-none text-pretty prose-p:leading-8 prose-img:rounded-xl text-justify'>
 					{Array.isArray(body) && (
 						<FootnotePortableText value={body as PortableTextBlock[]} />
 					)}
 				</div>
+
+				{pdfUrl && (
+					<div className='mt-12 border-t border-white/10 pt-6'>
+						<p className='mb-2 text-xs uppercase tracking-[0.18em] opacity-40'>
+							Materiale allegato
+						</p>
+
+						<a
+							href={pdfDownloadUrl}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='group inline-flex w-fit items-center gap-2 text-sm opacity-75 transition hover:opacity-100 font-bold'
+						>
+							<span className='underline underline-offset-4 bold'>
+								Scarica il PDF
+							</span>
+						</a>
+					</div>
+				)}
 
 				<footer className='mt-16 border-t pt-8'>
 					<Link

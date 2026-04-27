@@ -51,6 +51,7 @@ export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
     publishedAt,
     body,
     image,
+    "pdfUrl": pdf.asset->url,
     author->{_id, name, slug},
     category->{_id, title, slug}
   }

@@ -39,7 +39,7 @@ export type SiteSettings = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "blockquote";
+    style?: "normal" | "h2" | "h3" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -57,7 +57,7 @@ export type SiteSettings = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "blockquote";
+    style?: "normal" | "h2" | "h3" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -171,6 +171,16 @@ export type Post = {
     _type: "image";
     _key: string;
   }>;
+  pdf?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
 };
 
 export type Author = {
@@ -442,7 +452,7 @@ export type POST_BY_SLUG_QUERYResult = {
   };
 } | null;
 // Variable: POST_BY_CATEGORY_AND_SLUG_QUERY
-// Query: *[    _type == "post" &&    slug.current == $slug &&    category->slug.current == $category  ][0]{    _id,    title,    slug,    subtitle,    publishedAt,    body,    image,    author->{_id, name, slug},    category->{_id, title, slug}  }
+// Query: *[    _type == "post" &&    slug.current == $slug &&    category->slug.current == $category  ][0]{    _id,    title,    slug,    subtitle,    publishedAt,    body,    image,    "pdfUrl": pdf.asset->url,    author->{_id, name, slug},    category->{_id, title, slug}  }
 export type POST_BY_CATEGORY_AND_SLUG_QUERYResult = {
   _id: string;
   title: string;
@@ -496,6 +506,7 @@ export type POST_BY_CATEGORY_AND_SLUG_QUERYResult = {
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
+  pdfUrl: string | null;
   author: {
     _id: string;
     name: string;
@@ -570,7 +581,7 @@ export type SITE_SETTINGS_QUERYResult = {
       _type: "span";
       _key: string;
     }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "normal";
+    style?: "blockquote" | "h2" | "h3" | "normal";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -607,7 +618,7 @@ export type LICENSE_TEXT_QUERYResult = {
       _type: "span";
       _key: string;
     }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "normal";
+    style?: "blockquote" | "h2" | "h3" | "normal";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -628,7 +639,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"category\"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n": CATEGORIES_LIST_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    author->{\n      _id,\n      name,\n      slug,\n    }\n  }\n": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage,\n  author->{_id, name, slug}\n}": POST_BY_SLUG_QUERYResult;
-    "\n  *[\n    _type == \"post\" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image,\n    author->{_id, name, slug},\n    category->{_id, title, slug}\n  }\n": POST_BY_CATEGORY_AND_SLUG_QUERYResult;
+    "\n  *[\n    _type == \"post\" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image,\n    \"pdfUrl\": pdf.asset->url,\n    author->{_id, name, slug},\n    category->{_id, title, slug}\n  }\n": POST_BY_CATEGORY_AND_SLUG_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    defined(slug.current) &&\n    category->slug.current == $category\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    subtitle,\n    image,\n    thumbnailImage,\n    excerpt,\n    author->{\n      _id,\n      name,\n      slug,\n    },\n    category->{\n      _id,\n      title,\n      slug\n    }\n  }\n": POSTS_BY_CATEGORY_QUERYResult;
     "\n  *[_type == \"post\"]{\n    \"slug\": slug.current,\n    \"category\": category->slug.current\n  }\n": ALL_POSTS_WITH_CATEGORY_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n  title,\n  aboutUsText,\n  logo,\n  contactEmail,\n  facebookUrl,\n  instagramUrl,\n}\n": SITE_SETTINGS_QUERYResult;
