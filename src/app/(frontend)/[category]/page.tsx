@@ -16,25 +16,38 @@ export async function generateStaticParams() {
 	}));
 }
 
+const formatCategoryTitle = (category: string) => {
+	return category.replaceAll('-', ' ');
+};
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
 	const { category } = await params;
 
 	const postsByCategory: POSTS_BY_CATEGORY_QUERYResult =
 		await getPostsByCategory(category);
 
+	const categoryTitle = formatCategoryTitle(category);
+
 	if (!postsByCategory.length) {
 		return (
 			<main
-				className='container mx-auto py-32 text-center'
+				className='mx-auto flex min-h-[50vh] w-full max-w-3xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6'
 				aria-labelledby='no-posts-heading'
 			>
-				<h1 id='no-posts-heading' className='text-2xl mb-4'>
-					Non ci sono ancora post in questa categoria.
+				<h1
+					id='no-posts-heading'
+					className='text-2xl font-semibold leading-tight sm:text-3xl'
+				>
+					Non ci sono ancora articoli in questa categoria.
 				</h1>
+
+				<p className='mt-3 text-gray-300'>
+					Torna alla homepage per esplorare gli altri contenuti.
+				</p>
+
 				<Link
 					href='/'
-					className='underline focus-visible:outline-2 focus-visible:outline-offset-2'
-					aria-label='Back to homepage'
+					className='mt-6 inline-block underline underline-offset-4 transition hover:text-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
 				>
 					Torna alla homepage
 				</Link>
@@ -44,13 +57,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
 	return (
 		<main
-			className='container mx-auto max-w-4xl px-6'
+			className='mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 md:py-12'
 			aria-labelledby='category-heading'
 		>
-			<h1 id='category-heading' className='text-4xl font-bold mb-8'>
-				{category.toUpperCase()}
+			<h1
+				id='category-heading'
+				className='mb-8 text-3xl font-bold leading-tight uppercase sm:text-4xl'
+			>
+				{categoryTitle}
 			</h1>
-			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
+
+			<ul className='grid grid-cols-1 gap-10 sm:grid-cols-2'>
 				{postsByCategory.map((post) => (
 					<li key={post._id} className='h-full'>
 						<PostCard post={post} categorySlug={category} />

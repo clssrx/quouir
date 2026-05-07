@@ -19,7 +19,7 @@ export const categoryType = defineType({
 			type: 'slug',
 			options: { source: 'title', maxLength: 96 },
 			validation: (rule) =>
-				rule.required().error('Genera l’URL della categoria'),
+				rule.required().error("Genera l'URL della categoria"),
 		}),
 		defineField({
 			name: 'description',

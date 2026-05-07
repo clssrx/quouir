@@ -34,7 +34,10 @@ export const POST_BY_SLUG_QUERY = groq`*[_type == "post" && slug.current == $slu
   subtitle,
   publishedAt,
   body,
-	image,
+	image {
+      ...,
+      alt
+    },
   author->{_id, name, slug}
 }`;
 
@@ -50,7 +53,10 @@ export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
     subtitle,
     publishedAt,
     body,
-    image,
+    image {
+      ...,
+      alt
+    },
     "pdfUrl": pdf.asset->url,
     author->{_id, name, slug},
     category->{_id, title, slug}
@@ -69,8 +75,14 @@ export const POSTS_BY_CATEGORY_QUERY = groq`
     slug,
     publishedAt,
     subtitle,
-    image,
-    thumbnailImage,
+    image {
+      ...,
+      alt
+    },
+    thumbnailImage {
+      ...,
+      alt
+    },
     excerpt,
     author->{
       _id,

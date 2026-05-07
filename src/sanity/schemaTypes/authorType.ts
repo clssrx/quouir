@@ -7,10 +7,10 @@ export const authorType = defineType({
 	fields: [
 		defineField({
 			name: 'name',
-			title: 'Nome dell’autore',
+			title: "Nome dell'autore",
 			type: 'string',
 			validation: (rule) =>
-				rule.required().error('Inserisci il nome dell’autore'),
+				rule.required().error("Inserisci il nome dell'autore"),
 		}),
 		defineField({
 			name: 'slug',
@@ -18,7 +18,7 @@ export const authorType = defineType({
 			description: 'Viene generato automaticamente dal nome.',
 			type: 'slug',
 			options: { source: 'name', maxLength: 96 },
-			validation: (rule) => rule.required().error('Genera l’URL dell’autore'),
+			validation: (rule) => rule.required().error("Genera l'URL dell'autore"),
 		}),
 		defineField({
 			name: 'bio',
@@ -29,10 +29,19 @@ export const authorType = defineType({
 		}),
 		defineField({
 			name: 'image',
-			title: 'Foto dell’autore',
-			description: 'Immagine profilo dell’autore.',
+			title: "Foto dell'autore",
+			description: "Immagine profilo dell'autore.",
 			type: 'image',
 			options: { hotspot: true },
+			fields: [
+				defineField({
+					name: 'alt',
+					title: 'Testo alternativo',
+					type: 'string',
+					description:
+						"Descrizione dell'immagine per migliorare l'accessibilità.",
+				}),
+			],
 		}),
 	],
 	preview: {

@@ -1,46 +1,91 @@
 'use client';
 
-import Image from 'next/image';
 import {
 	PortableText,
-	PortableTextComponents,
 	PortableTextBlock,
+	PortableTextComponents,
 } from '@portabletext/react';
-import { urlFor } from '@/sanity/lib/image';
 
-import { Footnote } from '@/types/components';
+import {
+	linkClasses,
+	portableTextComponents,
+	renderTextWithLinks,
+} from '@/components/portableTextComponents';
 
 type FootnoteMark = {
 	_key?: string;
 	_type: 'footnote';
+	text?: string;
+};
+
+type PortableTextSpan = {
+	_type?: 'span';
+	text?: string;
+	marks?: string[];
+};
+
+type MarkDef =
+	| FootnoteMark
+	| {
+			_key?: string;
+			_type?: string;
+			[key: string]: unknown;
+	  };
+
+type PortableTextBlockWithChildren = PortableTextBlock & {
+	children?: PortableTextSpan[];
+	markDefs?: MarkDef[];
+};
+
+type ExtractedFootnote = {
+	number: number;
+	markKey: string;
 	text: string;
 };
 
-type PortableTextBlockWithMarks = PortableTextBlock & {
-	markDefs?: FootnoteMark[];
+const isFootnoteMark = (mark: MarkDef): mark is FootnoteMark => {
+	return (
+		mark._type === 'footnote' &&
+		typeof mark._key === 'string' &&
+		typeof mark.text === 'string' &&
+		mark.text.trim().length > 0
+	);
 };
 
-const extractFootnotes = (blocks: PortableTextBlock[]): Footnote[] => {
-	const footnotesMap = new Map<string, number>();
-	let counter = 1;
+const extractFootnotes = (blocks: PortableTextBlock[]): ExtractedFootnote[] => {
+	const footnotes: ExtractedFootnote[] = [];
+	const seenKeys = new Set<string>();
 
 	blocks.forEach((block) => {
-		const typedBlock = block as PortableTextBlockWithMarks;
+		const typedBlock = block as PortableTextBlockWithChildren;
 
-		if (typedBlock._type === 'block' && typedBlock.markDefs) {
-			typedBlock.markDefs.forEach((mark) => {
-				if (
-					mark._type === 'footnote' &&
-					typeof mark.text === 'string' &&
-					!footnotesMap.has(mark.text)
-				) {
-					footnotesMap.set(mark.text, counter++);
-				}
+		if (typedBlock._type !== 'block') return;
+
+		const markDefs = typedBlock.markDefs ?? [];
+		const children = typedBlock.children ?? [];
+
+		children.forEach((child) => {
+			child.marks?.forEach((markKey) => {
+				if (seenKeys.has(markKey)) return;
+
+				const footnote = markDefs.find(
+					(mark) => mark._key === markKey && isFootnoteMark(mark),
+				);
+
+				if (!footnote || !footnote._key || !footnote.text) return;
+
+				seenKeys.add(markKey);
+
+				footnotes.push({
+					number: footnotes.length + 1,
+					markKey: footnote._key,
+					text: footnote.text,
+				});
 			});
-		}
+		});
 	});
 
-	return Array.from(footnotesMap.entries()).map(([text, id]) => ({ id, text }));
+	return footnotes;
 };
 
 export const FootnotePortableText = ({
@@ -51,46 +96,64 @@ export const FootnotePortableText = ({
 	const footnotes = extractFootnotes(value);
 
 	const components: PortableTextComponents = {
-		types: {
-			image: ({ value }) =>
-				value ? (
-					<Image
-						className='rounded-lg not-prose w-full h-auto'
-						src={urlFor(value)
-							.width(600)
-							.height(400)
-							.quality(80)
-							.auto('format')
-							.url()}
-						alt={value?.alt || ''}
-						width={600}
-						height={400}
-					/>
-				) : null,
-		},
+		...portableTextComponents,
+
 		block: {
+			...portableTextComponents.block,
+
 			normal: ({ children }) => <p className='mb-5 leading-7'>{children}</p>,
+
+			h2: ({ children }) => (
+				<h2 className='mb-4 mt-10 text-2xl font-semibold leading-tight'>
+					{children}
+				</h2>
+			),
+
+			h3: ({ children }) => (
+				<h3 className='mb-3 mt-8 text-xl font-semibold leading-tight'>
+					{children}
+				</h3>
+			),
+
+			blockquote: ({ children }) => (
+				<blockquote className='my-6 border-l-2 border-white/20 pl-4 italic text-gray-200'>
+					{children}
+				</blockquote>
+			),
+
 			indented: ({ children }) => (
 				<p className='mb-5 leading-7 indent-8'>{children}</p>
 			),
 		},
-		hardBreak: () => <br />,
-		marks: {
-			footnote: ({ value }) => {
-				const footnoteValue = value as FootnoteMark;
-				const footnote = footnotes.find((f) => f.text === footnoteValue.text);
 
-				if (!footnote) return null;
+		hardBreak: () => <br />,
+
+		marks: {
+			...portableTextComponents.marks,
+
+			footnote: ({ children, value }) => {
+				const footnoteValue = value as FootnoteMark;
+
+				const footnote = footnotes.find(
+					(note) => note.markKey === footnoteValue._key,
+				);
+
+				if (!footnote) return <>{children}</>;
 
 				return (
-					<sup className='cursor-pointer'>
-						<a
-							href={`#footnote-${footnote.id}`}
-							id={`footnote-ref-${footnote.id}`}
-						>
-							{footnote.id}
-						</a>
-					</sup>
+					<>
+						{children}
+						<sup className='ml-0.5 align-super text-xs leading-none'>
+							<a
+								href={`#footnote-${footnote.number}`}
+								id={`footnote-ref-${footnote.number}`}
+								aria-label={`Vai alla nota ${footnote.number}`}
+								className='text-purple-300 underline-offset-2 hover:text-purple-200 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-300'
+							>
+								{footnote.number}
+							</a>
+						</sup>
+					</>
 				);
 			},
 		},
@@ -101,15 +164,22 @@ export const FootnotePortableText = ({
 			<PortableText value={value} components={components} />
 
 			{footnotes.length > 0 && (
-				<section className='mt-8 border-t pt-4 text-sm text-gray-600'>
-					<h2 className='mb-2 font-semibold'>Footnotes</h2>
-					<ol className='ml-5 list-decimal'>
-						{footnotes.map((f) => (
-							<li key={f.id} id={`footnote-${f.id}`}>
-								{f.text}{' '}
+				<section
+					className='mt-8 border-t border-white/10 pt-4 text-sm text-gray-300'
+					aria-labelledby='footnotes-heading'
+				>
+					<h2 id='footnotes-heading' className='mb-2 font-semibold text-white'>
+						Note
+					</h2>
+
+					<ol className='ml-5 list-decimal space-y-2'>
+						{footnotes.map((footnote) => (
+							<li key={footnote.markKey} id={`footnote-${footnote.number}`}>
+								<span>{renderTextWithLinks(footnote.text)}</span>{' '}
 								<a
-									href={`#footnote-ref-${f.id}`}
-									className='text-purple-600 hover:underline'
+									href={`#footnote-ref-${footnote.number}`}
+									className={linkClasses}
+									aria-label={`Torna al riferimento della nota ${footnote.number}`}
 								>
 									↩
 								</a>
