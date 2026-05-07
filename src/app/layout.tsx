@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "QU'OUIR",
+	title: "qu'ouïr",
 	description:
-		'QU’OUÏR è un gruppo di ricerca, un archivio di pratiche e di forme, un laboratorio culturale e politico.',
+		"qu'ouïr è un gruppo di ricerca, un archivio di pratiche e di forme, un laboratorio culturale e politico.",
 };
 
 export default function RootLayout({

@@ -35,7 +35,7 @@ export default async function HomePage() {
 					<div className='overflow-hidden rounded-full  p-2'>
 						<Image
 							src={logoUrl}
-							alt="Logo Qu'ouir"
+							alt="Logo qu'ouïr"
 							width={260}
 							height={260}
 							priority
