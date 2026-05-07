@@ -19,18 +19,21 @@ export default function SocialLinks({
 	return (
 		<div className='flex justify-center space-x-6 p-4'>
 			{instagramUrl && (
-				<Link href={instagramUrl}>
-					<FaInstagram size={24} />
+				<Link href={instagramUrl} aria-label="Instagram di QU'OUÏR">
+					<FaInstagram size={24} aria-hidden='true' focusable='false' />
 				</Link>
 			)}
 			{facebookUrl && (
-				<Link href={facebookUrl}>
-					<FaFacebookF size={24} />
+				<Link href={facebookUrl} aria-label="Facebook di QU'OUÏR">
+					<FaFacebookF aria-hidden='true' focusable='false' size={24} />
 				</Link>
 			)}
 			{contactEmail && (
-				<Link href={`mailto:${contactEmail}`}>
-					<FaEnvelope size={24} />
+				<Link
+					href={`mailto:${contactEmail}`}
+					aria-label="Scrivi una email a QU'OUÏR"
+				>
+					<FaEnvelope size={24} aria-hidden='true' focusable='false' />
 				</Link>
 			)}
 		</div>

@@ -36,10 +36,14 @@ export default function Navbar({ categories }: NavbarProps) {
 						))}
 				</div>
 
+				{/* Mobile Menu Button */}
 				<button
+					type='button'
+					aria-label={isOpen ? 'Chiudi menu' : 'Apri menu'}
+					aria-expanded={isOpen}
+					aria-controls='primary-navigation-mobile'
 					onClick={() => setIsOpen(!isOpen)}
 					className='md:hidden flex flex-col gap-1'
-					aria-label='Toggle menu'
 				>
 					<span className='w-6 h-0.5 bg-white' />
 					<span className='w-6 h-0.5 bg-white' />
@@ -49,19 +53,24 @@ export default function Navbar({ categories }: NavbarProps) {
 
 			{/* Mobile Dropdown */}
 			{isOpen && (
-				<div className='md:hidden px-6 pb-4 flex flex-col gap-4 items-end'>
-					{categories
-						.filter((c) => c.slug?.current)
-						.map((category) => (
-							<Link
-								key={category._id}
-								href={`/${category.slug.current}`}
-								onClick={() => setIsOpen(false)}
-								className='text-sm text-white/70 hover:text-white transition'
-							>
-								{category.title.toUpperCase()}
-							</Link>
-						))}
+				<div className='md:hidden' id='primary-navigation-mobile'>
+					<nav
+						aria-label='Menu di navigazione mobile'
+						className='px-6 pb-4 flex flex-col gap-4 items-end'
+					>
+						{categories
+							.filter((c) => c.slug?.current)
+							.map((category) => (
+								<Link
+									key={category._id}
+									href={`/${category.slug.current}`}
+									onClick={() => setIsOpen(false)}
+									className='text-sm text-white/70 hover:text-white transition'
+								>
+									{category.title.toUpperCase()}
+								</Link>
+							))}
+					</nav>
 				</div>
 			)}
 		</nav>

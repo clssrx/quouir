@@ -26,12 +26,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 		return (
 			<main
 				className='container mx-auto py-32 text-center'
-				role='main'
 				aria-labelledby='no-posts-heading'
 			>
-				<h2 id='no-posts-heading' className='text-2xl mb-4'>
+				<h1 id='no-posts-heading' className='text-2xl mb-4'>
 					Non ci sono ancora post in questa categoria.
-				</h2>
+				</h1>
 				<Link
 					href='/'
 					className='underline focus-visible:outline-2 focus-visible:outline-offset-2'
@@ -46,7 +45,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 	return (
 		<main
 			className='container mx-auto max-w-4xl px-6'
-			role='main'
 			aria-labelledby='category-heading'
 		>
 			<h1 id='category-heading' className='text-4xl font-bold mb-8'>
@@ -54,13 +52,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 			</h1>
 			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10' role='list'>
 				{postsByCategory.map((post) => (
-					<li
-						key={post._id}
-						className='h-full'
-						tabIndex={0}
-						aria-label={`Post: ${post.title}`}
-						role='listitem'
-					>
+					<li key={post._id} className='h-full'>
 						<PostCard post={post} categorySlug={category} />
 					</li>
 				))}
