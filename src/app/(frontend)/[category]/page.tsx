@@ -50,7 +50,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 			<h1 id='category-heading' className='text-4xl font-bold mb-8'>
 				{category.toUpperCase()}
 			</h1>
-			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10' role='list'>
+			<ul className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
 				{postsByCategory.map((post) => (
 					<li key={post._id} className='h-full'>
 						<PostCard post={post} categorySlug={category} />
