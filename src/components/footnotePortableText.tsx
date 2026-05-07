@@ -13,19 +13,19 @@ import {
 } from '@/components/portableTextComponents';
 
 type FootnoteMark = {
-	_key?: string;
+	_key: string;
 	_type: 'footnote';
-	text?: string;
+	text: string;
 };
 
 type PortableTextSpan = {
 	_type?: 'span';
 	text?: string;
-	marks?: string[];
+	marks?: unknown[];
 };
 
 type MarkDef =
-	| FootnoteMark
+	| Partial<FootnoteMark>
 	| {
 			_key?: string;
 			_type?: string;
@@ -65,14 +65,19 @@ const extractFootnotes = (blocks: PortableTextBlock[]): ExtractedFootnote[] => {
 		const children = typedBlock.children ?? [];
 
 		children.forEach((child) => {
-			child.marks?.forEach((markKey) => {
+			const marks = Array.isArray(child.marks)
+				? child.marks.filter((mark): mark is string => typeof mark === 'string')
+				: [];
+
+			marks.forEach((markKey) => {
 				if (seenKeys.has(markKey)) return;
 
 				const footnote = markDefs.find(
-					(mark) => mark._key === markKey && isFootnoteMark(mark),
+					(mark): mark is FootnoteMark =>
+						mark._key === markKey && isFootnoteMark(mark),
 				);
 
-				if (!footnote || !footnote._key || !footnote.text) return;
+				if (!footnote) return;
 
 				seenKeys.add(markKey);
 
@@ -99,8 +104,6 @@ export const FootnotePortableText = ({
 		...portableTextComponents,
 
 		block: {
-			...portableTextComponents.block,
-
 			normal: ({ children }) => <p className='mb-5 leading-7'>{children}</p>,
 
 			h2: ({ children }) => (
@@ -129,10 +132,10 @@ export const FootnotePortableText = ({
 		hardBreak: () => <br />,
 
 		marks: {
-			...portableTextComponents.marks,
+			...(portableTextComponents.marks ?? {}),
 
 			footnote: ({ children, value }) => {
-				const footnoteValue = value as FootnoteMark;
+				const footnoteValue = value as Partial<FootnoteMark>;
 
 				const footnote = footnotes.find(
 					(note) => note.markKey === footnoteValue._key,

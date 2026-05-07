@@ -67,10 +67,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 		);
 	}
 
-	const hasAuthorImage = Boolean(author.image);
+	const authorImage = author.image;
 
-	const authorImageUrl = hasAuthorImage
-		? urlFor(author.image)?.width(500).height(500).url()
+	const authorImageUrl = authorImage
+		? urlFor(authorImage).width(500).height(500).url()
 		: '/images/author-placeholder-image.jpg';
 
 	return (
@@ -91,8 +91,8 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 						<Image
 							src={authorImageUrl}
 							alt={
-								hasAuthorImage
-									? (author.image?.alt ?? `Ritratto di ${author.name}`)
+								authorImage
+									? (authorImage.alt ?? `Ritratto di ${author.name}`)
 									: ''
 							}
 							width={250}
