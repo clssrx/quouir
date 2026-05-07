@@ -8,6 +8,7 @@ const pagesToTest = [
 	'/interviste',
 	'/papers',
 	'/traduzioni',
+	'call-e-norme-editoriali',
 ];
 
 test.describe('Accessibility checks', () => {
