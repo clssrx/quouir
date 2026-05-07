@@ -64,6 +64,15 @@ export const postType = defineType({
 			description: 'Immagine piccola usata nelle liste e nelle anteprime.',
 			type: 'image',
 			options: { hotspot: true },
+			fields: [
+				defineField({
+					name: 'alt',
+					title: 'Testo alternativo',
+					type: 'string',
+					description:
+						"Descrizione dell'immagine per migliorare l'accessibilità.",
+				}),
+			],
 		}),
 		defineField({
 			name: 'excerpt',
@@ -117,19 +126,20 @@ export const postType = defineType({
 								title: 'Nota a piè di pagina',
 								type: 'object',
 								icon: DocumentTextIcon,
+								options: {
+									modal: {
+										type: 'dialog',
+										width: 1,
+									},
+								},
 								fields: [
 									defineField({
 										name: 'text',
 										title: 'Testo della nota',
 										type: 'text',
-										rows: 3,
-									}),
-									defineField({
-										name: 'id',
-										title: 'ID nota',
-										type: 'string',
-										description:
-											'Identificativo unico per questa nota, per esempio “nota-1”.',
+										rows: 4,
+										validation: (rule) =>
+											rule.required().error('Inserisci il testo della nota.'),
 									}),
 								],
 							},
@@ -141,6 +151,15 @@ export const postType = defineType({
 					title: 'Immagine',
 					icon: ImageIcon,
 					options: { hotspot: true },
+					fields: [
+						defineField({
+							name: 'alt',
+							title: 'Testo alternativo',
+							type: 'string',
+							description:
+								"Descrizione dell'immagine per migliorare l'accessibilità.",
+						}),
+					],
 				}),
 			],
 		}),

@@ -9,7 +9,8 @@
 		"lint": "eslint",
 		"predev": "npm run typegen",
 		"prebuild": "npm run typegen",
-		"typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate"
+		"typegen": "sanity schema extract --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate",
+		"test:a11y": "playwright test tests/a11y.spec.ts"
 	},
 	"dependencies": {
 		"@sanity/image-url": "^1.2.0",
@@ -23,6 +24,8 @@
 		"styled-components": "^6.3.9"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.11.3",
+		"@playwright/test": "^1.59.1",
 		"@sanity/client": "^7.14.1",
 		"@tailwindcss/postcss": "^4",
 		"@types/node": "^20",
@@ -30,6 +33,8 @@
 		"@types/react-dom": "^19",
 		"eslint": "^9",
 		"eslint-config-next": "16.1.6",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"playwright": "^1.59.1",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}

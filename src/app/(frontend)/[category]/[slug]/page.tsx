@@ -23,6 +23,10 @@ export async function generateStaticParams() {
 	}));
 }
 
+const formatCategoryLabel = (category: string) => {
+	return category.replaceAll('-', ' ');
+};
+
 export default async function PostPage({ params }: PostPageProps) {
 	const { category, slug } = await params;
 
@@ -43,6 +47,8 @@ export default async function PostPage({ params }: PostPageProps) {
 		pdfUrl,
 	} = post;
 
+	const categoryLabel = formatCategoryLabel(category);
+
 	const pdfName = `${title || 'documento'}-${author?.name || 'autore'}`
 		.toLowerCase()
 		.normalize('NFD')
@@ -52,7 +58,6 @@ export default async function PostPage({ params }: PostPageProps) {
 		.concat('.pdf');
 
 	const pdfDownloadUrl = `${pdfUrl}?dl=${encodeURIComponent(pdfName)}`;
-	console.log(pdfName);
 
 	const postImageUrl = image
 		? urlFor(image).width(1200).height(675).fit('crop').url()
@@ -67,34 +72,41 @@ export default async function PostPage({ params }: PostPageProps) {
 		: null;
 
 	return (
-		<main className='min-h-screen px-4 pb-8 pt-0 md:px-5 md:pb-16 md:pt-2'>
+		<main
+			className='min-h-screen px-4 pb-8 pt-0 md:px-5 md:pb-16 md:pt-2'
+			aria-labelledby='post-title'
+		>
 			<article className='mx-auto max-w-3xl'>
 				<Link
 					href={`/${category}`}
-					className='mb-4 inline-flex text-sm opacity-70 transition hover:opacity-100 md:mb-6'
+					className='mb-4 inline-flex text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:mb-6'
 				>
-					← Torna a {category}
+					← Torna a {categoryLabel}
 				</Link>
+
 				<header className='mb-10'>
-					<p className='mb-4 text-sm uppercase tracking-[0.22em] opacity-50'>
-						{category}
+					<p className='mb-4 text-sm uppercase tracking-[0.22em] text-gray-400'>
+						{categoryLabel}
 					</p>
 
-					<h1 className='text-4xl font-semibold leading-tight tracking-tight md:text-6xl'>
+					<h1
+						id='post-title'
+						className='text-4xl font-semibold leading-tight tracking-tight md:text-6xl'
+					>
 						{title}
 					</h1>
 
 					{subtitle && (
-						<p className='mt-5 text-lg leading-8 opacity-75 md:text-xl '>
+						<p className='mt-5 text-lg leading-8 text-gray-300 md:text-xl'>
 							{subtitle}
 						</p>
 					)}
 
-					<div className='mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm opacity-60'>
+					<div className='mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-400'>
 						{author?.name && author?.slug?.current ? (
 							<Link
 								href={`/authors/${author.slug.current}`}
-								className='hover:underline'
+								className='underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
 							>
 								{author.name}
 							</Link>
@@ -104,17 +116,18 @@ export default async function PostPage({ params }: PostPageProps) {
 
 						{formattedDate && (
 							<>
-								<span>·</span>
+								<span aria-hidden='true'>·</span>
 								<time dateTime={publishedAt ?? undefined}>{formattedDate}</time>
 							</>
 						)}
 					</div>
 				</header>
+
 				{postImageUrl && (
 					<div className='mb-12 overflow-hidden rounded-2xl'>
 						<Image
 							src={postImageUrl}
-							alt={title || 'Immagine articolo'}
+							alt={image?.alt ?? ''}
 							width={1200}
 							height={675}
 							sizes='(min-width: 768px) 768px, 100vw'
@@ -123,37 +136,42 @@ export default async function PostPage({ params }: PostPageProps) {
 						/>
 					</div>
 				)}
-				<div className='prose prose-neutral max-w-none text-pretty prose-p:leading-8 prose-img:rounded-xl text-justify'>
+
+				<div className='prose prose-invert prose-neutral max-w-none text-left text-pretty prose-p:leading-8 prose-img:rounded-xl sm:text-justify'>
 					{Array.isArray(body) && (
 						<FootnotePortableText value={body as PortableTextBlock[]} />
 					)}
 				</div>
 
 				{pdfUrl && (
-					<div className='mt-12 border-t border-white/10 pt-6'>
-						<p className='mb-2 text-xs uppercase tracking-[0.18em] opacity-40'>
+					<section
+						className='mt-12 border-t border-white/10 pt-6'
+						aria-labelledby='attached-material-heading'
+					>
+						<h2
+							id='attached-material-heading'
+							className='mb-2 text-xs uppercase tracking-[0.18em] text-gray-400'
+						>
 							Materiale allegato
-						</p>
+						</h2>
 
 						<a
 							href={pdfDownloadUrl}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='group inline-flex w-fit items-center gap-2 text-sm opacity-75 transition hover:opacity-100 font-bold'
+							download={pdfName}
+							className='inline-flex w-fit items-center gap-2 text-sm font-bold text-gray-200 underline underline-offset-4 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+							aria-label={`Scarica il PDF: ${title}`}
 						>
-							<span className='underline underline-offset-4 bold'>
-								Scarica il PDF
-							</span>
+							Scarica il PDF
 						</a>
-					</div>
+					</section>
 				)}
 
-				<footer className='mt-16 border-t pt-8'>
+				<footer className='mt-16 border-t border-white/10 pt-8'>
 					<Link
 						href={`/${category}`}
-						className='text-sm opacity-70 transition hover:opacity-100 hover:underline'
+						className='text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
 					>
-						← Altri articoli in {category}
+						← Altri articoli in {categoryLabel}
 					</Link>
 				</footer>
 			</article>

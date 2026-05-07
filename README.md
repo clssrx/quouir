@@ -4,111 +4,148 @@
 ![npm](https://img.shields.io/badge/npm-%3E%3D10.0.0-blue)
 ![Vercel](https://img.shields.io/badge/deploy-vercel-black)
 
-Qu'ouir is a **work-in-progress** web project for the Qu'ouir collective, built with **Next.js** and **Sanity**.
+Qu'ouir is a **work-in-progress** editorial web project for the Qu'ouir collective, built with **Next.js** and **Sanity**.
 
-This project now uses a **single-app structure** with the Sanity Studio embedded inside the Next.js frontend.
+The project uses a **single-app structure**, with the Sanity Studio embedded inside the Next.js frontend.
 
 ---
 
 ## Project Structure
 
-```
+```text
 quouir/
 ├─ src/
-│ ├─ app/ # Next.js App Router pages
-│ ├─ studio/ # Embedded Sanity Studio
-│ └─ ... # components, lib, etc.
+│  ├─ app/          # Next.js App Router pages
+│  ├─ components/   # Shared React components
+│  ├─ sanity/       # Sanity config, queries, schemas, and types
+│  └─ studio/       # Embedded Sanity Studio
+├─ tests/           # Playwright accessibility tests
 ├─ package.json
-├─ .env.local # local secrets (gitignored)
-├─ .env.example # template for environment variables
-├─ README.md
-
-- Studio is accessible at `/studio` in the running Next.js app.
+├─ playwright.config.ts
+├─ .env.local       # Local secrets, gitignored
+├─ .env.example     # Template for environment variables
+└─ README.md
 ```
+
+The Sanity Studio is available at `/studio` in the running Next.js app.
+
 ---
 
 ## Features
 
-- Modern Next.js frontend with App Router
+- Next.js frontend using the App Router
 - Embedded Sanity Studio for content management
-- Draft mode / preview support for viewing unpublished content
-- Fully compatible with **Vercel deployment**
-- Simplified npm-based workflow
+- Portable Text rendering with accessible links, images, and footnotes
+- Automated accessibility checks with axe and Playwright
+- JSX accessibility linting with `eslint-plugin-jsx-a11y`
+- Vercel-compatible deployment
 
 ---
 
-## Getting Started (Development)
+## Getting Started
 
 ### Prerequisites
 
 - Node.js >= 20.0.0
 - npm >= 10.0.0
 
-### Install Dependencies
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### Run Frontend + Studio
+### Run the app locally
 
 ```bash
 npm run dev
 ```
 
--Frontend: http://localhost:3000
+Local URLs:
 
-- Studio: http://localhost:3000/studio
+```text
+Frontend: http://localhost:3000
+Studio:   http://localhost:3000/studio
+```
 
-> The Studio is served via `NextStudio` using a Next.js catch-all route.
+The Studio is served through `NextStudio` using a Next.js catch-all route.
 
-### Environment Variables
+---
 
-Create .env.local based on .env.example:
+## Environment Variables
+
+Create `.env.local` from `.env.example`:
 
 ```bash
-# Public variables (browser)
+# Public variables
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=your_dataset
 
-# Server-only variables (server)
+# Server-only variables
 SANITY_PROJECT_ID=your_project_id
 SANITY_APP_ID=your_app_id
 SANITY_DATASET=your_dataset
 SANITY_STUDIO_API_VERSION=YYYY-MM-DD
 SANITY_API_TOKEN=your_sanity_token_for_drafts
-
 ```
 
-- `.env.local` is ignored by git.
+`.env.local` is ignored by git.
 
-- `.env.example` documents all required variables for development and production.
+For Vercel deployments, add the same variables in the Vercel project dashboard for production and preview environments.
 
-- Vercel: Set the same variables in your project dashboard for production and preview deployments.
+---
 
-### Build / Production
+## Development
+
+Before opening a pull request, run:
 
 ```bash
+npm run lint
+npm run test:a11y
 npm run build
-npm start
 ```
 
-- Builds the Next.js app (including embedded Studio)
+Regenerate Sanity types after schema or query changes:
 
-- Starts the production server
+```bash
+npm run typegen
+```
 
-> **On Vercel**, you can deploy the project root directly; the Studio will be served at /studio.
+---
+
+## Accessibility
+
+This project includes an initial accessibility setup:
+
+- axe and Playwright for automated checks on rendered pages
+- `eslint-plugin-jsx-a11y` for JSX accessibility linting
+- visible keyboard focus styles
+- skip link for keyboard navigation
+- semantic landmarks and headings
+- accessible image alt handling
+- accessible Portable Text links and footnotes
+
+Automated tools do not replace manual testing, so keyboard navigation and screen-reader checks are still recommended before major releases.
+
+---
+
+## Deployment
+
+The project can be deployed directly from the repository root on Vercel.
+
+The frontend and Studio are served from the same Next.js app:
+
+```text
+Frontend: /
+Studio:   /studio
+```
+
+---
 
 ## License
 
-This work is licensed under a Creative Commons Attribution 4.0 International License.
+Unless otherwise stated, the contents are distributed under a Creative Commons BY-NC-ND 4.0 license.
 
-You are free to:
+This means the material may be shared with attribution for non-commercial purposes, without derivatives.
 
-- Share — copy and redistribute the material in any medium or format
-
-- Adapt — remix, transform, and build upon the material for any purpose, even commercially
-
-As long as you give appropriate credit, provide a link to the license, and indicate if changes were made.
-
-_Work in progress — contributions, feedback, and ideas are welcome via issues or pull requests._
+_Work in progress. Contributions, feedback, and ideas are welcome through issues or pull requests._

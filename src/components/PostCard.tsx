@@ -35,7 +35,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 					<div className='overflow-hidden'>
 						<Image
 							src={imageUrl}
-							alt={title}
+							alt=''
 							width={600}
 							height={600}
 							className='aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105'
@@ -48,14 +48,15 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 				</h2>
 			</Link>
 
-			<p className='text-xs uppercase tracking-wider text-gray-500 mt-2'>
+			<p className='text-xs uppercase tracking-wider text-gray-400 mt-2'>
 				<Link
 					href={`/authors/${authorSlug}`}
-					className='hover:text-white transition'
+					className='underline-offset-4 hover:text-white hover:underline transition'
 				>
 					{authorName}
 				</Link>
-				{formattedDate && <> · {formattedDate}</>}
+				{' · '}
+				{formattedDate}
 			</p>
 
 			<p className='text-justify mt-3 line-clamp-4 text-sm text-gray-300'>

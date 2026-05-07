@@ -7,7 +7,10 @@ export const AUTHOR_QUERY = groq`{
     _id,
     name,
     bio,
-    image,
+    image {
+      ...,
+      alt
+    },
     slug
   },
   "posts": *[
@@ -19,7 +22,10 @@ export const AUTHOR_QUERY = groq`{
     title,
     slug,
     publishedAt,
-		image,
+		image {
+      ...,
+      alt
+    },
     category->{title, slug},
   }
 }`;
