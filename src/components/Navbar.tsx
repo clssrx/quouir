@@ -39,9 +39,9 @@ export default function Navbar({ categories }: NavbarProps) {
 				<Link
 					href='/'
 					className='text-xl font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
-					aria-label="Vai alla homepage di QU'OUÏR"
+					aria-label="Vai alla homepage di qu'ouïr"
 				>
-					QU&apos;OUÏR
+					qu'ouïr
 				</Link>
 
 				<nav
