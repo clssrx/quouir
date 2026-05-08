@@ -22,7 +22,7 @@ export const AUTHOR_QUERY = groq`{
     title,
     slug,
     publishedAt,
-		image {
+      thumbnailImage {
       ...,
       alt
     },
