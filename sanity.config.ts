@@ -12,7 +12,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
 	name: 'default',
-	title: "Qu'ouir",
+	title: "QU'OUÏR",
 	basePath: '/studio',
 	projectId,
 	dataset,

@@ -41,7 +41,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					className='text-xl font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
 					aria-label="Vai alla homepage di QU'OUÏR"
 				>
-					QU&apos;OUÏR
+					QU'OUÏR
 				</Link>
 
 				<nav
