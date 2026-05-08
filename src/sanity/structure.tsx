@@ -6,7 +6,7 @@ const EmojiIcon = ({ emoji }: { emoji: string }) => {
 
 export const structure: StructureResolver = (S) =>
 	S.list()
-		.title("qu'ouïr Studio")
+		.title("QU'OUÏR Studio")
 		.items([
 			S.documentTypeListItem('post')
 				.title('Articoli')

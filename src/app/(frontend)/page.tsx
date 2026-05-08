@@ -27,7 +27,7 @@ export default async function HomePage() {
 	return (
 		<main className='min-h-screen px-4 pb-16 md:pt-2 '>
 			<section className='mx-auto flex max-w-3xl flex-col items-center gap-8 text-center'>
-				<h1 className='text-4xl font-bold tracking-tight md:text-6xl'>
+				<h1 className='text-4xl font-bold tracking-tight md:text-6xl text-transform: uppercase'>
 					{title}
 				</h1>
 
@@ -35,7 +35,7 @@ export default async function HomePage() {
 					<div className='overflow-hidden rounded-full  p-2'>
 						<Image
 							src={logoUrl}
-							alt="Logo qu'ouïr"
+							alt="Logo QU'OUÏR"
 							width={260}
 							height={260}
 							priority

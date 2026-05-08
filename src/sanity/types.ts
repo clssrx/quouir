@@ -325,7 +325,7 @@ export type AllSanitySchemaTypes = SiteSettings | SanityImageCrop | SanityImageH
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/queries/authors.ts
 // Variable: AUTHOR_QUERY
-// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    defined(author) &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,		image {      ...,      alt    },    category->{title, slug},  }}
+// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    defined(author) &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,      thumbnailImage {      ...,      alt    },    category->{title, slug},  }}
 export type AUTHOR_QUERYResult = {
   author: {
     _id: string;
@@ -351,7 +351,7 @@ export type AUTHOR_QUERYResult = {
     title: string;
     slug: Slug;
     publishedAt: string;
-    image: {
+    thumbnailImage: {
       asset?: {
         _ref: string;
         _type: "reference";
@@ -361,8 +361,8 @@ export type AUTHOR_QUERYResult = {
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
+      alt: string | null;
       _type: "image";
-      alt: null;
     } | null;
     category: {
       title: string;
@@ -643,7 +643,7 @@ export type LICENSE_TEXT_QUERYResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "{\n  \"author\": *[_type == \"author\" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n  \"posts\": *[\n    _type == \"post\" &&\n    defined(author) &&\n    references(*[_type==\"author\" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n\t\timage {\n      ...,\n      alt\n    },\n    category->{title, slug},\n  }\n}": AUTHOR_QUERYResult;
+    "{\n  \"author\": *[_type == \"author\" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n  \"posts\": *[\n    _type == \"post\" &&\n    defined(author) &&\n    references(*[_type==\"author\" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n      thumbnailImage {\n      ...,\n      alt\n    },\n    category->{title, slug},\n  }\n}": AUTHOR_QUERYResult;
     "\n  *[_type == \"category\"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n": CATEGORIES_LIST_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    author->{\n      _id,\n      name,\n      slug,\n    }\n  }\n": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage {\n      ...,\n      alt\n    },\n  author->{_id, name, slug}\n}": POST_BY_SLUG_QUERYResult;

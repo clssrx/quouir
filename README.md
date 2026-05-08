@@ -1,10 +1,10 @@
-# qu'ouïr
+# QU'OUÏR
 
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
 ![npm](https://img.shields.io/badge/npm-%3E%3D10.0.0-blue)
 ![Vercel](https://img.shields.io/badge/deploy-vercel-black)
 
-qu'ouïr is a **work-in-progress** editorial web project for the Qu'ouir collective, built with **Next.js** and **Sanity**.
+QU'OUÏR is a **work-in-progress** editorial web project for the Qu'ouir collective, built with **Next.js** and **Sanity**.
 
 The project uses a **single-app structure**, with the Sanity Studio embedded inside the Next.js frontend.
 
