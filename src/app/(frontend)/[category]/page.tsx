@@ -1,4 +1,5 @@
-import { CallEditorialGuidelinesPage } from '@/components/CallEditorialGuidelinesPage';
+import { notFound } from 'next/navigation';
+
 import { PostCard } from '@/components/PostCard';
 import {
 	getAllCategories,
@@ -7,44 +8,44 @@ import {
 import { getPostsByCategory } from '@/sanity/queries/posts';
 import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
 import { CategoryPageProps } from '@/types/pages';
-import { formatCategoryTitle } from './_utils/categoryFormatting';
+
 import { EmptyCategoryState } from './_components/EmptyCategoryState';
-import { notFound } from 'next/navigation';
+import { formatCategoryTitle } from './_utils/categoryFormatting';
 
 export const dynamicParams = true;
 export const revalidate = 300;
 
+const STATIC_CATEGORY_ROUTES = ['call-e-norme-editoriali'];
+
 export async function generateStaticParams() {
 	const categories = await getAllCategories();
 
-	return categories.map((category) => ({
-		category: category.slug.current,
-	}));
+	return categories
+		.filter(
+			(category) => !STATIC_CATEGORY_ROUTES.includes(category.slug.current),
+		)
+		.map((category) => ({
+			category: category.slug.current,
+		}));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
 	const { category } = await params;
 
-	const postsByCategory: POSTS_BY_CATEGORY_QUERYResult =
-		await getPostsByCategory(category);
-
-	const categoryTitle = formatCategoryTitle(category);
-
 	const existingCategory = await getCategoryBySlug(category);
-
-	const isCallAndGuidelinesPage = category === 'call-e-norme-editoriali';
 
 	if (!existingCategory) {
 		notFound();
 	}
 
-	if (isCallAndGuidelinesPage) {
-		return <CallEditorialGuidelinesPage />;
-	}
+	const postsByCategory: POSTS_BY_CATEGORY_QUERYResult =
+		await getPostsByCategory(category);
 
 	if (!postsByCategory.length) {
 		return <EmptyCategoryState />;
 	}
+
+	const categoryTitle = formatCategoryTitle(category);
 
 	return (
 		<main
