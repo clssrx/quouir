@@ -2,6 +2,7 @@ import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
 import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
+import { formatItalianDate } from '@/utils/formatting';
 
 export interface PostCardProps {
 	post: POSTS_BY_CATEGORY_QUERYResult[0];
@@ -20,13 +21,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 		? urlFor(image).width(600).height(600).url()
 		: undefined;
 
-	const formattedDate = publishedAt
-		? new Date(publishedAt).toLocaleDateString('it-IT', {
-				day: 'numeric',
-				month: 'long',
-				year: 'numeric',
-			})
-		: '';
+	const formattedDate = formatItalianDate(publishedAt);
 
 	return (
 		<article className='flex flex-col h-full'>
@@ -43,7 +38,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 					</div>
 				)}
 
-				<h2 className='mt-5 min-h-[3.25rem] text-xl font-bold uppercase leading-tight line-clamp-2'>
+				<h2 className='mt-5 min-h-13 text-xl font-bold uppercase leading-tight line-clamp-2'>
 					{title.toUpperCase()}
 				</h2>
 			</Link>

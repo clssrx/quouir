@@ -15,19 +15,34 @@ The project uses a **single-app structure**, with the Sanity Studio embedded ins
 ```text
 quouir/
 ├─ src/
-│  ├─ app/          # Next.js App Router pages
-│  ├─ components/   # Shared React components
-│  ├─ sanity/       # Sanity config, queries, schemas, and types
-│  └─ studio/       # Embedded Sanity Studio
-├─ tests/           # Playwright accessibility tests
+│  ├─ app/
+│  │  ├─ (frontend)/        # Public website routes
+│  │  └─ studio/            # Embedded Sanity Studio route
+│  ├─ components/           # Shared UI components
+│  ├─ sanity/               # Sanity config, queries, schemas, and generated types
+│  └─ utils/                # Shared utility functions
+├─ tests/                   # Playwright accessibility tests
 ├─ package.json
 ├─ playwright.config.ts
-├─ .env.local       # Local secrets, gitignored
-├─ .env.example     # Template for environment variables
+├─ .env.example
 └─ README.md
 ```
 
+Route-specific components, data, and utilities are colocated inside their route folders using `_components`, `_data`, and `_utils` folders.
+
 The Sanity Studio is available at `/studio` in the running Next.js app.
+
+---
+
+## Architecture Notes
+
+This project uses the Next.js App Router.
+
+Page-specific UI is kept close to the route that uses it. For example, route-only components live in local `_components` folders, while reusable components live in `src/components`.
+
+Sanity data access is kept in `src/sanity/queries`, and generated Sanity types are used across pages and components.
+
+Content pages use ISR with `revalidate` so published content can refresh without requiring a full rebuild.
 
 ---
 
@@ -35,10 +50,19 @@ The Sanity Studio is available at `/studio` in the running Next.js app.
 
 - Next.js frontend using the App Router
 - Embedded Sanity Studio for content management
+- CMS-driven editorial pages powered by Sanity
+- Route-local component organization for page-specific UI
+- Incremental Static Regeneration for content pages
 - Portable Text rendering with accessible links, images, and footnotes
 - Automated accessibility checks with axe and Playwright
 - JSX accessibility linting with `eslint-plugin-jsx-a11y`
 - Vercel-compatible deployment
+
+---
+
+## Content Updates
+
+CMS-driven content pages use ISR with a short revalidation window, so published Sanity content can refresh without requiring a full rebuild.
 
 ---
 
@@ -95,20 +119,14 @@ For Vercel deployments, add the same variables in the Vercel project dashboard f
 
 ---
 
-## Development
-
-Before opening a pull request, run:
+## Scripts
 
 ```bash
-npm run lint
-npm run test:a11y
-npm run build
-```
-
-Regenerate Sanity types after schema or query changes:
-
-```bash
-npm run typegen
+npm run dev        # Start the local development server
+npm run lint       # Run linting
+npm run build      # Create a production build
+npm run test:a11y  # Run Playwright accessibility tests
+npm run typegen    # Regenerate Sanity types
 ```
 
 ---
@@ -148,4 +166,4 @@ Unless otherwise stated, the contents are distributed under a Creative Commons B
 
 This means the material may be shared with attribution for non-commercial purposes, without derivatives.
 
-_Work in progress. Contributions, feedback, and ideas are welcome through issues or pull requests._
+_Work in progress. Feedback, and ideas are welcome through issues._
