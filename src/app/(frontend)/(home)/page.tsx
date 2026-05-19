@@ -1,6 +1,6 @@
 import { getSiteSettings } from '@/sanity/queries/siteSettings';
 import { SITE_SETTINGS_QUERYResult } from '@/sanity/types';
-import SocialLinks from '@/components/SocialLinks';
+import SocialLinks from './_components/SocialLinks';
 
 import { HomeLogo } from './_components/HomeLogo';
 import { HomeMainText } from './_components/HomeMainText';
