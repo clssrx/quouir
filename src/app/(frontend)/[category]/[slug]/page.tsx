@@ -12,7 +12,7 @@ import { urlFor } from '@/sanity/lib/image';
 import { PostPageProps } from '@/types/pages';
 import { FootnotePortableText } from '@/components/footnotePortableText';
 
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
 	const posts = await getAllPostsWithCategoryForStaticParams();

@@ -7,7 +7,7 @@ import { CategoryPageProps } from '@/types/pages';
 import Link from 'next/link';
 
 export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours
+export const revalidate = 300;
 
 export async function generateStaticParams() {
 	const categories = await getAllCategories();
