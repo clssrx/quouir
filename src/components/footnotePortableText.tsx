@@ -10,7 +10,7 @@ import {
 	linkClasses,
 	portableTextComponents,
 	renderTextWithLinks,
-} from '@/components/portableTextComponents';
+} from '@/components/PortableTextComponents';
 
 type FootnoteMark = {
 	_key: string;

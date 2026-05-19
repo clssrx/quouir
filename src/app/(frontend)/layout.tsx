@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import {
 	linkClasses,
 	portableTextComponents,
-} from '@/components/portableTextComponents';
+} from '@/components/PortableTextComponents';
 
 export default async function FrontendLayout({
 	children,

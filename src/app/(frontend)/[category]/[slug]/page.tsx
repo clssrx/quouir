@@ -7,7 +7,7 @@ import {
 	getPostByCategoryAndSlug,
 } from '@/sanity/queries/posts';
 import { PostPageProps } from '@/types/pages';
-import { FootnotePortableText } from '@/components/footnotePortableText';
+import { FootnotePortableText } from '@/components/FootnotePortableText';
 import { formatCategoryTitle } from '../_utils/categoryFormatting';
 import { AttachedPdfSection } from './_components/AttachedPdf';
 import { PostHeader } from './_components/PostHeader';
