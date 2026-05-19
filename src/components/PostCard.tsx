@@ -43,7 +43,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 					</div>
 				)}
 
-				<h2 className='text-xl font-semibold mt-4 line-clamp-2 group-hover:opacity-80'>
+				<h2 className='mt-5 min-h-[3.25rem] text-xl font-bold uppercase leading-tight line-clamp-2'>
 					{title.toUpperCase()}
 				</h2>
 			</Link>
