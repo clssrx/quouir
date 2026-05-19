@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { formatPublishedDate } from '../_utils/postFormatting';
+import { formatItalianDate } from '@/utils/formatting';
 
 type PostHeaderProps = {
 	categoryLabel: string;
@@ -18,7 +18,7 @@ export const PostHeader = ({
 	authorSlug,
 	publishedAt,
 }: PostHeaderProps) => {
-	const formattedDate = formatPublishedDate(publishedAt);
+	const formattedDate = formatItalianDate(publishedAt);
 
 	return (
 		<header className='mb-10'>
