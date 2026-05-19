@@ -1,7 +1,3 @@
-export const formatCategoryLabel = (category: string) => {
-	return category.replaceAll('-', ' ');
-};
-
 export const formatPublishedDate = (publishedAt?: string | null) => {
 	if (!publishedAt) return null;
 

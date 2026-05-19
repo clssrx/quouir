@@ -8,7 +8,7 @@ import {
 } from '@/sanity/queries/posts';
 import { PostPageProps } from '@/types/pages';
 import { FootnotePortableText } from '@/components/footnotePortableText';
-import { formatCategoryLabel } from './_utils/postFormatting';
+import { formatCategoryTitle } from '../_utils/categoryFormatting';
 import { AttachedPdfSection } from './_components/AttachedPdf';
 import { PostHeader } from './_components/PostHeader';
 import { PostCategoryLink } from './_components/PostCategoryLink';
@@ -45,7 +45,7 @@ export default async function PostPage({ params }: PostPageProps) {
 		pdfUrl,
 	} = post;
 
-	const categoryLabel = formatCategoryLabel(category);
+	const categoryLabel = formatCategoryTitle(category);
 
 	return (
 		<main
