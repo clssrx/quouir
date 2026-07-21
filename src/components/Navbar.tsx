@@ -38,10 +38,10 @@ export default function Navbar({ categories }: NavbarProps) {
 			<div className='container mx-auto max-w-5xl px-6 py-4 flex items-center justify-between'>
 				<Link
 					href='/'
-					className='text-xl font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='text-xl font-bold focus-visible:outline-2 focus-visible:outline-offset-4'
 					aria-label="Vai alla homepage di QU'OUÏR"
 				>
-					QU'OUÏR
+					QU&apos;OUÏR
 				</Link>
 
 				<nav
@@ -52,7 +52,7 @@ export default function Navbar({ categories }: NavbarProps) {
 						<Link
 							key={category._id}
 							href={`/${category.slug?.current}`}
-							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline-2 focus-visible:outline-offset-4'
 						>
 							{category.title}
 						</Link>
@@ -65,7 +65,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					aria-expanded={isOpen}
 					aria-controls='primary-navigation-mobile'
 					onClick={() => setIsOpen((open) => !open)}
-					className='md:hidden flex flex-col gap-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='md:hidden flex flex-col gap-1 focus-visible:outline-2 focus-visible:outline-offset-4'
 				>
 					<span className='w-6 h-0.5 bg-white' aria-hidden='true' />
 					<span className='w-6 h-0.5 bg-white' aria-hidden='true' />
@@ -84,7 +84,7 @@ export default function Navbar({ categories }: NavbarProps) {
 							key={category._id}
 							href={`/${category.slug?.current}`}
 							onClick={() => setIsOpen(false)}
-							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline-2 focus-visible:outline-offset-4'
 						>
 							{category.title}
 						</Link>
