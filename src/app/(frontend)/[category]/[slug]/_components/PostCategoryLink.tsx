@@ -18,8 +18,8 @@ export const PostCategoryLink = ({
 			href={`/${category}`}
 			className={
 				isFooter
-					? 'text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
-					: 'mb-4 inline-flex text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 md:mb-6'
+					? 'text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4'
+					: 'mb-4 inline-flex text-sm text-gray-300 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 md:mb-6'
 			}
 		>
 			{isFooter
