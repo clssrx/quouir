@@ -19,11 +19,11 @@ export const POSTS_QUERY = groq`
     title,
     slug,
     publishedAt,
-    author->{
+    authors[]-> {
       _id,
       name,
       slug,
-    }
+	  },
   }
 `;
 
@@ -38,7 +38,11 @@ export const POST_BY_SLUG_QUERY = groq`*[_type == "post" && slug.current == $slu
       ...,
       alt
     },
-  author->{_id, name, slug}
+   authors[]-> {
+      _id,
+      name,
+      slug,
+	  },
 }`;
 
 export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
@@ -58,7 +62,11 @@ export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
       alt
     },
     "pdfUrl": pdf.asset->url,
-    author->{_id, name, slug},
+     authors[]-> {
+      _id,
+      name,
+      slug,
+	  },
     category->{_id, title, slug}
   }
 `;
@@ -84,11 +92,11 @@ export const POSTS_BY_CATEGORY_QUERY = groq`
       alt
     },
     excerpt,
-    author->{
+    authors[]-> {
       _id,
       name,
       slug,
-    },
+	  },
     category->{
       _id,
       title,

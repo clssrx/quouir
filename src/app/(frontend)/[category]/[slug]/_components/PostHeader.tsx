@@ -1,12 +1,15 @@
-import Link from 'next/link';
 import { formatItalianDate } from '@/utils/formatting';
+import { Slug } from '@/sanity/types';
+import AuthorsList from '@/components/AuthorsList';
 
 type PostHeaderProps = {
 	categoryLabel: string;
 	title: string;
 	subtitle?: string | null;
-	authorName: string;
-	authorSlug: string | null;
+	authors?: {
+		name: string;
+		slug: Slug;
+	}[];
 	publishedAt: string | undefined;
 };
 
@@ -14,8 +17,7 @@ export const PostHeader = ({
 	categoryLabel,
 	title,
 	subtitle,
-	authorName,
-	authorSlug,
+	authors,
 	publishedAt,
 }: PostHeaderProps) => {
 	const formattedDate = formatItalianDate(publishedAt);
@@ -40,16 +42,7 @@ export const PostHeader = ({
 			)}
 
 			<div className='mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-400'>
-				{authorName && authorSlug ? (
-					<Link
-						href={`/authors/${authorSlug}`}
-						className='underline-offset-4 transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
-					>
-						{authorName}
-					</Link>
-				) : (
-					<span>{authorName || 'Autore sconosciuto'}</span>
-				)}
+				<AuthorsList authors={authors} />
 
 				{formattedDate && (
 					<>

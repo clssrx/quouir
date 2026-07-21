@@ -29,11 +29,17 @@ export const postType = defineType({
 			type: 'string',
 		}),
 		defineField({
-			name: 'author',
-			title: 'Autore',
-			type: 'reference',
-			to: [{ type: 'author' }],
-			validation: (rule) => rule.required().error('Seleziona un autore.'),
+			name: 'authors',
+			title: 'Autorə / Autor3',
+			type: 'array',
+			of: [
+				defineArrayMember({
+					type: 'reference',
+					to: [{ type: 'author' }],
+				}),
+			],
+			validation: (rule) =>
+				rule.required().min(1).error('Seleziona almeno un autorə.'),
 		}),
 		defineField({
 			name: 'category',

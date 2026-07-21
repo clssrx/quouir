@@ -33,7 +33,7 @@ export const structure: StructureResolver = (S) =>
 				.icon(() => <EmojiIcon emoji='🏷️' />),
 
 			S.documentTypeListItem('author')
-				.title('Autori')
+				.title('Autor3')
 				.icon(() => <EmojiIcon emoji='👤' />),
 
 			S.divider(),

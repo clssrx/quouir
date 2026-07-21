@@ -15,7 +15,6 @@ export const AUTHOR_QUERY = groq`{
   },
   "posts": *[
     _type == "post" &&
-    defined(author) &&
     references(*[_type=="author" && slug.current==$slug]._id)
   ] | order(publishedAt desc){
     _id,
