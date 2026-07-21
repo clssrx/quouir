@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
 import { formatItalianDate } from '@/utils/formatting';
+import AuthorsList from './AuthorsList';
 
 export interface PostCardProps {
 	post: POSTS_BY_CATEGORY_QUERYResult[0];
@@ -13,8 +14,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 	const title = post.title || '';
 	const publishedAt = post.publishedAt;
 	const image = post.thumbnailImage || post.image;
-	const authorName = post.author?.name || 'Unknown Author';
-	const authorSlug = post.author?.slug?.current || '';
+	const authors = post.authors || [];
 	const postSlug = post.slug?.current || '';
 	const excerpt = post.excerpt || null;
 	const imageUrl = image
@@ -44,12 +44,7 @@ export const PostCard = ({ post, categorySlug }: PostCardProps) => {
 			</Link>
 
 			<p className='text-xs uppercase tracking-wider text-gray-400 mt-2'>
-				<Link
-					href={`/authors/${authorSlug}`}
-					className='underline-offset-4 hover:text-white hover:underline transition'
-				>
-					{authorName}
-				</Link>
+				<AuthorsList authors={authors} isUppercase />
 				{' · '}
 				{formattedDate}
 			</p>

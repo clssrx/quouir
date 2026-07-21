@@ -1,8 +1,8 @@
 export const createPdfFileName = (
 	title?: string | null,
-	authorName?: string | null,
+	authorNames?: string[],
 ) => {
-	return `${title || 'documento'}-${authorName || 'autore'}`
+	return `${title || 'documento'}-${authorNames?.join('-') || 'autore'}`
 		.toLowerCase()
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')

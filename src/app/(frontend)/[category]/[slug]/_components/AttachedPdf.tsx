@@ -2,16 +2,16 @@ import { createPdfFileName } from '../_utils/postFormatting';
 
 type AttachedPdfSectionProps = {
 	title: string;
-	authorName: string | null;
+	authorNames?: string[];
 	pdfUrl: string | null;
 };
 
 export const AttachedPdfSection = ({
 	title,
-	authorName,
+	authorNames,
 	pdfUrl,
 }: AttachedPdfSectionProps) => {
-	const pdfName = createPdfFileName(title, authorName);
+	const pdfName = createPdfFileName(title, authorNames);
 
 	const pdfDownloadUrl = `${pdfUrl}?dl=${encodeURIComponent(pdfName)}`;
 
@@ -32,7 +32,7 @@ export const AttachedPdfSection = ({
 			<a
 				href={pdfDownloadUrl}
 				download={pdfName}
-				className='inline-flex w-fit items-center gap-2 text-sm font-bold text-gray-200 underline underline-offset-4 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+				className='inline-flex w-fit items-center gap-2 text-sm font-bold text-gray-200 underline underline-offset-4 transition hover:text-white  focus-visible:outline-2 focus-visible:outline-offset-4'
 				aria-label={`Scarica il PDF: ${title}`}
 			>
 				Scarica il PDF

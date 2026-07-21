@@ -41,11 +41,12 @@ export default async function PostPage({ params }: PostPageProps) {
 		subtitle,
 		publishedAt,
 		image,
-		author,
+		authors,
 		pdfUrl,
 	} = post;
 
 	const categoryLabel = formatCategoryTitle(category);
+	const authorNames = authors.map((author) => author.name);
 
 	return (
 		<main
@@ -59,8 +60,7 @@ export default async function PostPage({ params }: PostPageProps) {
 					categoryLabel={categoryLabel}
 					title={title}
 					subtitle={subtitle}
-					authorName={author?.name}
-					authorSlug={author?.slug.current}
+					authors={authors}
 					publishedAt={publishedAt}
 				/>
 
@@ -74,7 +74,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
 				<AttachedPdfSection
 					title={title}
-					authorName={author?.name}
+					authorNames={authorNames}
 					pdfUrl={pdfUrl}
 				/>
 
