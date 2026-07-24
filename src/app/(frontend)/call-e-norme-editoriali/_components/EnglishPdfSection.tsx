@@ -15,7 +15,7 @@ export const EnglishPdfSection = () => {
 
 			<a
 				href='/pdf/call-editorial-standards-en.pdf'
-				className='mt-5 inline-block rounded-full border border-white/20 px-5 py-2 text-sm uppercase tracking-wide transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+				className='mt-5 inline-block rounded-full border border-white/20 px-5 py-2 text-sm uppercase tracking-wide transition hover:bg-white hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4'
 			>
 				Download the English call and editorial standards PDF
 			</a>

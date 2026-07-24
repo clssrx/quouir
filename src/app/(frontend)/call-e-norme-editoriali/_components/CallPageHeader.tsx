@@ -25,7 +25,7 @@ export const CallPageHeader = () => {
 
 				<a
 					href='mailto:contatti@quouir.com'
-					className='mt-2 inline-block text-lg underline underline-offset-4 transition hover:text-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='mt-2 inline-block text-lg underline underline-offset-4 transition hover:text-gray-300 focus-visible:outline-2 focus-visible:outline-offset-4'
 				>
 					contatti@quouir.com
 				</a>
