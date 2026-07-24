@@ -14,7 +14,7 @@ type PortableTextImageValue = SanityImageSource & {
 };
 
 export const linkClasses =
-	'text-purple-300 underline underline-offset-4 transition hover:text-purple-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-300';
+	'text-purple-300 underline underline-offset-4 transition hover:text-purple-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-300';
 
 const isExternalHref = (href: string) => {
 	return href.startsWith('http');

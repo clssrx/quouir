@@ -17,6 +17,26 @@ export const revalidate = 300;
 
 const STATIC_CATEGORY_ROUTES = ['call-e-norme-editoriali'];
 
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+	params,
+}: CategoryPageProps): Promise<Metadata> {
+	const { category } = await params;
+
+	const existingCategory = await getCategoryBySlug(category);
+
+	if (!existingCategory) {
+		return {
+			title: 'Categoria non trovata',
+		};
+	}
+
+	return {
+		title: existingCategory.title,
+	};
+}
+
 export async function generateStaticParams() {
 	const categories = await getAllCategories();
 

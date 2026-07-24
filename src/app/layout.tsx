@@ -13,9 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "QU'OUÏR",
+	metadataBase: new URL('https://www.quouir.com'),
+
+	title: {
+		default: "QU'OUÏR",
+		template: "%s | QU'OUÏR",
+	},
+
 	description:
-		"QU'OUÏR è un gruppo di ricerca, un archivio di pratiche e di forme, un laboratorio culturale e politico.",
+		"QU'OUÏR è una rivista di filosofia, un archivio di pratiche discorsive e un laboratorio culturale e politico.",
 };
 
 export default function RootLayout({

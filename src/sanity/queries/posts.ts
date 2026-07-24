@@ -106,10 +106,15 @@ export const POSTS_BY_CATEGORY_QUERY = groq`
 `;
 
 export const ALL_POSTS_WITH_CATEGORY_QUERY = groq`
-  *[_type == "post"]{
-    "slug": slug.current,
-    "category": category->slug.current
-  }
+	*[
+		_type == "post" &&
+		defined(slug.current) &&
+		defined(category->slug.current)
+	] {
+		"slug": slug.current,
+		"category": category->slug.current,
+		_updatedAt
+	}
 `;
 
 export async function getLatestPosts(): Promise<POSTS_QUERYResult> {
@@ -150,7 +155,13 @@ export async function getPostsByCategory(
 }
 
 export async function getAllPostsWithCategoryForStaticParams(): Promise<ALL_POSTS_WITH_CATEGORY_QUERYResult> {
-	const data = await client.fetch(ALL_POSTS_WITH_CATEGORY_QUERY);
+	const data = await client.fetch(
+		ALL_POSTS_WITH_CATEGORY_QUERY,
+		{},
+		{
+			next: { revalidate: 60 },
+		},
+	);
 
 	return data;
 }

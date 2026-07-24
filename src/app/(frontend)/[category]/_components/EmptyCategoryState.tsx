@@ -19,7 +19,7 @@ export const EmptyCategoryState = () => {
 
 			<Link
 				href='/'
-				className='mt-6 inline-block underline underline-offset-4 transition hover:text-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4'
+				className='mt-6 inline-block underline underline-offset-4 transition hover:text-gray-300 focus-visible:outline-2 focus-visible:outline-offset-4'
 			>
 				Torna alla homepage
 			</Link>

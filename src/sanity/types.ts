@@ -572,10 +572,11 @@ export type POSTS_BY_CATEGORY_QUERYResult = Array<{
   };
 }>;
 // Variable: ALL_POSTS_WITH_CATEGORY_QUERY
-// Query: *[_type == "post"]{    "slug": slug.current,    "category": category->slug.current  }
+// Query: *[		_type == "post" &&		defined(slug.current) &&		defined(category->slug.current)	] {		"slug": slug.current,		"category": category->slug.current,		_updatedAt	}
 export type ALL_POSTS_WITH_CATEGORY_QUERYResult = Array<{
   slug: string;
   category: string;
+  _updatedAt: string;
 }>;
 
 // Source: ./src/sanity/queries/siteSettings.ts
@@ -650,7 +651,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage {\n      ...,\n      alt\n    },\n   authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n}": POST_BY_SLUG_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image {\n      ...,\n      alt\n    },\n    \"pdfUrl\": pdf.asset->url,\n     authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{_id, title, slug}\n  }\n": POST_BY_CATEGORY_AND_SLUG_QUERYResult;
     "\n  *[\n    _type == \"post\" &&\n    defined(slug.current) &&\n    category->slug.current == $category\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    subtitle,\n    image {\n      ...,\n      alt\n    },\n    thumbnailImage {\n      ...,\n      alt\n    },\n    excerpt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{\n      _id,\n      title,\n      slug\n    }\n  }\n": POSTS_BY_CATEGORY_QUERYResult;
-    "\n  *[_type == \"post\"]{\n    \"slug\": slug.current,\n    \"category\": category->slug.current\n  }\n": ALL_POSTS_WITH_CATEGORY_QUERYResult;
+    "\n\t*[\n\t\t_type == \"post\" &&\n\t\tdefined(slug.current) &&\n\t\tdefined(category->slug.current)\n\t] {\n\t\t\"slug\": slug.current,\n\t\t\"category\": category->slug.current,\n\t\t_updatedAt\n\t}\n": ALL_POSTS_WITH_CATEGORY_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n  title,\n  aboutUsText,\n  logo,\n  contactEmail,\n  facebookUrl,\n  instagramUrl,\n}\n": SITE_SETTINGS_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n  licenseText,\n}\n": LICENSE_TEXT_QUERYResult;
   }
