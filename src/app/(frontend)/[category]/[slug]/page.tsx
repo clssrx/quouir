@@ -72,9 +72,8 @@ export default async function PostPage({ params }: PostPageProps) {
 			className='min-h-screen px-4 pb-8 pt-0 md:px-5 md:pb-16 md:pt-2'
 			aria-labelledby='post-title'
 		>
+			<PostCategoryLink category={category} categoryLabel={categoryLabel} />
 			<article className='mx-auto max-w-3xl'>
-				<PostCategoryLink category={category} categoryLabel={categoryLabel} />
-
 				<PostHeader
 					categoryLabel={categoryLabel}
 					title={title}
@@ -85,7 +84,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
 				<PostHeroImage image={image} />
 
-				<div className='prose prose-invert prose-neutral max-w-none text-left text-pretty prose-p:leading-8 prose-img:rounded-xl sm:text-justify'>
+				<div className='prose prose-invert prose-neutral max-w-none text-pretty prose-p:leading-8 prose-img:rounded-xl text-justify'>
 					{Array.isArray(body) && (
 						<FootnotePortableText value={body as PortableTextBlock[]} />
 					)}

@@ -22,7 +22,7 @@ export default async function FrontendLayout({
 		<>
 			<a
 				href='#main-content'
-				className='sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-black focus:outline focus:outline-2 focus:outline-offset-2'
+				className='sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-black focus:outline-2 focus:outline-offset-2'
 			>
 				Salta al contenuto principale
 			</a>
@@ -55,7 +55,7 @@ const Footer = ({ licenseText }: { licenseText?: PortableTextBlock[] }) => {
 					© {new Date().getFullYear()} QU&apos;OUÏR
 				</p>
 
-				<div className='mt-4 text-left text-sm leading-relaxed text-white/70 sm:text-center'>
+				<div className='mt-4 text-center text-sm leading-relaxed text-white/70 sm:text-center'>
 					{licenseText ? (
 						<PortableText
 							value={licenseText}
