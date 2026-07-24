@@ -13,8 +13,27 @@ import { AttachedPdfSection } from './_components/AttachedPdf';
 import { PostHeader } from './_components/PostHeader';
 import { PostCategoryLink } from './_components/PostCategoryLink';
 import { PostHeroImage } from './_components/PostHeroImage';
+import { Metadata } from 'next';
 
 export const revalidate = 300;
+
+export async function generateMetadata({
+	params,
+}: PostPageProps): Promise<Metadata> {
+	const { category, slug } = await params;
+
+	const post = await getPostByCategoryAndSlug(category, slug);
+
+	if (!post) {
+		return {
+			title: 'Articolo non trovato',
+		};
+	}
+
+	return {
+		title: post.title,
+	};
+}
 
 export async function generateStaticParams() {
 	const posts = await getAllPostsWithCategoryForStaticParams();
