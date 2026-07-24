@@ -39,6 +39,28 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }],
 	},
+
+	async redirects() {
+		return [
+			{
+				source: '/materiali/risveglio-di-primavera-736d4',
+				destination: '/materiali/risveglio-di-primavera',
+				permanent: true,
+			},
+			{
+				source: '/pillole/la-questione-dellidentita',
+				destination:
+					'/materiali/la-questione-dell-identita-gleichheit-e-selbigkeit',
+				permanent: true,
+			},
+			{
+				source: '/pillole',
+				destination: '/materiali',
+				permanent: true,
+			},
+		];
+	},
+
 	async headers() {
 		return [
 			{
