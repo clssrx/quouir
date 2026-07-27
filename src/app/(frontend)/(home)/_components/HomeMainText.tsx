@@ -1,8 +1,8 @@
 import { PortableText, PortableTextBlock } from 'next-sanity';
 
-import { SITE_SETTINGS_QUERYResult } from '@/sanity/types';
+import { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
 
-type SiteSettings = NonNullable<SITE_SETTINGS_QUERYResult>;
+type SiteSettings = NonNullable<SITE_SETTINGS_QUERY_RESULT>;
 
 type HomeMainTextProps = {
 	aboutUsText: SiteSettings['aboutUsText'];

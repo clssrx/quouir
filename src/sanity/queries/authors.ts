@@ -1,8 +1,8 @@
-import { groq } from 'next-sanity';
+import { defineQuery } from 'next-sanity';
 import { sanityFetch } from '../lib/live';
-import { AUTHOR_QUERYResult } from '../types';
+import { AUTHOR_QUERY_RESULT } from '../types';
 
-export const AUTHOR_QUERY = groq`{
+export const AUTHOR_QUERY = defineQuery(`{
   "author": *[_type == "author" && slug.current == $slug][0]{
     _id,
     name,
@@ -27,11 +27,11 @@ export const AUTHOR_QUERY = groq`{
     },
     category->{title, slug},
   }
-}`;
+}`);
 
 export async function getAuthorBySlug(
 	slug: string,
-): Promise<AUTHOR_QUERYResult> {
+): Promise<AUTHOR_QUERY_RESULT> {
 	const { data } = await sanityFetch({
 		query: AUTHOR_QUERY,
 		params: { slug },

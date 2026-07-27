@@ -1,5 +1,6 @@
 import { defineField, defineType, defineArrayMember } from 'sanity';
-import { ImageIcon, DocumentTextIcon } from '@sanity/icons';
+import { ImageIcon } from '@sanity/icons/Image';
+import { DocumentTextIcon } from '@sanity/icons/DocumentText';
 
 export const postType = defineType({
 	name: 'post',

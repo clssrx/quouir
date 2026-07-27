@@ -1,22 +1,18 @@
 import { SanityLive } from '@/sanity/lib/live';
 import { getAllCategories } from '@/sanity/queries/categories';
 import { getLicenseText } from '@/sanity/queries/siteSettings';
-import { PortableText, PortableTextBlock } from 'next-sanity';
+import { PortableText } from 'next-sanity';
 import Navbar from '@/components/Navbar';
-import {
-	linkClasses,
-	portableTextComponents,
-} from '@/components/portable-text/PortableTextComponents';
+import { portableTextComponents } from '@/components/portable-text/PortableTextComponents';
+import { LICENSE_TEXT_QUERY_RESULT } from '@/sanity/types';
 
 export default async function FrontendLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
-	const [categories, data] = await Promise.all([
+	const [categories, licenseText] = await Promise.all([
 		getAllCategories(),
 		getLicenseText(),
 	]);
-
-	const licenseText = data?.licenseText;
 
 	return (
 		<>
@@ -44,7 +40,15 @@ export default async function FrontendLayout({
 	);
 }
 
-const Footer = ({ licenseText }: { licenseText?: PortableTextBlock[] }) => {
+type FooterProps = {
+	licenseText?: LICENSE_TEXT_QUERY_RESULT;
+};
+
+const Footer = ({ licenseText }: FooterProps) => {
+	if (!licenseText) {
+		return null;
+	}
+
 	return (
 		<footer
 			className='mt-4 border-t border-white/10'
@@ -56,26 +60,10 @@ const Footer = ({ licenseText }: { licenseText?: PortableTextBlock[] }) => {
 				</p>
 
 				<div className='mt-4 text-center text-sm leading-relaxed text-white/70 sm:text-center'>
-					{licenseText ? (
-						<PortableText
-							value={licenseText}
-							components={portableTextComponents}
-						/>
-					) : (
-						<p>
-							I contenuti sono distribuiti con licenza{' '}
-							<a
-								href='https://creativecommons.org/licenses/by-nc-nd/4.0/'
-								target='_blank'
-								rel='noopener noreferrer'
-								className={linkClasses}
-							>
-								Creative Commons BY-NC-ND 4.0
-								<span className='sr-only'>, si apre in una nuova scheda</span>
-							</a>
-							. Uso non commerciale. Opere derivate non consentite.
-						</p>
-					)}
+					<PortableText
+						value={licenseText}
+						components={portableTextComponents}
+					/>
 				</div>
 			</div>
 		</footer>

@@ -1,15 +1,15 @@
-import { groq } from 'next-sanity';
+import { defineQuery } from 'next-sanity';
 import {
-	ALL_POSTS_WITH_CATEGORY_QUERYResult,
-	POSTS_BY_CATEGORY_QUERYResult,
-	POSTS_QUERYResult,
-	POST_BY_CATEGORY_AND_SLUG_QUERYResult,
-	POST_BY_SLUG_QUERYResult,
+	ALL_POSTS_WITH_CATEGORY_QUERY_RESULT,
+	POSTS_BY_CATEGORY_QUERY_RESULT,
+	POSTS_QUERY_RESULT,
+	POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT,
+	POST_BY_SLUG_QUERY_RESULT,
 } from '../types';
 import { sanityFetch } from '../lib/live';
 import { client } from '../lib/client';
 
-export const POSTS_QUERY = groq`
+export const POSTS_QUERY = defineQuery(`
   *[
     _type == "post" &&
     defined(slug.current)
@@ -25,9 +25,10 @@ export const POSTS_QUERY = groq`
       slug,
 	  },
   }
-`;
+`);
 
-export const POST_BY_SLUG_QUERY = groq`*[_type == "post" && slug.current == $slug][0]{
+export const POST_BY_SLUG_QUERY =
+	defineQuery(`*[_type == "post" && slug.current == $slug][0]{
   _id,
   title,
   slug,
@@ -43,9 +44,9 @@ export const POST_BY_SLUG_QUERY = groq`*[_type == "post" && slug.current == $slu
       name,
       slug,
 	  },
-}`;
+}`);
 
-export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
+export const POST_BY_CATEGORY_AND_SLUG_QUERY = defineQuery(`
   *[
     _type == "post" &&
     slug.current == $slug &&
@@ -69,9 +70,9 @@ export const POST_BY_CATEGORY_AND_SLUG_QUERY = groq`
 	  },
     category->{_id, title, slug}
   }
-`;
+`);
 
-export const POSTS_BY_CATEGORY_QUERY = groq`
+export const POSTS_BY_CATEGORY_QUERY = defineQuery(`
   *[
     _type == "post" &&
     defined(slug.current) &&
@@ -103,9 +104,9 @@ export const POSTS_BY_CATEGORY_QUERY = groq`
       slug
     }
   }
-`;
+`);
 
-export const ALL_POSTS_WITH_CATEGORY_QUERY = groq`
+export const ALL_POSTS_WITH_CATEGORY_QUERY = defineQuery(`
 	*[
 		_type == "post" &&
 		defined(slug.current) &&
@@ -115,16 +116,16 @@ export const ALL_POSTS_WITH_CATEGORY_QUERY = groq`
 		"category": category->slug.current,
 		_updatedAt
 	}
-`;
+`);
 
-export async function getLatestPosts(): Promise<POSTS_QUERYResult> {
+export async function getLatestPosts(): Promise<POSTS_QUERY_RESULT> {
 	const { data } = await sanityFetch({ query: POSTS_QUERY, params: {} });
 	return data;
 }
 
 export async function getPostBySlug(
 	slug: string,
-): Promise<POST_BY_SLUG_QUERYResult | null> {
+): Promise<POST_BY_SLUG_QUERY_RESULT | null> {
 	const { data } = await sanityFetch({
 		query: POST_BY_SLUG_QUERY,
 		params: { slug },
@@ -135,7 +136,7 @@ export async function getPostBySlug(
 export async function getPostByCategoryAndSlug(
 	category: string,
 	slug: string,
-): Promise<POST_BY_CATEGORY_AND_SLUG_QUERYResult | null> {
+): Promise<POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT | null> {
 	const { data } = await sanityFetch({
 		query: POST_BY_CATEGORY_AND_SLUG_QUERY,
 		params: { category, slug },
@@ -146,7 +147,7 @@ export async function getPostByCategoryAndSlug(
 
 export async function getPostsByCategory(
 	category: string,
-): Promise<POSTS_BY_CATEGORY_QUERYResult> {
+): Promise<POSTS_BY_CATEGORY_QUERY_RESULT> {
 	const { data } = await sanityFetch({
 		query: POSTS_BY_CATEGORY_QUERY,
 		params: { category },
@@ -154,7 +155,7 @@ export async function getPostsByCategory(
 	return data;
 }
 
-export async function getAllPostsWithCategoryForStaticParams(): Promise<ALL_POSTS_WITH_CATEGORY_QUERYResult> {
+export async function getAllPostsWithCategoryForStaticParams(): Promise<ALL_POSTS_WITH_CATEGORY_QUERY_RESULT> {
 	const data = await client.fetch(
 		ALL_POSTS_WITH_CATEGORY_QUERY,
 		{},

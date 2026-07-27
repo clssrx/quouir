@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 import { urlFor } from '@/sanity/lib/image';
-import { SITE_SETTINGS_QUERYResult } from '@/sanity/types';
+import { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
 
-type SiteSettings = NonNullable<SITE_SETTINGS_QUERYResult>;
+type SiteSettings = NonNullable<SITE_SETTINGS_QUERY_RESULT>;
 
 type HomeLogoProps = {
 	logo: SiteSettings['logo'];

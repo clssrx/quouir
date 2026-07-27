@@ -2,14 +2,14 @@ import { notFound } from 'next/navigation';
 
 import { getAuthorBySlug } from '@/sanity/queries/authors';
 import { AuthorPageProps } from '@/types/pages';
-import { AUTHOR_QUERYResult } from '@/sanity/types';
+import { AUTHOR_QUERY_RESULT } from '@/sanity/types';
 
 import { AuthorPostsSection } from './_components/AuthorPostsSection';
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
 	const { slug } = await params;
 
-	const data: AUTHOR_QUERYResult = await getAuthorBySlug(slug);
+	const data: AUTHOR_QUERY_RESULT = await getAuthorBySlug(slug);
 	const { author, posts } = data;
 
 	if (!author) {

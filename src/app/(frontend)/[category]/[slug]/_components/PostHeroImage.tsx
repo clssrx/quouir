@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 import { urlFor } from '@/sanity/lib/image';
-import { POST_BY_CATEGORY_AND_SLUG_QUERYResult } from '@/sanity/types';
+import { POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT } from '@/sanity/types';
 
-type Post = NonNullable<POST_BY_CATEGORY_AND_SLUG_QUERYResult>;
+type Post = NonNullable<POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT>;
 
 type PostHeroImageProps = {
 	image: Post['image'];

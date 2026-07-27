@@ -6,7 +6,7 @@ import {
 	getCategoryBySlug,
 } from '@/sanity/queries/categories';
 import { getPostsByCategory } from '@/sanity/queries/posts';
-import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
+import { POSTS_BY_CATEGORY_QUERY_RESULT } from '@/sanity/types';
 import { CategoryPageProps } from '@/types/pages';
 
 import { EmptyCategoryState } from './_components/EmptyCategoryState';
@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 		notFound();
 	}
 
-	const postsByCategory: POSTS_BY_CATEGORY_QUERYResult =
+	const postsByCategory: POSTS_BY_CATEGORY_QUERY_RESULT =
 		await getPostsByCategory(category);
 
 	if (!postsByCategory.length) {
