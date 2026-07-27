@@ -1,12 +1,17 @@
 import { getSiteSettings } from '@/sanity/queries/siteSettings';
-import type { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
 
 import { HomeLogo } from './_components/HomeLogo';
 import { HomeMainText } from './_components/HomeMainText';
 import SocialLinks from './_components/SocialLinks';
 
+import ArchivePostEntry from '@/components/ArchivePostEntry';
+import { getLatestPosts } from '@/sanity/queries/posts';
+
 export default async function HomePage() {
-	const data: SITE_SETTINGS_QUERY_RESULT | null = await getSiteSettings();
+	const [data, latestPosts] = await Promise.all([
+		getSiteSettings(),
+		getLatestPosts(),
+	]);
 
 	if (!data) {
 		return (
@@ -43,6 +48,32 @@ export default async function HomePage() {
 
 				<HomeLogo logo={logo} />
 			</section>
+
+			{latestPosts.length > 0 && (
+				<section
+					className='border-t border-white/15'
+					aria-labelledby='latest-posts-heading'
+				>
+					<div className='flex items-end justify-between py-5'>
+						<h2
+							id='latest-posts-heading'
+							className='font-mono text-xs uppercase tracking-[0.14em] text-white/50'
+						>
+							Ultime aggiunte
+						</h2>
+
+						<span className='font-mono text-[0.65rem] text-white/30'>
+							{String(latestPosts.length).padStart(2, '0')}
+						</span>
+					</div>
+
+					<ul className='border-b border-white/15'>
+						{latestPosts.map((post, index) => (
+							<ArchivePostEntry key={post._id} post={post} index={index} />
+						))}
+					</ul>
+				</section>
+			)}
 
 			<section className='border-t border-white/15 py-10 md:py-14'>
 				<div className='grid gap-10 lg:grid-cols-[10rem_minmax(0,48rem)]'>

@@ -73,37 +73,36 @@ export const POST_BY_CATEGORY_AND_SLUG_QUERY = defineQuery(`
 `);
 
 export const POSTS_BY_CATEGORY_QUERY = defineQuery(`
-  *[
-    _type == "post" &&
-    defined(slug.current) &&
-    category->slug.current == $category
-  ]
-  | order(publishedAt desc)[0...12]{
-    _id,
-    title,
-    slug,
-    publishedAt,
-    subtitle,
-    image {
-      ...,
-      alt
-    },
-    thumbnailImage {
-      ...,
-      alt
-    },
+	*[
+		_type == "post" &&
+		category->slug.current == $category
+	]
+	| order(publishedAt desc) {
+		_id,
+		title,
+		slug,
+		publishedAt,
     excerpt,
-    authors[]-> {
-      _id,
-      name,
-      slug,
-	  },
-    category->{
-      _id,
-      title,
-      slug
-    }
-  }
+    subtitle,
+		thumbnailImage {
+			...,
+			alt
+		},
+		image {
+			...,
+			alt
+		},
+		authors[]-> {
+			_id,
+			name,
+			slug
+		},
+		category-> {
+			_id,
+			title,
+			slug
+		}
+	}
 `);
 
 export const ALL_POSTS_WITH_CATEGORY_QUERY = defineQuery(`
@@ -118,8 +117,46 @@ export const ALL_POSTS_WITH_CATEGORY_QUERY = defineQuery(`
 	}
 `);
 
-export async function getLatestPosts(): Promise<POSTS_QUERY_RESULT> {
-	const { data } = await sanityFetch({ query: POSTS_QUERY, params: {} });
+export const LATEST_POSTS_QUERY = defineQuery(`
+	*[
+		_type == "post" &&
+		defined(slug.current) &&
+		defined(category->slug.current)
+	]
+	| order(publishedAt desc)[0...3] {
+		_id,
+		title,
+		slug,
+		publishedAt,
+		excerpt,
+		subtitle,
+		thumbnailImage {
+			...,
+			alt
+		},
+		image {
+			...,
+			alt
+		},
+		authors[]-> {
+			_id,
+			name,
+			slug
+		},
+		category-> {
+			_id,
+			title,
+			slug
+		}
+	}
+`);
+
+export async function getLatestPosts() {
+	const { data } = await sanityFetch({
+		query: LATEST_POSTS_QUERY,
+		params: {},
+	});
+
 	return data;
 }
 
