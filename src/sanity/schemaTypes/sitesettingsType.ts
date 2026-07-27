@@ -46,11 +46,21 @@ export const siteSettingsType = defineType({
 			validation: (rule) =>
 				rule.required().error('Inserisci il titolo del sito.'),
 		}),
+
 		defineField({
 			name: 'logo',
 			title: 'Logo del sito',
 			type: 'image',
 			options: { hotspot: true },
+		}),
+		defineField({
+			name: 'introText',
+			title: 'Introduzione homepage',
+			description:
+				'Breve testo introduttivo mostrato in apertura della homepage.',
+			type: 'text',
+			rows: 3,
+			validation: (rule) => rule.required(),
 		}),
 		defineField({
 			name: 'aboutUsText',

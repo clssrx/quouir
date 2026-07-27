@@ -36,6 +36,7 @@ export type SiteSettings = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  introText: string;
   aboutUsText: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -589,9 +590,10 @@ export type ALL_POSTS_WITH_CATEGORY_QUERY_RESULT = Array<{
 
 // Source: src/sanity/queries/siteSettings.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0]{  title,  aboutUsText,  logo,  contactEmail,  facebookUrl,  instagramUrl,}
+// Query: *[_type == "siteSettings"][0] {		title,		introText,		aboutUsText,		logo,		contactEmail,		facebookUrl,		instagramUrl	}
 export type SITE_SETTINGS_QUERY_RESULT = {
   title: string;
+  introText: string;
   aboutUsText: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -656,7 +658,7 @@ declare module "@sanity/client" {
     '\n  *[\n    _type == "post" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image {\n      ...,\n      alt\n    },\n    "pdfUrl": pdf.asset->url,\n     authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{_id, title, slug}\n  }\n': POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current) &&\n    category->slug.current == $category\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    subtitle,\n    image {\n      ...,\n      alt\n    },\n    thumbnailImage {\n      ...,\n      alt\n    },\n    excerpt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{\n      _id,\n      title,\n      slug\n    }\n  }\n': POSTS_BY_CATEGORY_QUERY_RESULT;
     '\n\t*[\n\t\t_type == "post" &&\n\t\tdefined(slug.current) &&\n\t\tdefined(category->slug.current)\n\t] {\n\t\t"slug": slug.current,\n\t\t"category": category->slug.current,\n\t\t_updatedAt\n\t}\n': ALL_POSTS_WITH_CATEGORY_QUERY_RESULT;
-    '*[_type == "siteSettings"][0]{\n  title,\n  aboutUsText,\n  logo,\n  contactEmail,\n  facebookUrl,\n  instagramUrl,\n}\n': SITE_SETTINGS_QUERY_RESULT;
+    '\n\t*[_type == "siteSettings"][0] {\n\t\ttitle,\n\t\tintroText,\n\t\taboutUsText,\n\t\tlogo,\n\t\tcontactEmail,\n\t\tfacebookUrl,\n\t\tinstagramUrl\n\t}\n': SITE_SETTINGS_QUERY_RESULT;
     '\n\t*[_type == "siteSettings"][0].licenseText\n': LICENSE_TEXT_QUERY_RESULT;
   }
 }

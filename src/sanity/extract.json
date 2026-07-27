@@ -118,6 +118,13 @@
         },
         "optional": true
       },
+      "introText": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
       "aboutUsText": {
         "type": "objectAttribute",
         "value": {
