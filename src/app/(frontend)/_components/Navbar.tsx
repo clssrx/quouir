@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import type { CATEGORIES_LIST_QUERY_RESULT } from '@/sanity/types';
 
 type NavbarProps = {
@@ -10,6 +12,7 @@ type NavbarProps = {
 
 export default function Navbar({ categories }: NavbarProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const pathname = usePathname();
 
 	const navigationItems = categories.filter(
 		(category) => category.slug?.current,
@@ -34,29 +37,53 @@ export default function Navbar({ categories }: NavbarProps) {
 	if (!navigationItems.length) return null;
 
 	return (
-		<header className='backdrop-blur-sm border-b border-white/10 mb-8'>
-			<div className='container mx-auto max-w-5xl px-6 py-4 flex items-center justify-between'>
+		<header className='sticky top-0 z-40 border-b border-white/20 bg-black md:fixed md:inset-y-0 md:left-0 md:w-64 md:border-r md:border-b-0'>
+			<div className='flex items-center justify-between px-4 py-4 md:h-full md:flex-col md:items-stretch md:justify-start md:px-5 md:py-5'>
 				<Link
 					href='/'
-					className='text-xl font-bold focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='text-2xl font-semibold tracking-[-0.04em] focus-visible:outline-2 focus-visible:outline-offset-4'
 					aria-label="Vai alla homepage di QU'OUÏR"
 				>
 					QU&apos;OUÏR
 				</Link>
 
+				<p className='mt-14 hidden font-mono text-[0.7rem] uppercase tracking-[0.15em] text-white/40 md:block'>
+					Archivio
+				</p>
+
 				<nav
-					className='hidden md:flex gap-6'
+					className='mt-3 hidden flex-col border-b border-white/15 md:flex'
 					aria-label='Navigazione principale'
 				>
-					{navigationItems.map((category) => (
-						<Link
-							key={category._id}
-							href={`/${category.slug?.current}`}
-							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline-2 focus-visible:outline-offset-4'
-						>
-							{category.title}
-						</Link>
-					))}
+					{navigationItems.map((category, index) => {
+						const slug = category.slug?.current;
+						if (!slug) return null;
+
+						const href = `/${slug}`;
+						const isActive =
+							pathname === href || pathname.startsWith(`${href}/`);
+
+						return (
+							<Link
+								key={category._id}
+								href={href}
+								aria-current={isActive ? 'page' : undefined}
+								className={[
+									'group grid grid-cols-[2.25rem_1fr] items-baseline border-t border-white/15 py-3',
+									'text-sm uppercase tracking-[0.03em] transition-colors',
+									'hover:text-purple-300',
+									'focus-visible:outline-2 focus-visible:outline-offset-4',
+									isActive ? 'text-purple-300' : 'text-white',
+								].join(' ')}
+							>
+								<span className='font-mono text-[0.65rem] text-white/40 group-hover:text-current'>
+									{String(index + 1).padStart(2, '0')}
+								</span>
+
+								<span>{category.title}</span>
+							</Link>
+						);
+					})}
 				</nav>
 
 				<button
@@ -65,11 +92,11 @@ export default function Navbar({ categories }: NavbarProps) {
 					aria-expanded={isOpen}
 					aria-controls='primary-navigation-mobile'
 					onClick={() => setIsOpen((open) => !open)}
-					className='md:hidden flex flex-col gap-1 focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='flex flex-col gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 md:hidden'
 				>
-					<span className='w-6 h-0.5 bg-white' aria-hidden='true' />
-					<span className='w-6 h-0.5 bg-white' aria-hidden='true' />
-					<span className='w-6 h-0.5 bg-white' aria-hidden='true' />
+					<span className='h-px w-6 bg-white' aria-hidden='true' />
+					<span className='h-px w-6 bg-white' aria-hidden='true' />
+					<span className='h-px w-6 bg-white' aria-hidden='true' />
 				</button>
 			</div>
 
@@ -77,18 +104,37 @@ export default function Navbar({ categories }: NavbarProps) {
 				<nav
 					id='primary-navigation-mobile'
 					aria-label='Navigazione mobile'
-					className='md:hidden px-6 pb-4 flex flex-col gap-4 items-end'
+					className='border-t border-white/20 px-4 pb-4 md:hidden'
 				>
-					{navigationItems.map((category) => (
-						<Link
-							key={category._id}
-							href={`/${category.slug?.current}`}
-							onClick={() => setIsOpen(false)}
-							className='text-sm text-white/70 hover:text-white transition uppercase focus-visible:outline-2 focus-visible:outline-offset-4'
-						>
-							{category.title}
-						</Link>
-					))}
+					{navigationItems.map((category, index) => {
+						const slug = category.slug?.current;
+						if (!slug) return null;
+
+						const href = `/${slug}`;
+						const isActive =
+							pathname === href || pathname.startsWith(`${href}/`);
+
+						return (
+							<Link
+								key={category._id}
+								href={href}
+								aria-current={isActive ? 'page' : undefined}
+								onClick={() => setIsOpen(false)}
+								className={[
+									'grid grid-cols-[2.25rem_1fr] border-b border-white/15 py-3',
+									'text-sm uppercase',
+									'focus-visible:outline-2 focus-visible:outline-offset-4',
+									isActive ? 'text-purple-300' : 'text-white',
+								].join(' ')}
+							>
+								<span className='font-mono text-[0.65rem] text-white/40'>
+									{String(index + 1).padStart(2, '0')}
+								</span>
+
+								<span>{category.title}</span>
+							</Link>
+						);
+					})}
 				</nav>
 			)}
 		</header>
