@@ -1,19 +1,20 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { PortableTextBlock } from 'next-sanity';
+import type { PortableTextBlock } from 'next-sanity';
 
-import { POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT } from '@/sanity/types';
+import { FootnotePortableText } from '@/components/portable-text/FootnotePortableText';
 import {
 	getAllPostsWithCategoryForStaticParams,
 	getPostByCategoryAndSlug,
 } from '@/sanity/queries/posts';
-import { PostPageProps } from '@/types/pages';
-import { FootnotePortableText } from '@/components/portable-text/FootnotePortableText';
+import type { POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT } from '@/sanity/types';
+import type { PostPageProps } from '@/types/pages';
+
 import { formatCategoryTitle } from '../_utils/categoryFormatting';
 import { AttachedPdfSection } from './_components/AttachedPdf';
-import { PostHeader } from './_components/PostHeader';
 import { PostCategoryLink } from './_components/PostCategoryLink';
+import { PostHeader } from './_components/PostHeader';
 import { PostHeroImage } from './_components/PostHeroImage';
-import { Metadata } from 'next';
 
 export const revalidate = 300;
 
@@ -64,45 +65,51 @@ export default async function PostPage({ params }: PostPageProps) {
 		pdfUrl,
 	} = post;
 
-	const categoryLabel = formatCategoryTitle(category);
-	const authorNames = authors.map((author) => author.name);
+	const categoryLabel = post.category?.title ?? formatCategoryTitle(category);
+
+	const authorNames = (authors ?? []).map((author) => author.name);
 
 	return (
-		<main
-			className='min-h-screen px-4 pb-8 pt-0 md:px-5 md:pb-16 md:pt-2'
-			aria-labelledby='post-title'
-		>
-			<PostCategoryLink category={category} categoryLabel={categoryLabel} />
-			<article className='mx-auto max-w-3xl'>
-				<PostHeader
-					categoryLabel={categoryLabel}
-					title={title}
-					subtitle={subtitle}
-					authors={authors}
-					publishedAt={publishedAt}
-				/>
-
-				<PostHeroImage image={image} />
-
-				<div className='prose prose-invert prose-neutral max-w-none text-pretty prose-p:leading-8 prose-img:rounded-xl text-justify'>
-					{Array.isArray(body) && (
-						<FootnotePortableText value={body as PortableTextBlock[]} />
-					)}
-				</div>
-
-				<AttachedPdfSection
-					title={title}
-					authorNames={authorNames}
-					pdfUrl={pdfUrl}
-				/>
-
-				<footer className='mt-16 border-t border-white/10 pt-8'>
-					<PostCategoryLink
+		<main className='pt-8 pb-12 md:pt-10 md:pb-20' aria-labelledby='post-title'>
+			<article>
+				<div className='mx-auto max-w-4xl'>
+					<PostHeader
 						category={category}
 						categoryLabel={categoryLabel}
-						variant='footer'
+						title={title}
+						subtitle={subtitle}
+						authors={authors}
+						publishedAt={publishedAt}
 					/>
-				</footer>
+				</div>
+
+				{image && (
+					<div className='mx-auto mt-10 max-w-6xl md:mt-14'>
+						<PostHeroImage image={image} />
+					</div>
+				)}
+
+				<div className='mx-auto mt-12 max-w-2xl md:mt-16'>
+					<div>
+						{Array.isArray(body) && (
+							<FootnotePortableText value={body as PortableTextBlock[]} />
+						)}
+					</div>
+
+					<AttachedPdfSection
+						title={title}
+						authorNames={authorNames}
+						pdfUrl={pdfUrl}
+					/>
+
+					<footer className='mt-16 border-t border-white/15 pt-6'>
+						<PostCategoryLink
+							category={category}
+							categoryLabel={categoryLabel}
+							variant='footer'
+						/>
+					</footer>
+				</div>
 			</article>
 		</main>
 	);

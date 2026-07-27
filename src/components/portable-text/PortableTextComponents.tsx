@@ -75,7 +75,7 @@ const PortableTextImage = ({ value }: { value?: unknown }) => {
 
 	return (
 		<Image
-			className='not-prose h-auto w-full rounded-lg'
+			className='not-prose my-10 h-auto w-full'
 			src={urlFor(image)
 				.width(600)
 				.height(400)
