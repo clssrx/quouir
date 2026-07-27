@@ -1,10 +1,8 @@
 import { SanityLive } from '@/sanity/lib/live';
 import { getAllCategories } from '@/sanity/queries/categories';
 import { getLicenseText } from '@/sanity/queries/siteSettings';
-import { PortableText } from 'next-sanity';
-import Navbar from '@/components/Navbar';
-import { portableTextComponents } from '@/components/portable-text/PortableTextComponents';
-import { LICENSE_TEXT_QUERY_RESULT } from '@/sanity/types';
+import Navbar from './_components/Navbar';
+import { Footer } from './_components/Footer';
 
 export default async function FrontendLayout({
 	children,
@@ -39,33 +37,3 @@ export default async function FrontendLayout({
 		</>
 	);
 }
-
-type FooterProps = {
-	licenseText?: LICENSE_TEXT_QUERY_RESULT;
-};
-
-const Footer = ({ licenseText }: FooterProps) => {
-	if (!licenseText) {
-		return null;
-	}
-
-	return (
-		<footer
-			className='mt-4 border-t border-white/10'
-			aria-label='Informazioni sul sito'
-		>
-			<div className='mx-auto max-w-3xl px-6 py-8 text-center'>
-				<p className='text-sm text-white/60'>
-					© {new Date().getFullYear()} QU&apos;OUÏR
-				</p>
-
-				<div className='mt-4 text-center text-sm leading-relaxed text-white/70 sm:text-center'>
-					<PortableText
-						value={licenseText}
-						components={portableTextComponents}
-					/>
-				</div>
-			</div>
-		</footer>
-	);
-};
