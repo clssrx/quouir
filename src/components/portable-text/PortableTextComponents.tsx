@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { PortableTextComponents } from '@portabletext/react';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { type SanityImageSource } from '@sanity/image-url';
 import type { ReactNode } from 'react';
 
 import { urlFor } from '@/sanity/lib/image';

@@ -1,26 +1,26 @@
-import { groq } from 'next-sanity';
-import { CATEGORIES_LIST_QUERYResult } from '../types';
+import { defineQuery } from 'next-sanity';
+import { CATEGORIES_LIST_QUERY_RESULT } from '../types';
 import { client } from '../lib/client';
 import { sanityFetch } from '../lib/live';
 
-export const CATEGORIES_LIST_QUERY = groq`
+export const CATEGORIES_LIST_QUERY = defineQuery(`
   *[_type == "category"] | order(title asc) {
     _id,
     title,
     slug
   }
-`;
+`);
 
-export const CATEGORY_BY_SLUG_QUERY = `
+export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
 	*[_type == "category" && slug.current == $slug][0] {
 		_id,
 		title,
 		slug
 	}
-`;
+`);
 
 export async function getAllCategories() {
-	return client.fetch<CATEGORIES_LIST_QUERYResult>(
+	return client.fetch<CATEGORIES_LIST_QUERY_RESULT>(
 		CATEGORIES_LIST_QUERY,
 		{},
 		{

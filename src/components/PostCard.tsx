@@ -1,12 +1,12 @@
 import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import Link from 'next/link';
-import { POSTS_BY_CATEGORY_QUERYResult } from '@/sanity/types';
+import { POSTS_BY_CATEGORY_QUERY_RESULT } from '@/sanity/types';
 import { formatItalianDate } from '@/utils/formatting';
 import AuthorsList from './AuthorsList';
 
 export interface PostCardProps {
-	post: POSTS_BY_CATEGORY_QUERYResult[0];
+	post: POSTS_BY_CATEGORY_QUERY_RESULT[0];
 	categorySlug: string;
 }
 

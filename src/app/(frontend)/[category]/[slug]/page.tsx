@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { PortableTextBlock } from 'next-sanity';
 
-import { POST_BY_CATEGORY_AND_SLUG_QUERYResult } from '@/sanity/types';
+import { POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT } from '@/sanity/types';
 import {
 	getAllPostsWithCategoryForStaticParams,
 	getPostByCategoryAndSlug,
@@ -47,7 +47,7 @@ export async function generateStaticParams() {
 export default async function PostPage({ params }: PostPageProps) {
 	const { category, slug } = await params;
 
-	const post: POST_BY_CATEGORY_AND_SLUG_QUERYResult | null =
+	const post: POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT | null =
 		await getPostByCategoryAndSlug(category, slug);
 
 	if (!post) {

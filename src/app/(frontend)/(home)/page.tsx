@@ -1,12 +1,12 @@
 import { getSiteSettings } from '@/sanity/queries/siteSettings';
-import { SITE_SETTINGS_QUERYResult } from '@/sanity/types';
+import { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
 import SocialLinks from './_components/SocialLinks';
 
 import { HomeLogo } from './_components/HomeLogo';
 import { HomeMainText } from './_components/HomeMainText';
 
 export default async function HomePage() {
-	const data: SITE_SETTINGS_QUERYResult | null = await getSiteSettings();
+	const data: SITE_SETTINGS_QUERY_RESULT | null = await getSiteSettings();
 
 	if (!data) {
 		return (

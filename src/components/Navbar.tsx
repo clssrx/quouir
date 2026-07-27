@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import type { CATEGORIES_LIST_QUERYResult } from '@/sanity/types';
+import type { CATEGORIES_LIST_QUERY_RESULT } from '@/sanity/types';
 
 type NavbarProps = {
-	categories: CATEGORIES_LIST_QUERYResult;
+	categories: CATEGORIES_LIST_QUERY_RESULT;
 };
 
 export default function Navbar({ categories }: NavbarProps) {
