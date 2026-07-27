@@ -2,28 +2,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { urlFor } from '@/sanity/lib/image';
-import type {
-	LATEST_POSTS_QUERY_RESULT,
-	POSTS_BY_CATEGORY_QUERY_RESULT,
-} from '@/sanity/types';
 import { formatItalianDate } from '@/utils/formatting';
 
 import AuthorsList from './AuthorsList';
 
+import type {
+	AUTHOR_QUERY_RESULT,
+	LATEST_POSTS_QUERY_RESULT,
+	POSTS_BY_CATEGORY_QUERY_RESULT,
+} from '@/sanity/types';
+
 type ArchivePost =
 	| LATEST_POSTS_QUERY_RESULT[number]
-	| POSTS_BY_CATEGORY_QUERY_RESULT[number];
+	| POSTS_BY_CATEGORY_QUERY_RESULT[number]
+	| AUTHOR_QUERY_RESULT['posts'][number];
 
 type ArchivePostEntryProps = {
 	post: ArchivePost;
 	index: number;
 	variant?: 'default' | 'category';
+	showAuthors?: boolean;
 };
 
 export default function ArchivePostEntry({
 	post,
 	index,
 	variant = 'default',
+	showAuthors = true,
 }: ArchivePostEntryProps) {
 	const categorySlug = post.category?.slug?.current;
 	const postSlug = post.slug?.current;
@@ -86,11 +91,11 @@ export default function ArchivePostEntry({
 					</h3>
 
 					<div className='mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.06em] text-white/45'>
-						{authors.length > 0 && (
+						{showAuthors && authors.length > 0 && (
 							<AuthorsList authors={authors} isUppercase />
 						)}
 
-						{authors.length > 0 && formattedDate && (
+						{showAuthors && authors.length > 0 && formattedDate && (
 							<span aria-hidden='true'>/</span>
 						)}
 

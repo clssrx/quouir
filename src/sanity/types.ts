@@ -346,7 +346,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries/authors.ts
 // Variable: AUTHOR_QUERY
-// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,      thumbnailImage {      ...,      alt    },    category->{title, slug},  }}
+// Query: {  "author": *[_type == "author" && slug.current == $slug][0] {    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    references(*[_type == "author" && slug.current == $slug]._id)  ] | order(publishedAt desc) {    _id,    title,    slug,    publishedAt,    excerpt,    subtitle,    thumbnailImage {      ...,      alt    },    image {      ...,      alt    },    authors[]-> {      _id,      name,      slug    },    category-> {      _id,      title,      slug    }  }}
 export type AUTHOR_QUERY_RESULT = {
   author: {
     _id: string;
@@ -367,6 +367,8 @@ export type AUTHOR_QUERY_RESULT = {
     title: string;
     slug: Slug;
     publishedAt: string;
+    excerpt: string | null;
+    subtitle: string | null;
     thumbnailImage: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -375,7 +377,21 @@ export type AUTHOR_QUERY_RESULT = {
       alt: string | null;
       _type: "image";
     } | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      alt: null;
+    } | null;
+    authors: Array<{
+      _id: string;
+      name: string;
+      slug: Slug;
+    }>;
     category: {
+      _id: string;
       title: string;
       slug: Slug;
     };
@@ -688,7 +704,7 @@ export type LICENSE_TEXT_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '{\n  "author": *[_type == "author" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n  "posts": *[\n    _type == "post" &&\n    references(*[_type=="author" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n      thumbnailImage {\n      ...,\n      alt\n    },\n    category->{title, slug},\n  }\n}': AUTHOR_QUERY_RESULT;
+    '{\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n\n  "posts": *[\n    _type == "post" &&\n    references(*[_type == "author" && slug.current == $slug]._id)\n  ] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    subtitle,\n\n    thumbnailImage {\n      ...,\n      alt\n    },\n\n    image {\n      ...,\n      alt\n    },\n\n    authors[]-> {\n      _id,\n      name,\n      slug\n    },\n\n    category-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': AUTHOR_QUERY_RESULT;
     '\n  *[_type == "category"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n': CATEGORIES_LIST_QUERY_RESULT;
     '\n\t*[_type == "category" && slug.current == $slug][0] {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORY_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n  }\n': POSTS_QUERY_RESULT;

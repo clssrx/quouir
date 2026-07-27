@@ -1,22 +1,31 @@
-import { PostsSectionProps } from '@/types/pages';
-
-import { AuthorPostCard } from './AuthorPostCard';
+import ArchivePostEntry from '@/components/ArchivePostEntry';
+import type { PostsSectionProps } from '@/types/pages';
 
 export const AuthorPostsSection = ({ posts }: PostsSectionProps) => {
 	return (
-		<section aria-labelledby='author-posts-heading' className='mt-10'>
-			<h2 id='author-posts-heading' className='text-2xl font-semibold'>
-				Articoli
-			</h2>
+		<section aria-labelledby='author-posts-heading' className='pt-5'>
+			<div className='pb-5'>
+				<h2
+					id='author-posts-heading'
+					className='font-mono text-xs uppercase tracking-[0.14em] text-white/50'
+				>
+					Scritti
+				</h2>
+			</div>
 
 			{posts.length === 0 ? (
-				<p className='mt-6 text-gray-400'>
+				<p className='border-t border-white/15 py-8 text-white/50'>
 					Nessun articolo trovato per questa autrice o questo autore.
 				</p>
 			) : (
-				<ul className='mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:max-w-2xl'>
-					{posts.map((post) => (
-						<AuthorPostCard key={post._id} post={post} />
+				<ul className='border-b border-white/15'>
+					{posts.map((post, index) => (
+						<ArchivePostEntry
+							key={post._id}
+							post={post}
+							index={index}
+							showAuthors={false}
+						/>
 					))}
 				</ul>
 			)}
