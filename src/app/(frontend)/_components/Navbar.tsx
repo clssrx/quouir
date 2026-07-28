@@ -15,6 +15,8 @@ export default function Navbar({ categories }: NavbarProps) {
 
 	const pathname = usePathname();
 
+	const isHome = pathname === '/';
+
 	const menuButtonRef = useRef<HTMLButtonElement>(null);
 	const menuRef = useRef<HTMLElement>(null);
 	const wasOpen = useRef(false);
@@ -63,9 +65,8 @@ export default function Navbar({ categories }: NavbarProps) {
 			<div className='flex h-14 items-center justify-between px-4 md:hidden'>
 				<Link
 					href='/'
-					aria-label="Vai alla homepage di QU'OUÏR"
-					className='inline-flex min-h-11 items-center text-xl font-semibold uppercase tracking-[-0.04em] transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
 					onClick={() => setIsOpen(false)}
+					className={`${isHome ? 'hidden md:block' : 'block'} font-medium uppercase tracking-[-0.04em]`}
 				>
 					QU&apos;OUÏR
 				</Link>
@@ -76,7 +77,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					aria-expanded={isOpen}
 					aria-controls='mobile-navigation'
 					onClick={() => setIsOpen((open) => !open)}
-					className='min-h-11 px-2 font-mono text-xs uppercase tracking-widest transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-2'
+					className='min-h-11 px-2 font-mono text-xs uppercase tracking-widest transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-2 ml-auto'
 				>
 					{isOpen ? 'Chiudi' : 'Menu'}
 				</button>
