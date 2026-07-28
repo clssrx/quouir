@@ -36,6 +36,7 @@ export type SiteSettings = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  introText: string;
   aboutUsText: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -345,7 +346,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries/authors.ts
 // Variable: AUTHOR_QUERY
-// Query: {  "author": *[_type == "author" && slug.current == $slug][0]{    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    references(*[_type=="author" && slug.current==$slug]._id)  ] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,      thumbnailImage {      ...,      alt    },    category->{title, slug},  }}
+// Query: {  "author": *[_type == "author" && slug.current == $slug][0] {    _id,    name,    bio,    image {      ...,      alt    },    slug  },  "posts": *[    _type == "post" &&    references(*[_type == "author" && slug.current == $slug]._id)  ] | order(publishedAt desc) {    _id,    title,    slug,    publishedAt,    excerpt,    subtitle,    thumbnailImage {      ...,      alt    },    image {      ...,      alt    },    authors[]-> {      _id,      name,      slug    },    category-> {      _id,      title,      slug    }  }}
 export type AUTHOR_QUERY_RESULT = {
   author: {
     _id: string;
@@ -366,6 +367,8 @@ export type AUTHOR_QUERY_RESULT = {
     title: string;
     slug: Slug;
     publishedAt: string;
+    excerpt: string | null;
+    subtitle: string | null;
     thumbnailImage: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -374,7 +377,21 @@ export type AUTHOR_QUERY_RESULT = {
       alt: string | null;
       _type: "image";
     } | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      alt: null;
+    } | null;
+    authors: Array<{
+      _id: string;
+      name: string;
+      slug: Slug;
+    }>;
     category: {
+      _id: string;
       title: string;
       slug: Slug;
     };
@@ -542,21 +559,14 @@ export type POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT = {
 
 // Source: src/sanity/queries/posts.ts
 // Variable: POSTS_BY_CATEGORY_QUERY
-// Query: *[    _type == "post" &&    defined(slug.current) &&    category->slug.current == $category  ]  | order(publishedAt desc)[0...12]{    _id,    title,    slug,    publishedAt,    subtitle,    image {      ...,      alt    },    thumbnailImage {      ...,      alt    },    excerpt,    authors[]-> {      _id,      name,      slug,	  },    category->{      _id,      title,      slug    }  }
+// Query: *[		_type == "post" &&		category->slug.current == $category	]	| order(publishedAt desc) {		_id,		title,		slug,		publishedAt,    excerpt,    subtitle,		thumbnailImage {			...,			alt		},		image {			...,			alt		},		authors[]-> {			_id,			name,			slug		},		category-> {			_id,			title,			slug		}	}
 export type POSTS_BY_CATEGORY_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: Slug;
   publishedAt: string;
+  excerpt: string | null;
   subtitle: string | null;
-  image: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-    alt: null;
-  } | null;
   thumbnailImage: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -565,7 +575,14 @@ export type POSTS_BY_CATEGORY_QUERY_RESULT = Array<{
     alt: string | null;
     _type: "image";
   } | null;
-  excerpt: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    alt: null;
+  } | null;
   authors: Array<{
     _id: string;
     name: string;
@@ -587,11 +604,50 @@ export type ALL_POSTS_WITH_CATEGORY_QUERY_RESULT = Array<{
   _updatedAt: string;
 }>;
 
+// Source: src/sanity/queries/posts.ts
+// Variable: LATEST_POSTS_QUERY
+// Query: *[		_type == "post" &&		defined(slug.current) &&		defined(category->slug.current)	]	| order(publishedAt desc)[0...3] {		_id,		title,		slug,		publishedAt,		excerpt,		subtitle,		thumbnailImage {			...,			alt		},		image {			...,			alt		},		authors[]-> {			_id,			name,			slug		},		category-> {			_id,			title,			slug		}	}
+export type LATEST_POSTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  publishedAt: string;
+  excerpt: string | null;
+  subtitle: string | null;
+  thumbnailImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | null;
+    _type: "image";
+  } | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    alt: null;
+  } | null;
+  authors: Array<{
+    _id: string;
+    name: string;
+    slug: Slug;
+  }>;
+  category: {
+    _id: string;
+    title: string;
+    slug: Slug;
+  };
+}>;
+
 // Source: src/sanity/queries/siteSettings.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0]{  title,  aboutUsText,  logo,  contactEmail,  facebookUrl,  instagramUrl,}
+// Query: *[_type == "siteSettings"][0] {		title,		introText,		aboutUsText,		logo,		contactEmail,		facebookUrl,		instagramUrl	}
 export type SITE_SETTINGS_QUERY_RESULT = {
   title: string;
+  introText: string;
   aboutUsText: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -648,15 +704,16 @@ export type LICENSE_TEXT_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '{\n  "author": *[_type == "author" && slug.current == $slug][0]{\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n  "posts": *[\n    _type == "post" &&\n    references(*[_type=="author" && slug.current==$slug]._id)\n  ] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n      thumbnailImage {\n      ...,\n      alt\n    },\n    category->{title, slug},\n  }\n}': AUTHOR_QUERY_RESULT;
+    '{\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n\n  "posts": *[\n    _type == "post" &&\n    references(*[_type == "author" && slug.current == $slug]._id)\n  ] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    subtitle,\n\n    thumbnailImage {\n      ...,\n      alt\n    },\n\n    image {\n      ...,\n      alt\n    },\n\n    authors[]-> {\n      _id,\n      name,\n      slug\n    },\n\n    category-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': AUTHOR_QUERY_RESULT;
     '\n  *[_type == "category"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n': CATEGORIES_LIST_QUERY_RESULT;
     '\n\t*[_type == "category" && slug.current == $slug][0] {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORY_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n  }\n': POSTS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage {\n      ...,\n      alt\n    },\n   authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n}': POST_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    slug.current == $slug &&\n    category->slug.current == $category\n  ][0]{\n    _id,\n    title,\n    slug,\n    subtitle,\n    publishedAt,\n    body,\n    image {\n      ...,\n      alt\n    },\n    "pdfUrl": pdf.asset->url,\n     authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{_id, title, slug}\n  }\n': POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT;
-    '\n  *[\n    _type == "post" &&\n    defined(slug.current) &&\n    category->slug.current == $category\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    subtitle,\n    image {\n      ...,\n      alt\n    },\n    thumbnailImage {\n      ...,\n      alt\n    },\n    excerpt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n    category->{\n      _id,\n      title,\n      slug\n    }\n  }\n': POSTS_BY_CATEGORY_QUERY_RESULT;
+    '\n\t*[\n\t\t_type == "post" &&\n\t\tcategory->slug.current == $category\n\t]\n\t| order(publishedAt desc) {\n\t\t_id,\n\t\ttitle,\n\t\tslug,\n\t\tpublishedAt,\n    excerpt,\n    subtitle,\n\t\tthumbnailImage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\t\timage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\t\tauthors[]-> {\n\t\t\t_id,\n\t\t\tname,\n\t\t\tslug\n\t\t},\n\t\tcategory-> {\n\t\t\t_id,\n\t\t\ttitle,\n\t\t\tslug\n\t\t}\n\t}\n': POSTS_BY_CATEGORY_QUERY_RESULT;
     '\n\t*[\n\t\t_type == "post" &&\n\t\tdefined(slug.current) &&\n\t\tdefined(category->slug.current)\n\t] {\n\t\t"slug": slug.current,\n\t\t"category": category->slug.current,\n\t\t_updatedAt\n\t}\n': ALL_POSTS_WITH_CATEGORY_QUERY_RESULT;
-    '*[_type == "siteSettings"][0]{\n  title,\n  aboutUsText,\n  logo,\n  contactEmail,\n  facebookUrl,\n  instagramUrl,\n}\n': SITE_SETTINGS_QUERY_RESULT;
+    '\n\t*[\n\t\t_type == "post" &&\n\t\tdefined(slug.current) &&\n\t\tdefined(category->slug.current)\n\t]\n\t| order(publishedAt desc)[0...3] {\n\t\t_id,\n\t\ttitle,\n\t\tslug,\n\t\tpublishedAt,\n\t\texcerpt,\n\t\tsubtitle,\n\t\tthumbnailImage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\t\timage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\t\tauthors[]-> {\n\t\t\t_id,\n\t\t\tname,\n\t\t\tslug\n\t\t},\n\t\tcategory-> {\n\t\t\t_id,\n\t\t\ttitle,\n\t\t\tslug\n\t\t}\n\t}\n': LATEST_POSTS_QUERY_RESULT;
+    '\n\t*[_type == "siteSettings"][0] {\n\t\ttitle,\n\t\tintroText,\n\t\taboutUsText,\n\t\tlogo,\n\t\tcontactEmail,\n\t\tfacebookUrl,\n\t\tinstagramUrl\n\t}\n': SITE_SETTINGS_QUERY_RESULT;
     '\n\t*[_type == "siteSettings"][0].licenseText\n': LICENSE_TEXT_QUERY_RESULT;
   }
 }

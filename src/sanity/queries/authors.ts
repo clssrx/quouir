@@ -1,9 +1,10 @@
 import { defineQuery } from 'next-sanity';
+
 import { sanityFetch } from '../lib/live';
-import { AUTHOR_QUERY_RESULT } from '../types';
+import type { AUTHOR_QUERY_RESULT } from '../types';
 
 export const AUTHOR_QUERY = defineQuery(`{
-  "author": *[_type == "author" && slug.current == $slug][0]{
+  "author": *[_type == "author" && slug.current == $slug][0] {
     _id,
     name,
     bio,
@@ -13,19 +14,39 @@ export const AUTHOR_QUERY = defineQuery(`{
     },
     slug
   },
+
   "posts": *[
     _type == "post" &&
-    references(*[_type=="author" && slug.current==$slug]._id)
-  ] | order(publishedAt desc){
+    references(*[_type == "author" && slug.current == $slug]._id)
+  ] | order(publishedAt desc) {
     _id,
     title,
     slug,
     publishedAt,
-      thumbnailImage {
+    excerpt,
+    subtitle,
+
+    thumbnailImage {
       ...,
       alt
     },
-    category->{title, slug},
+
+    image {
+      ...,
+      alt
+    },
+
+    authors[]-> {
+      _id,
+      name,
+      slug
+    },
+
+    category-> {
+      _id,
+      title,
+      slug
+    }
   }
 }`);
 
@@ -36,5 +57,6 @@ export async function getAuthorBySlug(
 		query: AUTHOR_QUERY,
 		params: { slug },
 	});
+
 	return data;
 }

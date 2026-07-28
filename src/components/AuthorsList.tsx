@@ -20,9 +20,11 @@ export default function AuthorsList({
 				<span key={author.slug.current}>
 					<Link
 						href={`/authors/${author.slug.current}`}
-						className='underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4'
+						className={`transition-colors hover:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4 ${
+							isUppercase ? 'uppercase' : ''
+						}`}
 					>
-						{isUppercase ? author.name.toUpperCase() : author.name}
+						{author.name}
 					</Link>
 					{index < authors.length - 1 && ', '}
 				</span>

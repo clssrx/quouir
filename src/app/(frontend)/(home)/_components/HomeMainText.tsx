@@ -11,7 +11,7 @@ type HomeMainTextProps = {
 const portableTextComponents = {
 	block: {
 		normal: ({ children }: { children?: React.ReactNode }) => (
-			<p className='mb-6 text-justify'>{children}</p>
+			<p className='mb-6'>{children}</p>
 		),
 	},
 };
@@ -22,7 +22,7 @@ export const HomeMainText = ({ aboutUsText }: HomeMainTextProps) => {
 	}
 
 	return (
-		<div className='max-w-3xl text-left text-lg leading-8 text-white/80 md:text-xl md:leading-9'>
+		<div className='text-lg leading-[1.55] text-white/80 md:text-xl'>
 			<PortableText
 				value={aboutUsText as PortableTextBlock[]}
 				components={portableTextComponents}

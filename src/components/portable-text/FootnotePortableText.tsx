@@ -24,33 +24,37 @@ const createFootnotePortableTextComponents = (
 	footnotes: ExtractedFootnote[],
 ): PortableTextComponents => ({
 	...portableTextComponents,
-
 	block: {
-		normal: ({ children }) => <p className='mb-5 leading-7'>{children}</p>,
+		normal: ({ children }) => (
+			<p className='mb-6 text-base leading-[1.7] text-white/90 last:mb-0 sm:text-lg md:mb-7'>
+				{children}
+			</p>
+		),
 
 		h2: ({ children }) => (
-			<h2 className='mb-4 mt-10 text-2xl font-semibold leading-tight'>
+			<h2 className='mt-10 mb-4 text-2xl font-medium leading-[1.08] tracking-[-0.03em] sm:text-3xl md:mt-14 md:mb-5 md:text-4xl'>
 				{children}
 			</h2>
 		),
 
 		h3: ({ children }) => (
-			<h3 className='mb-3 mt-8 text-xl font-semibold leading-tight'>
+			<h3 className='mt-8 mb-4 text-xl font-medium leading-[1.1] tracking-[-0.02em] sm:text-2xl md:mt-10 md:text-3xl'>
 				{children}
 			</h3>
 		),
 
 		blockquote: ({ children }) => (
-			<blockquote className='my-6 border-l-2 border-white/20 pl-4 italic text-gray-200'>
+			<blockquote className='my-8 border-y border-white/15 py-5 text-lg leading-[1.5] text-white/75 sm:text-xl md:my-10 md:py-6 md:text-2xl'>
 				{children}
 			</blockquote>
 		),
 
 		indented: ({ children }) => (
-			<p className='mb-5 indent-8 leading-7'>{children}</p>
+			<p className='mb-6 indent-6 text-base leading-[1.7] text-white/90 last:mb-0 sm:text-lg md:mb-7 md:indent-8'>
+				{children}
+			</p>
 		),
 	},
-
 	hardBreak: () => <br />,
 
 	marks: {
@@ -94,14 +98,17 @@ export const FootnotePortableText = ({ value }: FootnotePortableTextProps) => {
 
 			{footnotes.length > 0 && (
 				<section
-					className='mt-8 border-t border-white/10 pt-4 text-sm text-gray-300'
+					className='mt-12 border-t border-white/15 pt-5 font-mono text-xs leading-relaxed text-white/55 md:mt-16'
 					aria-labelledby='footnotes-heading'
 				>
-					<h2 id='footnotes-heading' className='mb-2 font-semibold text-white'>
+					<h2
+						id='footnotes-heading'
+						className='mb-5 uppercase tracking-widest text-white/70'
+					>
 						Note
 					</h2>
 
-					<ol className='ml-5 list-decimal space-y-2'>
+					<ol className='ml-5 list-decimal space-y-3'>
 						{footnotes.map((footnote) => (
 							<li key={footnote.markKey} id={`footnote-${footnote.number}`}>
 								<span>{renderTextWithLinks(footnote.text)}</span>{' '}

@@ -1,23 +1,21 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { PostCard } from '@/components/PostCard';
+import ArchivePostEntry from '@/components/ArchivePostEntry';
 import {
 	getAllCategories,
 	getCategoryBySlug,
 } from '@/sanity/queries/categories';
 import { getPostsByCategory } from '@/sanity/queries/posts';
-import { POSTS_BY_CATEGORY_QUERY_RESULT } from '@/sanity/types';
-import { CategoryPageProps } from '@/types/pages';
+import type { POSTS_BY_CATEGORY_QUERY_RESULT } from '@/sanity/types';
+import type { CategoryPageProps } from '@/types/pages';
 
 import { EmptyCategoryState } from './_components/EmptyCategoryState';
-import { formatCategoryTitle } from './_utils/categoryFormatting';
 
 export const dynamicParams = true;
 export const revalidate = 300;
 
 const STATIC_CATEGORY_ROUTES = ['call-e-norme-editoriali'];
-
-import type { Metadata } from 'next';
 
 export async function generateMetadata({
 	params,
@@ -61,31 +59,40 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 	const postsByCategory: POSTS_BY_CATEGORY_QUERY_RESULT =
 		await getPostsByCategory(category);
 
-	if (!postsByCategory.length) {
-		return <EmptyCategoryState />;
-	}
-
-	const categoryTitle = formatCategoryTitle(category);
-
 	return (
-		<main
-			className='mx-auto w-full max-w-4xl px-4 py-2 sm:px-6 md:py-2'
-			aria-labelledby='category-heading'
-		>
-			<h1
-				id='category-heading'
-				className='mb-8 text-3xl font-bold leading-tight uppercase sm:text-4xl'
-			>
-				{categoryTitle}
-			</h1>
+		<main aria-labelledby='category-heading'>
+			<header className='py-6 md:py-10'>
+				<div className='grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4'>
+					<h1
+						id='category-heading'
+						className='min-w-0 text-[clamp(2.75rem,12vw,8rem)] font-semibold uppercase leading-[0.82] tracking-[-0.055em]'
+					>
+						{existingCategory.title}
+					</h1>
 
-			<ul className='grid grid-cols-1 gap-10 sm:grid-cols-2'>
-				{postsByCategory.map((post) => (
-					<li key={post._id} className='h-full'>
-						<PostCard post={post} categorySlug={category} />
-					</li>
-				))}
-			</ul>
+					<span
+						className='mb-1 shrink-0 font-mono text-[0.65rem] text-white/40 md:text-xs'
+						aria-label={`${postsByCategory.length} contenuti`}
+					>
+						{String(postsByCategory.length).padStart(2, '0')}
+					</span>
+				</div>
+			</header>
+
+			{postsByCategory.length > 0 ? (
+				<ul className='border-b border-white/15'>
+					{postsByCategory.map((post, index) => (
+						<ArchivePostEntry
+							key={post._id}
+							post={post}
+							index={index}
+							variant='category'
+						/>
+					))}
+				</ul>
+			) : (
+				<EmptyCategoryState />
+			)}
 		</main>
 	);
 }
