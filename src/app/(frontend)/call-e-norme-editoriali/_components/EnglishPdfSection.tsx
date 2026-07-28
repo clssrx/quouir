@@ -4,7 +4,7 @@ export const EnglishPdfSection = () => {
 			aria-labelledby='english-pdf-heading'
 			className='grid gap-5 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 		>
-			<span className='font-mono text-xs text-white/35'>07</span>
+			<span className='font-mono text-xs text-white/60'>07</span>
 
 			<h2
 				id='english-pdf-heading'

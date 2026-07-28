@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function NotFound() {
 	return (
 		<main className='flex min-h-[calc(100dvh-3.5rem)] flex-col py-8 md:min-h-screen md:py-10'>
-			<p className='font-mono text-xs uppercase tracking-[0.14em] text-white/40'>
+			<p className='font-mono text-xs uppercase tracking-[0.14em] text-white/60'>
 				Errore / 404
 			</p>
 
@@ -18,7 +18,7 @@ export default function NotFound() {
 
 			<div className='mt-10 border-t border-white/15 pt-6 md:mt-14'>
 				<div className='grid gap-6 md:grid-cols-[3rem_minmax(0,1fr)] md:gap-6'>
-					<span className='font-mono text-xs text-white/35'>00</span>
+					<span className='font-mono text-xs text-white/60'>00</span>
 
 					<div className='max-w-2xl'>
 						<h1 className='text-3xl font-medium leading-[0.95] tracking-[-0.035em] md:text-5xl'>

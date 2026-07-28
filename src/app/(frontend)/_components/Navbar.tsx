@@ -90,7 +90,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					aria-label='Navigazione principale'
 					className='fixed inset-x-0 top-14 bottom-0 overflow-y-auto bg-black px-4 pb-8 md:hidden'
 				>
-					<p className='py-5 font-mono text-xs uppercase tracking-[0.14em] text-white/40'>
+					<p className='py-5 font-mono text-xs uppercase tracking-[0.14em] text-white/60'>
 						Indice
 					</p>
 
@@ -122,7 +122,7 @@ export default function Navbar({ categories }: NavbarProps) {
 										isActive ? 'text-purple-300' : 'text-white',
 									].join(' ')}
 								>
-									<span className='font-mono text-[0.65rem] tracking-normal text-white/35'>
+									<span className='font-mono text-[0.65rem] tracking-normal text-white/60'>
 										{String(index + 1).padStart(2, '0')}
 									</span>
 
@@ -144,7 +144,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					QU&apos;OUÏR
 				</Link>
 
-				<p className='mt-14 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-white/40'>
+				<p className='mt-14 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-white/60'>
 					Indice
 				</p>
 
@@ -177,7 +177,7 @@ export default function Navbar({ categories }: NavbarProps) {
 									isActive ? 'text-purple-300' : 'text-white',
 								].join(' ')}
 							>
-								<span className='font-mono text-[0.65rem] text-white/40 group-hover:text-current'>
+								<span className='font-mono text-[0.65rem] text-white/60 group-hover:text-current'>
 									{String(index + 1).padStart(2, '0')}
 								</span>
 

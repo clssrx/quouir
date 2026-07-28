@@ -20,7 +20,7 @@ export const TextExamplesSection = ({
 			aria-labelledby={headingId}
 			className='grid gap-5 border-b border-white/15 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 		>
-			<span className='font-mono text-xs text-white/35'>{number}</span>
+			<span className='font-mono text-xs text-white/60'>{number}</span>
 
 			<h2
 				id={headingId}
@@ -38,7 +38,7 @@ export const TextExamplesSection = ({
 							key={example.id}
 							className='grid gap-4 border-t border-white/15 py-4 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)]'
 						>
-							<span className='text-xs text-white/30'>
+							<span className='text-xs text-white/60'>
 								{String(index + 1).padStart(2, '0')}
 							</span>
 

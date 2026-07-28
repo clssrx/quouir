@@ -62,7 +62,7 @@ export default async function HomePage() {
 							Ultime aggiunte
 						</h2>
 
-						<span className='font-mono text-[0.65rem] text-white/30'>
+						<span className='font-mono text-[0.65rem] text-white/60'>
 							{String(latestPosts.length).padStart(2, '0')}
 						</span>
 					</div>

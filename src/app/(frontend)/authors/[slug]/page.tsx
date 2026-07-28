@@ -28,7 +28,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 					</h1>
 
 					<span
-						className='mb-1 shrink-0 font-mono text-[0.65rem] text-white/40 md:text-xs'
+						className='mb-1 shrink-0 font-mono text-[0.65rem] text-white/60 md:text-xs'
 						aria-label={`${posts.length} contenuti`}
 					>
 						{String(posts.length).padStart(2, '0')}

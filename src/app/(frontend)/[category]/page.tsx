@@ -71,7 +71,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 					</h1>
 
 					<span
-						className='mb-1 shrink-0 font-mono text-[0.65rem] text-white/40 md:text-xs'
+						className='mb-1 shrink-0 font-mono text-[0.65rem] text-white/60 md:text-xs'
 						aria-label={`${postsByCategory.length} contenuti`}
 					>
 						{String(postsByCategory.length).padStart(2, '0')}

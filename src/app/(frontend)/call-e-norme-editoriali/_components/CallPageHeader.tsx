@@ -22,7 +22,7 @@ export const CallPageHeader = () => {
 				</div>
 
 				<div className='min-w-0 border-t border-white/15 pt-4 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6'>
-					<p className='font-mono text-xs uppercase tracking-[0.12em] text-white/45'>
+					<p className='font-mono text-xs uppercase tracking-[0.12em] text-white/60'>
 						Invio contributi
 					</p>
 
