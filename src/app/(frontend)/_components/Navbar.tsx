@@ -63,13 +63,15 @@ export default function Navbar({ categories }: NavbarProps) {
 		<header className='sticky top-0 z-50 border-b border-white/15 bg-black md:fixed md:inset-y-0 md:left-0 md:w-64 md:border-r md:border-b-0'>
 			{/* Mobile header */}
 			<div className='flex h-14 items-center justify-between px-4 md:hidden'>
-				<Link
-					href='/'
-					onClick={() => setIsOpen(false)}
-					className={`${isHome ? 'hidden md:block' : 'block'} font-medium uppercase tracking-[-0.04em]`}
-				>
-					QU&apos;OUÏR
-				</Link>
+				{!isHome && (
+					<Link
+						href='/'
+						onClick={() => setIsOpen(false)}
+						className='font-medium uppercase tracking-[-0.04em]'
+					>
+						QU&apos;OUÏR
+					</Link>
+				)}
 
 				<button
 					type='button'
@@ -77,7 +79,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					aria-expanded={isOpen}
 					aria-controls='mobile-navigation'
 					onClick={() => setIsOpen((open) => !open)}
-					className='min-h-11 px-2 font-mono text-xs uppercase tracking-widest transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-2 ml-auto'
+					className='ml-auto min-h-11 px-2 font-mono text-xs uppercase tracking-widest transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-2'
 				>
 					{isOpen ? 'Chiudi' : 'Menu'}
 				</button>
