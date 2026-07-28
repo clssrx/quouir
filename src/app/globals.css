@@ -25,3 +25,23 @@ body {
 	outline: 2px solid currentColor;
 	outline-offset: 4px;
 }
+
+.text-link {
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+	text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+	transition:
+		color 150ms ease,
+		text-decoration-color 150ms ease;
+
+	&:hover {
+		color: var(--color-purple-300);
+		text-decoration-color: currentColor;
+	}
+
+	&:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 4px;
+	}
+}
