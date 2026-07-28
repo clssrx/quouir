@@ -16,45 +16,54 @@ import { TextExamplesSection } from './_components/TextExamplesSection';
 export default function CallEditorialGuidelinesPage() {
 	return (
 		<main
-			className='mx-auto w-full max-w-4xl px-4 py-2 sm:px-6'
+			className='py-8 md:py-10'
 			aria-labelledby='call-editorial-guidelines-heading'
 		>
-			<article className='space-y-14'>
+			<article>
 				<CallPageHeader />
 
-				<ResearchFieldsSection fields={researchFields} />
+				<div className='border-t border-white/15'>
+					<ResearchFieldsSection fields={researchFields} />
 
-				<section aria-labelledby='languages-heading' className='space-y-3'>
-					<h2
-						id='languages-heading'
-						className='text-2xl font-semibold uppercase'
+					<section
+						aria-labelledby='languages-heading'
+						className='grid gap-5 border-b border-white/15 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 					>
-						Lingue accettate
-					</h2>
+						<span className='font-mono text-xs text-white/35'>02</span>
 
-					<p className='text-gray-100'>
-						Italiano, inglese, francese, spagnolo.
-					</p>
-				</section>
+						<h2
+							id='languages-heading'
+							className='text-lg font-medium uppercase leading-tight tracking-[-0.02em] md:text-xl'
+						>
+							Lingue accettate
+						</h2>
 
-				<ContributionTypesSection contributionTypes={contributionTypes} />
+						<p className='text-lg leading-relaxed text-white/80'>
+							Italiano / Inglese / Francese / Spagnolo
+						</p>
+					</section>
 
-				<EditorialRulesSection rules={editorialRules} />
+					<ContributionTypesSection contributionTypes={contributionTypes} />
 
-				<TextExamplesSection
-					headingId='notes-heading'
-					title='Note a piè di pagina'
-					examples={footnoteExamples}
-				/>
+					<EditorialRulesSection rules={editorialRules} />
 
-				<TextExamplesSection
-					headingId='bibliography-heading'
-					title='Bibliografia'
-					intro='La bibliografia va organizzata come le note a piè di pagina, eccetto per il fatto che il nome deve seguire il cognome; il rientro deve essere sporgente di 0,5 cm; l’interlinea deve essere di 1,5. I riferimenti vanno messi in ordine alfabetico.'
-					examples={bibliographyExamples}
-				/>
+					<TextExamplesSection
+						number='05'
+						headingId='notes-heading'
+						title='Note a piè di pagina'
+						examples={footnoteExamples}
+					/>
 
-				<EnglishPdfSection />
+					<TextExamplesSection
+						number='06'
+						headingId='bibliography-heading'
+						title='Bibliografia'
+						intro='La bibliografia va organizzata come le note a piè di pagina, eccetto per il fatto che il nome deve seguire il cognome; il rientro deve essere sporgente di 0,5 cm; l’interlinea deve essere di 1,5. I riferimenti vanno messi in ordine alfabetico.'
+						examples={bibliographyExamples}
+					/>
+
+					<EnglishPdfSection />
+				</div>
 			</article>
 		</main>
 	);
