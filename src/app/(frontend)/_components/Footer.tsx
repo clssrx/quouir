@@ -29,14 +29,14 @@ export function Footer({ licenseText }: FooterProps) {
 
 				<div className='mt-6 flex flex-col gap-3 border-t border-white/15 pt-4 font-mono text-[0.65rem] uppercase tracking-[0.06em] text-white/45 sm:flex-row sm:items-center sm:justify-between md:text-xs'>
 					<p>
-						Sito sviluppato da{' '}
+						Design + development:{' '}
 						<a
 							href='https://www.linkedin.com/in/leoncolosio'
 							target='_blank'
 							rel='noopener noreferrer'
-							className='text-link'
+							className='transition-colors hover:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
 						>
-							Leon Colosio
+							Leon Colosio ↗
 						</a>
 					</p>
 
@@ -44,9 +44,9 @@ export function Footer({ licenseText }: FooterProps) {
 						href='https://github.com/clssrx/quouir'
 						target='_blank'
 						rel='noopener noreferrer'
-						className='text-link w-fit'
+						className='transition-colors hover:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4 w-fit'
 					>
-						Codice sorgente
+						Source code ↗
 					</a>
 				</div>
 			</div>
