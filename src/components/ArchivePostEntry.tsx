@@ -2,15 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { urlFor } from '@/sanity/lib/image';
-import { formatItalianDate } from '@/utils/formatting';
-
-import AuthorsList from './AuthorsList';
-
 import type {
 	AUTHOR_QUERY_RESULT,
 	LATEST_POSTS_QUERY_RESULT,
 	POSTS_BY_CATEGORY_QUERY_RESULT,
 } from '@/sanity/types';
+import { formatItalianDate } from '@/utils/formatting';
+
+import AuthorsList from './AuthorsList';
 
 type ArchivePost =
 	| LATEST_POSTS_QUERY_RESULT[number]
@@ -57,41 +56,30 @@ export default function ArchivePostEntry({
 			<article
 				className={
 					isCategory
-						? 'group grid gap-4 py-6 md:grid-cols-[3rem_minmax(0,1fr)_14rem] md:gap-6 md:py-8 lg:grid-cols-[3rem_minmax(0,1fr)_18rem]'
-						: 'group grid gap-4 py-5 md:grid-cols-[3rem_9rem_minmax(0,1fr)_10rem] md:gap-4 md:py-6'
+						? 'group grid grid-cols-[1fr_auto] gap-4 py-6 md:grid-cols-[3rem_minmax(0,1fr)_14rem] md:gap-6 md:py-8 lg:grid-cols-[3rem_minmax(0,1fr)_18rem]'
+						: 'group grid grid-cols-[1fr_auto] gap-4 py-5 md:grid-cols-[3rem_9rem_minmax(0,1fr)_10rem] md:gap-4 md:py-6'
 				}
 			>
-				{/* Mobile index + category */}
-				<div className='flex items-baseline justify-between md:hidden'>
-					<span className='font-mono text-xs text-white/40'>
-						{String(index + 1).padStart(2, '0')}
-					</span>
-
-					{!isCategory && (
-						<span className='text-xs font-medium uppercase tracking-[0.08em] text-white/60'>
-							{post.category?.title}
-						</span>
-					)}
-				</div>
-
-				{/* Desktop index */}
-				<span className='hidden font-mono text-xs text-white/40 md:col-start-1 md:row-start-1 md:block'>
+				{/* Index */}
+				<span className='col-start-1 row-start-1 font-mono text-xs text-white/40 md:col-start-1 md:row-start-1'>
 					{String(index + 1).padStart(2, '0')}
 				</span>
 
-				{/* Desktop category, only for mixed lists */}
-				{!isCategory && (
-					<span className='hidden text-xs font-medium uppercase tracking-[0.08em] text-white/60 md:col-start-2 md:row-start-1 md:block'>
-						{post.category?.title}
-					</span>
+				{!isCategory && post.category?.title && (
+					<Link
+						href={`/${categorySlug}`}
+						className='col-start-2 row-start-1 text-right text-xs font-medium uppercase tracking-[0.08em] text-white/60 transition-colors hover:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4 md:col-start-2 md:row-start-1 md:text-left'
+					>
+						{post.category.title}
+					</Link>
 				)}
 
 				{/* Title + metadata + excerpt */}
 				<div
 					className={
 						isCategory
-							? 'md:col-start-2 md:row-start-1'
-							: 'md:col-start-3 md:row-start-1'
+							? 'col-span-2 row-start-2 md:col-span-1 md:col-start-2 md:row-start-1'
+							: 'col-span-2 row-start-2 md:col-span-1 md:col-start-3 md:row-start-1'
 					}
 				>
 					<h3
@@ -135,8 +123,8 @@ export default function ArchivePostEntry({
 						aria-label={`Leggi ${post.title}`}
 						className={
 							isCategory
-								? 'group/image block w-full overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 md:col-start-3 md:row-start-1'
-								: 'group/image block w-full overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 md:col-start-4 md:row-start-1'
+								? 'group/image col-span-2 row-start-3 block w-full overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 md:col-span-1 md:col-start-3 md:row-start-1'
+								: 'group/image col-span-2 row-start-3 block w-full overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 md:col-span-1 md:col-start-4 md:row-start-1'
 						}
 					>
 						<div className='overflow-hidden transition-shadow duration-300 group-hover/image:ring-1 group-hover/image:ring-purple-300'>
@@ -152,8 +140,8 @@ export default function ArchivePostEntry({
 								}
 								className={
 									isCategory
-										? 'aspect-4/3 w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
-										: 'aspect-3/2 w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
+										? 'aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
+										: 'aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
 								}
 							/>
 						</div>
