@@ -7,7 +7,7 @@ export const EmptyCategoryState = () => {
 			aria-labelledby='empty-category-heading'
 		>
 			<div className='grid gap-6 md:grid-cols-[3rem_minmax(0,1fr)] md:gap-6'>
-				<span className='font-mono text-xs text-white/35'>00 / SEZIONE</span>
+				<span className='font-mono text-xs text-white/35'>00</span>
 
 				<div className='max-w-2xl'>
 					<h2
