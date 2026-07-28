@@ -17,7 +17,7 @@ export default function NotFound() {
 			</div>
 
 			<div className='mt-10 border-t border-white/15 pt-6 md:mt-14'>
-				<div className='grid gap-6 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6'>
+				<div className='grid gap-6 md:grid-cols-[3rem_minmax(0,1fr)] md:gap-6'>
 					<span className='font-mono text-xs text-white/35'>00</span>
 
 					<div className='max-w-2xl'>
@@ -26,7 +26,7 @@ export default function NotFound() {
 						</h1>
 
 						<p className='mt-5 max-w-xl text-base leading-relaxed text-white/60 md:text-lg'>
-							La pagina che stai cercando è disponibile.
+							La pagina che stai cercando non è disponibile.
 						</p>
 
 						<Link

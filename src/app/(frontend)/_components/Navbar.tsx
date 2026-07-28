@@ -72,6 +72,7 @@ export default function Navbar({ categories }: NavbarProps) {
 
 				<button
 					type='button'
+					ref={menuButtonRef}
 					aria-expanded={isOpen}
 					aria-controls='mobile-navigation'
 					onClick={() => setIsOpen((open) => !open)}
