@@ -65,18 +65,17 @@ export default function Navbar({ categories }: NavbarProps) {
 					href='/'
 					aria-label="Vai alla homepage di QU'OUÏR"
 					className='inline-flex min-h-11 items-center text-xl font-semibold uppercase tracking-[-0.04em] transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
+					onClick={() => setIsOpen(false)}
 				>
 					QU&apos;OUÏR
 				</Link>
 
 				<button
-					ref={menuButtonRef}
 					type='button'
-					aria-label={isOpen ? 'Chiudi menu' : 'Apri menu'}
 					aria-expanded={isOpen}
 					aria-controls='mobile-navigation'
 					onClick={() => setIsOpen((open) => !open)}
-					className='inline-flex min-h-11 items-center px-2 font-mono text-xs uppercase tracking-[0.1em] transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='min-h-11 px-2 font-mono text-xs uppercase tracking-widest transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-2'
 				>
 					{isOpen ? 'Chiudi' : 'Menu'}
 				</button>
@@ -91,7 +90,7 @@ export default function Navbar({ categories }: NavbarProps) {
 					className='fixed inset-x-0 top-14 bottom-0 overflow-y-auto bg-black px-4 pb-8 md:hidden'
 				>
 					<p className='py-5 font-mono text-xs uppercase tracking-[0.14em] text-white/40'>
-						Archivio
+						Indice
 					</p>
 
 					<div className='border-b border-white/15'>
@@ -112,22 +111,21 @@ export default function Navbar({ categories }: NavbarProps) {
 									key={category._id}
 									href={href}
 									aria-current={isActive ? 'page' : undefined}
+									onClick={() => setIsOpen(false)}
 									className={[
 										'grid min-h-14 grid-cols-[2.5rem_minmax(0,1fr)] items-baseline border-t border-white/15 py-4',
 										'text-2xl uppercase leading-none tracking-[-0.03em]',
-										'transition-colors hover:text-purple-300 active:text-purple-300',
+										'transition-colors duration-150',
+										'active:bg-white/5 active:text-purple-300',
 										'focus-visible:outline-2 focus-visible:-outline-offset-2',
 										isActive ? 'text-purple-300' : 'text-white',
 									].join(' ')}
-									onClick={() => setIsOpen(false)}
 								>
 									<span className='font-mono text-[0.65rem] tracking-normal text-white/35'>
 										{String(index + 1).padStart(2, '0')}
 									</span>
 
-									<span className='min-w-0 wrap-break-word'>
-										{category.title}
-									</span>
+									<span>{category.title}</span>
 								</Link>
 							);
 						})}
@@ -146,7 +144,7 @@ export default function Navbar({ categories }: NavbarProps) {
 				</Link>
 
 				<p className='mt-14 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-white/40'>
-					Archivio
+					Indice
 				</p>
 
 				<nav
