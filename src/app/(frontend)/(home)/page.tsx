@@ -69,7 +69,12 @@ export default async function HomePage() {
 
 					<ul className='border-b border-white/15'>
 						{latestPosts.map((post, index) => (
-							<ArchivePostEntry key={post._id} post={post} index={index} />
+							<ArchivePostEntry
+								key={post._id}
+								post={post}
+								index={index}
+								showImage={false}
+							/>
 						))}
 					</ul>
 				</section>
