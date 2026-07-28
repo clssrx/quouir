@@ -61,7 +61,7 @@ export default function ArchivePostEntry({
 				}
 			>
 				{/* Index */}
-				<span className='col-start-1 row-start-1 font-mono text-xs text-white/40 md:col-start-1 md:row-start-1'>
+				<span className='col-start-1 row-start-1 font-mono text-xs text-white/60 md:col-start-1 md:row-start-1'>
 					{String(index + 1).padStart(2, '0')}
 				</span>
 
@@ -97,7 +97,7 @@ export default function ArchivePostEntry({
 						</Link>
 					</h3>
 
-					<div className='mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.06em] text-white/45'>
+					<div className='mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.06em] text-white/60'>
 						{showAuthors && authors.length > 0 && (
 							<AuthorsList authors={authors} isUppercase />
 						)}
@@ -140,8 +140,8 @@ export default function ArchivePostEntry({
 								}
 								className={
 									isCategory
-										? 'aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
-										: 'aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
+										? 'aspect-4/3 w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
+										: 'aspect-3/2 w-full object-cover transition-transform duration-300 group-hover/image:scale-[1.025] motion-reduce:transition-none'
 								}
 							/>
 						</div>

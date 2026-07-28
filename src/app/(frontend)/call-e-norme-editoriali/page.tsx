@@ -29,7 +29,7 @@ export default function CallEditorialGuidelinesPage() {
 						aria-labelledby='languages-heading'
 						className='grid gap-5 border-b border-white/15 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 					>
-						<span className='font-mono text-xs text-white/35'>02</span>
+						<span className='font-mono text-xs text-white/60'>02</span>
 
 						<h2
 							id='languages-heading'

@@ -27,7 +27,7 @@ export const PostHeader = ({
 
 	return (
 		<header className='min-w-0'>
-			<div className='mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.65rem] uppercase tracking-[0.08em] text-white/45 md:mb-6 md:text-[0.7rem]'>
+			<div className='mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[0.65rem] uppercase tracking-[0.08em] text-white/60 md:mb-6 md:text-[0.7rem]'>
 				<Link
 					href={`/${category}`}
 					className='transition-colors hover:text-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'

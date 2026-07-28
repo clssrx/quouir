@@ -12,7 +12,7 @@ export const ContributionTypesSection = ({
 			aria-labelledby='types-heading'
 			className='grid gap-5 border-b border-white/15 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 		>
-			<span className='font-mono text-xs text-white/35'>03</span>
+			<span className='font-mono text-xs text-white/60'>03</span>
 
 			<h2
 				id='types-heading'
@@ -32,7 +32,7 @@ export const ContributionTypesSection = ({
 							className='grid gap-4 border-t border-white/15 py-6 first:border-t-0 first:pt-0 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-8'
 						>
 							<div>
-								<span className='font-mono text-[0.65rem] text-white/35'>
+								<span className='font-mono text-[0.65rem] text-white/60'>
 									{String(index + 1).padStart(2, '0')}
 								</span>
 

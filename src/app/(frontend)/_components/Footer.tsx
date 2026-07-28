@@ -27,7 +27,7 @@ export function Footer({ licenseText }: FooterProps) {
 					</div>
 				)}
 
-				<div className='mt-6 flex flex-col gap-3 border-t border-white/15 pt-4 font-mono text-[0.65rem] uppercase tracking-[0.06em] text-white/45 sm:flex-row sm:items-center sm:justify-between md:text-xs'>
+				<div className='mt-6 flex flex-col gap-3 border-t border-white/15 pt-4 font-mono text-[0.65rem] uppercase tracking-[0.06em] text-white/60 sm:flex-row sm:items-center sm:justify-between md:text-xs'>
 					<p>
 						Design + development:{' '}
 						<a
