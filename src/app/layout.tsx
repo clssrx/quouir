@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 	},
 
 	description:
-		"QU'OUÏR è una rivista di filosofia, un archivio di pratiche discorsive e un laboratorio culturale e politico.",
+		"QU'OUÏR è un gruppo di ricerca, un archivio di pratiche e di forme, un laboratorio culturale e politico",
 };
 
 export default function RootLayout({
