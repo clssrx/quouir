@@ -33,14 +33,14 @@ export default async function HomePage() {
 
 	return (
 		<main>
-			<section className='grid gap-12 py-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:py-10'>
+			<section className='grid gap-8 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-10 md:py-10'>
 				<div>
-					<h1 className='max-w-5xl text-[clamp(4.5rem,11vw,10rem)] font-semibold uppercase leading-[0.8] tracking-[-0.065em]'>
+					<h1 className='text-[clamp(3.5rem,16vw,9rem)] font-semibold uppercase leading-[0.8] tracking-[-0.065em]'>
 						{title}
 					</h1>
 
 					{introText && (
-						<p className='mt-10 max-w-2xl text-2xl leading-[1.1] tracking-[-0.025em] md:text-3xl'>
+						<p className='mt-7 max-w-2xl text-xl leading-[1.15] tracking-[-0.02em] sm:text-2xl md:mt-10 md:text-3xl lg:text-4xl'>
 							{introText}
 						</p>
 					)}
@@ -54,7 +54,7 @@ export default async function HomePage() {
 					className='border-t border-white/15'
 					aria-labelledby='latest-posts-heading'
 				>
-					<div className='flex items-end justify-between py-5'>
+					<div className='flex items-end justify-between py-4 md:py-5'>
 						<h2
 							id='latest-posts-heading'
 							className='font-mono text-xs uppercase tracking-[0.14em] text-white/50'
@@ -75,7 +75,7 @@ export default async function HomePage() {
 				</section>
 			)}
 
-			<section className='border-t border-white/15 py-10 md:py-14'>
+			<section className='border-t border-white/15 py-8 md:py-14'>
 				<div className='grid gap-10 lg:grid-cols-[10rem_minmax(0,48rem)]'>
 					<h2 className='font-mono text-xs uppercase tracking-[0.14em] text-white/50'>
 						{title} ?

@@ -8,7 +8,7 @@ export const ResearchFieldsSection = ({
 	return (
 		<section
 			aria-labelledby='fields-heading'
-			className='grid gap-5 border-b border-white/15 py-8 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
+			className='grid min-w-0 gap-3 border-b border-white/15 py-7 md:grid-cols-[3rem_14rem_minmax(0,1fr)] md:gap-6 md:py-10'
 		>
 			<span className='font-mono text-xs text-white/35'>01</span>
 

@@ -26,36 +26,35 @@ const createFootnotePortableTextComponents = (
 	...portableTextComponents,
 	block: {
 		normal: ({ children }) => (
-			<p className='mb-7 text-lg leading-[1.7] text-white/90 last:mb-0'>
+			<p className='mb-6 text-base leading-[1.7] text-white/90 last:mb-0 sm:text-lg md:mb-7'>
 				{children}
 			</p>
 		),
 
 		h2: ({ children }) => (
-			<h2 className='mt-14 mb-5 text-3xl font-medium leading-[1.05] tracking-[-0.03em] md:text-4xl'>
+			<h2 className='mt-10 mb-4 text-2xl font-medium leading-[1.08] tracking-[-0.03em] sm:text-3xl md:mt-14 md:mb-5 md:text-4xl'>
 				{children}
 			</h2>
 		),
 
 		h3: ({ children }) => (
-			<h3 className='mt-10 mb-4 text-2xl font-medium leading-[1.1] tracking-[-0.02em] md:text-3xl'>
+			<h3 className='mt-8 mb-4 text-xl font-medium leading-[1.1] tracking-[-0.02em] sm:text-2xl md:mt-10 md:text-3xl'>
 				{children}
 			</h3>
 		),
 
 		blockquote: ({ children }) => (
-			<blockquote className='my-10 border-y border-white/15 py-6 text-xl leading-[1.45] text-white/75 md:text-2xl'>
+			<blockquote className='my-8 border-y border-white/15 py-5 text-lg leading-[1.5] text-white/75 sm:text-xl md:my-10 md:py-6 md:text-2xl'>
 				{children}
 			</blockquote>
 		),
 
 		indented: ({ children }) => (
-			<p className='mb-7 indent-8 text-lg leading-[1.7] text-white/90 last:mb-0'>
+			<p className='mb-6 indent-6 text-base leading-[1.7] text-white/90 last:mb-0 sm:text-lg md:mb-7 md:indent-8'>
 				{children}
 			</p>
 		),
 	},
-
 	hardBreak: () => <br />,
 
 	marks: {
@@ -99,7 +98,7 @@ export const FootnotePortableText = ({ value }: FootnotePortableTextProps) => {
 
 			{footnotes.length > 0 && (
 				<section
-					className='mt-16 border-t border-white/15 pt-5 font-mono text-xs leading-relaxed text-white/55'
+					className='mt-12 border-t border-white/15 pt-5 font-mono text-xs leading-relaxed text-white/55 md:mt-16'
 					aria-labelledby='footnotes-heading'
 				>
 					<h2

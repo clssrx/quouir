@@ -70,7 +70,7 @@ export default async function PostPage({ params }: PostPageProps) {
 	const authorNames = (authors ?? []).map((author) => author.name);
 
 	return (
-		<main className='pt-8 pb-12 md:pt-10 md:pb-20' aria-labelledby='post-title'>
+		<main className='pt-6 pb-10 md:pt-10 md:pb-20' aria-labelledby='post-title'>
 			<article>
 				<div className='mx-auto max-w-4xl'>
 					<PostHeader
@@ -84,12 +84,12 @@ export default async function PostPage({ params }: PostPageProps) {
 				</div>
 
 				{image && (
-					<div className='mx-auto mt-10 max-w-6xl md:mt-14'>
+					<div className='mx-auto mt-8 max-w-6xl md:mt-14'>
 						<PostHeroImage image={image} />
 					</div>
 				)}
 
-				<div className='mx-auto mt-12 max-w-2xl md:mt-16'>
+				<div className='mx-auto mt-10 max-w-2xl md:mt-16'>
 					<div>
 						{Array.isArray(body) && (
 							<FootnotePortableText value={body as PortableTextBlock[]} />
@@ -102,7 +102,7 @@ export default async function PostPage({ params }: PostPageProps) {
 						pdfUrl={pdfUrl}
 					/>
 
-					<footer className='mt-16 border-t border-white/15 pt-6'>
+					<footer className='mt-12 border-t border-white/15 pt-5 md:mt-16 md:pt-6'>
 						<PostCategoryLink
 							category={category}
 							categoryLabel={categoryLabel}

@@ -21,7 +21,7 @@ export const EnglishPdfSection = () => {
 
 				<a
 					href='/pdf/call-editorial-standards-en.pdf'
-					className='mt-6 inline-flex items-baseline gap-3 border-b border-white/30 pb-1 font-mono text-sm uppercase tracking-[0.06em] transition-colors hover:border-purple-300 hover:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
+					className='mt-6 inline-flex max-w-full items-baseline gap-3 border-b border-white/30 pb-1 font-mono text-sm uppercase tracking-[0.06em] transition-colors hover:border-purple-300 hover:text-purple-300 active:border-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
 				>
 					Download PDF
 					<span aria-hidden='true'>↗</span>

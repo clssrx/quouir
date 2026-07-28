@@ -29,7 +29,7 @@ export const TextExamplesSection = ({
 				{title}
 			</h2>
 
-			<div className='max-w-3xl'>
+			<div className='min-w-0 max-w-3xl'>
 				{intro && <p className='mb-7 leading-relaxed text-white/70'>{intro}</p>}
 
 				<div className='font-mono text-sm leading-relaxed text-white/60'>
@@ -42,7 +42,7 @@ export const TextExamplesSection = ({
 								{String(index + 1).padStart(2, '0')}
 							</span>
 
-							<p>{example.content}</p>
+							<p className='wrap-anywhere'>{example.content}</p>
 						</div>
 					))}
 				</div>

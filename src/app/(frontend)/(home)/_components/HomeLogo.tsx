@@ -15,14 +15,14 @@ export const HomeLogo = ({ logo }: HomeLogoProps) => {
 	const logoUrl = urlFor(logo).width(500).height(500).fit('crop').url();
 
 	return (
-		<div className='w-40 justify-self-start md:w-52 lg:w-60'>
+		<div className='w-28 justify-self-end sm:w-32 md:w-52 md:justify-self-start lg:w-60'>
 			<Image
 				src={logoUrl}
 				alt="Logo QU'OUÏR"
 				width={500}
 				height={500}
 				priority
-				sizes='(min-width: 1024px) 240px, (min-width: 768px) 208px, 160px'
+				sizes='(min-width: 1024px) 240px, (min-width: 768px) 208px, (min-width: 640px) 128px, 112px'
 				className='h-auto w-full rounded-full'
 			/>
 		</div>
