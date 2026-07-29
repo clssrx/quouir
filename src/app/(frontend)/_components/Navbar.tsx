@@ -64,7 +64,7 @@ export default function Navbar({ categories }: NavbarProps) {
 				<Link
 					href='/'
 					onClick={() => setIsOpen(false)}
-					className='font-medium uppercase tracking-[-0.04em]'
+					className='mobile-navbar-brand font-medium uppercase tracking-[-0.04em]'
 				>
 					QU&apos;OUÏR
 				</Link>
