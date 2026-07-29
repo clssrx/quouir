@@ -45,3 +45,7 @@ body {
 		outline-offset: 4px;
 	}
 }
+
+body:has([data-page='home']) .mobile-navbar-brand {
+	display: none;
+}

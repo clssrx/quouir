@@ -15,7 +15,7 @@ export const HomeLogo = ({ logo }: HomeLogoProps) => {
 	const logoUrl = urlFor(logo).width(500).height(500).fit('crop').url();
 
 	return (
-		<div className='w-28 justify-self-end sm:w-32 md:w-52 md:justify-self-start lg:w-60'>
+		<div className='w-28 justify-self-end sm:w-32 md:w-32 md:justify-self-start lg:w-53 xl:w-60'>
 			<Image
 				src={logoUrl}
 				alt="Logo QU'OUÏR"

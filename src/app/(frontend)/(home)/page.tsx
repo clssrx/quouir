@@ -32,7 +32,7 @@ export default async function HomePage() {
 	} = data;
 
 	return (
-		<main>
+		<main data-page='home'>
 			<section className='grid gap-8 py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-10 md:py-10'>
 				<div>
 					<h1 className='text-[clamp(3.5rem,16vw,9rem)] font-semibold uppercase leading-[0.8] tracking-[-0.065em]'>

@@ -15,8 +15,6 @@ export default function Navbar({ categories }: NavbarProps) {
 
 	const pathname = usePathname();
 
-	const isHome = pathname === '/';
-
 	const menuButtonRef = useRef<HTMLButtonElement>(null);
 	const menuRef = useRef<HTMLElement>(null);
 	const wasOpen = useRef(false);
@@ -63,15 +61,13 @@ export default function Navbar({ categories }: NavbarProps) {
 		<header className='sticky top-0 z-50 border-b border-white/15 bg-black md:fixed md:inset-y-0 md:left-0 md:w-64 md:border-r md:border-b-0'>
 			{/* Mobile header */}
 			<div className='flex h-14 items-center justify-between px-4 md:hidden'>
-				{!isHome && (
-					<Link
-						href='/'
-						onClick={() => setIsOpen(false)}
-						className='font-medium uppercase tracking-[-0.04em]'
-					>
-						QU&apos;OUÏR
-					</Link>
-				)}
+				<Link
+					href='/'
+					onClick={() => setIsOpen(false)}
+					className='mobile-navbar-brand font-medium uppercase tracking-[-0.04em]'
+				>
+					QU&apos;OUÏR
+				</Link>
 
 				<button
 					type='button'
