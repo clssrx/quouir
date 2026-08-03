@@ -1,24 +1,29 @@
-import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
 
-const pagesToTest = [
+const routes = [
 	'/',
 	'/eventi',
 	'/materiali',
 	'/interviste',
 	'/papers',
 	'/traduzioni',
-	'call-e-norme-editoriali',
+	'/call-e-norme-editoriali',
 ];
 
 test.describe('Accessibility checks', () => {
-	for (const path of pagesToTest) {
-		test(`should not have automatically detectable accessibility issues on ${path}`, async ({
+	for (const route of routes) {
+		test(`should not have automatically detectable accessibility issues on ${route}`, async ({
 			page,
 		}) => {
-			await page.goto(path);
+			await page.goto(route);
 
-			const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+			// Wait until the streamed page content has replaced loading.tsx.
+			await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+			const accessibilityScanResults = await new AxeBuilder({
+				page,
+			}).analyze();
 
 			expect(accessibilityScanResults.violations).toEqual([]);
 		});

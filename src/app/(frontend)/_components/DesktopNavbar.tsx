@@ -38,7 +38,10 @@ export default function DesktopNavbar({ items }: DesktopNavbarProps) {
 							item.isActive ? 'text-purple-300' : 'text-white',
 						].join(' ')}
 					>
-						<span className='font-mono text-[0.65rem] text-white/60 group-hover:text-current'>
+						<span
+							className='font-mono text-[0.65rem] text-white/60 group-hover:text-current '
+							aria-hidden='true'
+						>
 							{String(index + 1).padStart(2, '0')}
 						</span>
 
