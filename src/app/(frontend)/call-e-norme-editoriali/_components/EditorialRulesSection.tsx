@@ -25,7 +25,10 @@ export const EditorialRulesSection = ({
 						key={rule}
 						className='grid gap-4 border-t border-white/15 py-4 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)]'
 					>
-						<span className='font-mono text-xs text-white/60'>
+						<span
+							className='font-mono text-xs text-white/60'
+							aria-hidden='true'
+						>
 							{String(index + 1).padStart(2, '0')}
 						</span>
 

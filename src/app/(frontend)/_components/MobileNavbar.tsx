@@ -98,7 +98,10 @@ export default function MobileNavbar({ items }: MobileNavbarProps) {
 									item.isActive ? 'text-purple-300' : 'text-white',
 								].join(' ')}
 							>
-								<span className='font-mono text-[0.65rem] tracking-normal text-white/60'>
+								<span
+									className='font-mono text-[0.65rem] tracking-normal text-white/60'
+									aria-hidden='true'
+								>
 									{String(index + 1).padStart(2, '0')}
 								</span>
 

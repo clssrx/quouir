@@ -13,6 +13,8 @@
 		"predev": "npm run typegen",
 		"prebuild": "npm run typegen",
 		"typegen": "sanity schema extract --force --enforce-required-fields --path=./src/sanity/extract.json && sanity typegen generate",
+		"test": "playwright test",
+		"test:smoke": "playwright test tests/smoke.spec.ts",
 		"test:a11y": "playwright test tests/a11y.spec.ts"
 	},
 	"dependencies": {

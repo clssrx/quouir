@@ -32,7 +32,10 @@ export const ContributionTypesSection = ({
 							className='grid gap-4 border-t border-white/15 py-6 first:border-t-0 first:pt-0 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-8'
 						>
 							<div>
-								<span className='font-mono text-[0.65rem] text-white/60'>
+								<span
+									className='font-mono text-[0.65rem] text-white/60'
+									aria-hidden='true'
+								>
 									{String(index + 1).padStart(2, '0')}
 								</span>
 

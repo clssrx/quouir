@@ -62,13 +62,18 @@ export default function ArchivePostEntry({
 			? 'py-5 md:grid-cols-[3rem_9rem_minmax(0,1fr)_10rem] md:gap-4 md:py-6'
 			: 'py-5 md:grid-cols-[3rem_9rem_minmax(0,1fr)] md:gap-4 md:py-6';
 
+	const HeadingTag = variant === 'category' ? 'h2' : 'h3';
+
 	return (
 		<li className='border-t border-white/15'>
 			<article
 				className={`group grid grid-cols-[1fr_auto] gap-4 ${articleLayout}`}
 			>
 				{/* Index */}
-				<span className='col-start-1 row-start-1 font-mono text-xs text-white/60'>
+				<span
+					className='col-start-1 row-start-1 font-mono text-xs text-white/60'
+					aria-hidden='true'
+				>
 					{String(index + 1).padStart(2, '0')}
 				</span>
 
@@ -88,7 +93,7 @@ export default function ArchivePostEntry({
 						isCategory ? 'md:col-start-2' : 'md:col-start-3'
 					}`}
 				>
-					<h3
+					<HeadingTag
 						className={`font-medium uppercase leading-[0.95] tracking-[-0.035em] ${
 							isCategory
 								? 'max-w-4xl text-[1.75rem] sm:text-3xl md:text-4xl'
@@ -101,7 +106,7 @@ export default function ArchivePostEntry({
 						>
 							{post.title}
 						</Link>
-					</h3>
+					</HeadingTag>
 
 					<div className='mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.06em] text-white/60'>
 						{showAuthors && authors.length > 0 && (
@@ -139,6 +144,7 @@ export default function ArchivePostEntry({
 								alt=''
 								width={800}
 								height={800}
+								loading={isCategory && index === 0 ? 'eager' : 'lazy'}
 								sizes={
 									isCategory
 										? '(min-width: 1024px) 18rem, (min-width: 768px) 14rem, 100vw'
