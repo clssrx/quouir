@@ -15,6 +15,98 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: src/sanity/extract.json
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type CallEditorialGuidelines = {
+  _id: string;
+  _type: "callEditorialGuidelines";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  introLead: string;
+  introSupportingText: string;
+  submissionLabel: string;
+  submissionEmail: string;
+  submissionNote: string;
+  researchFields: Array<string>;
+  acceptedLanguages: Array<string>;
+  contributionTypes: Array<{
+    title: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "contributionType";
+    _key: string;
+  }>;
+  editorialRules: Array<{
+    text: string;
+    _type: "editorialRule";
+    _key: string;
+  }>;
+  footnoteExamples: Array<{
+    editorLabel: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "editorialExample";
+    _key: string;
+  }>;
+  bibliographyIntro: string;
+  bibliographyExamples: Array<{
+    editorLabel: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "editorialExample";
+    _key: string;
+  }>;
+  englishDescription: string;
+  englishPdf: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  englishLinkLabel: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -131,13 +223,6 @@ export type CategoryReference = {
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "category";
-};
-
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
 };
 
 export type Post = {
@@ -324,6 +409,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityFileAssetReference
+  | CallEditorialGuidelines
   | SanityImageAssetReference
   | SiteSettings
   | SanityImageCrop
@@ -332,7 +419,6 @@ export type AllSanitySchemaTypes =
   | Slug
   | AuthorReference
   | CategoryReference
-  | SanityFileAssetReference
   | Post
   | Category
   | SanityImagePaletteSwatch
@@ -397,6 +483,80 @@ export type AUTHOR_QUERY_RESULT = {
     };
   }>;
 };
+
+// Source: src/sanity/queries/callEditorialGuidelines.ts
+// Variable: CALL_EDITORIAL_GUIDELINES_QUERY
+// Query: *[		_type == "callEditorialGuidelines" &&		_id == "callEditorialGuidelines"	][0] {		_id,		introLead,		introSupportingText,		submissionLabel,		submissionEmail,		submissionNote,		researchFields,		acceptedLanguages,		contributionTypes[] {			_key,			title,			content		},		editorialRules[] {			_key,			text		},		footnoteExamples[] {			_key,			content		},		bibliographyIntro,		bibliographyExamples[] {			_key,			content		},		englishDescription,		"englishPdfUrl": englishPdf.asset->url,		englishLinkLabel	}
+export type CALL_EDITORIAL_GUIDELINES_QUERY_RESULT = {
+  _id: "callEditorialGuidelines";
+  introLead: string;
+  introSupportingText: string;
+  submissionLabel: string;
+  submissionEmail: string;
+  submissionNote: string;
+  researchFields: Array<string>;
+  acceptedLanguages: Array<string>;
+  contributionTypes: Array<{
+    _key: string;
+    title: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+  }>;
+  editorialRules: Array<{
+    _key: string;
+    text: string;
+  }>;
+  footnoteExamples: Array<{
+    _key: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+  }>;
+  bibliographyIntro: string;
+  bibliographyExamples: Array<{
+    _key: string;
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+  }>;
+  englishDescription: string;
+  englishPdfUrl: string | null;
+  englishLinkLabel: string;
+} | null;
 
 // Source: src/sanity/queries/categories.ts
 // Variable: CATEGORIES_LIST_QUERY
@@ -705,6 +865,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '{\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n\n  "posts": *[\n    _type == "post" &&\n    references(*[_type == "author" && slug.current == $slug]._id)\n  ] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    subtitle,\n\n    thumbnailImage {\n      ...,\n      alt\n    },\n\n    image {\n      ...,\n      alt\n    },\n\n    authors[]-> {\n      _id,\n      name,\n      slug\n    },\n\n    category-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': AUTHOR_QUERY_RESULT;
+    '\n\t*[\n\t\t_type == "callEditorialGuidelines" &&\n\t\t_id == "callEditorialGuidelines"\n\t][0] {\n\t\t_id,\n\t\tintroLead,\n\t\tintroSupportingText,\n\t\tsubmissionLabel,\n\t\tsubmissionEmail,\n\t\tsubmissionNote,\n\n\t\tresearchFields,\n\t\tacceptedLanguages,\n\n\t\tcontributionTypes[] {\n\t\t\t_key,\n\t\t\ttitle,\n\t\t\tcontent\n\t\t},\n\n\t\teditorialRules[] {\n\t\t\t_key,\n\t\t\ttext\n\t\t},\n\n\t\tfootnoteExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tbibliographyIntro,\n\n\t\tbibliographyExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tenglishDescription,\n\t\t"englishPdfUrl": englishPdf.asset->url,\n\t\tenglishLinkLabel\n\t}\n': CALL_EDITORIAL_GUIDELINES_QUERY_RESULT;
     '\n  *[_type == "category"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n': CATEGORIES_LIST_QUERY_RESULT;
     '\n\t*[_type == "category" && slug.current == $slug][0] {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORY_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n  }\n': POSTS_QUERY_RESULT;

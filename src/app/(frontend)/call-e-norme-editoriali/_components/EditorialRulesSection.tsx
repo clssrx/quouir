@@ -1,5 +1,14 @@
+import type { CALL_EDITORIAL_GUIDELINES_QUERY_RESULT } from '@/sanity/types';
+
+type CallEditorialGuidelines =
+	NonNullable<CALL_EDITORIAL_GUIDELINES_QUERY_RESULT>;
+
+type EditorialRule = NonNullable<
+	CallEditorialGuidelines['editorialRules']
+>[number];
+
 type EditorialRulesSectionProps = {
-	rules: string[];
+	rules: EditorialRule[];
 };
 
 export const EditorialRulesSection = ({
@@ -22,7 +31,7 @@ export const EditorialRulesSection = ({
 			<ol>
 				{rules.map((rule, index) => (
 					<li
-						key={rule}
+						key={rule._key}
 						className='grid gap-4 border-t border-white/15 py-4 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)]'
 					>
 						<span
@@ -32,7 +41,9 @@ export const EditorialRulesSection = ({
 							{String(index + 1).padStart(2, '0')}
 						</span>
 
-						<p className='max-w-3xl leading-relaxed text-white/70'>{rule}</p>
+						<p className='max-w-3xl leading-relaxed text-white/70'>
+							{rule.text}
+						</p>
 					</li>
 				))}
 			</ol>

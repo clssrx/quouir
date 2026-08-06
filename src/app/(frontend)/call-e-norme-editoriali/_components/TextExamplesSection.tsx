@@ -1,11 +1,38 @@
-import type { TextExample } from '../_data/callEditorialGuidelines';
+import {
+	PortableText,
+	type PortableTextBlock,
+	type PortableTextComponents,
+} from '@portabletext/react';
+
+import type { CALL_EDITORIAL_GUIDELINES_QUERY_RESULT } from '@/sanity/types';
+
+type CallEditorialGuidelines =
+	NonNullable<CALL_EDITORIAL_GUIDELINES_QUERY_RESULT>;
+
+type TextExample = NonNullable<
+	CallEditorialGuidelines['footnoteExamples']
+>[number];
 
 type TextExamplesSectionProps = {
 	number: string;
 	headingId: string;
 	title: string;
-	intro?: string;
+	intro?: string | null;
 	examples: TextExample[];
+};
+
+const editorialExampleComponents: PortableTextComponents = {
+	block: {
+		normal: ({ children }) => <p className='wrap-anywhere'>{children}</p>,
+	},
+
+	marks: {
+		strong: ({ children }) => (
+			<strong className='font-semibold text-gray-100'>{children}</strong>
+		),
+
+		em: ({ children }) => <em>{children}</em>,
+	},
 };
 
 export const TextExamplesSection = ({
@@ -35,14 +62,21 @@ export const TextExamplesSection = ({
 				<div className='font-mono text-sm leading-relaxed text-white/60'>
 					{examples.map((example, index) => (
 						<div
-							key={example.id}
+							key={example._key}
 							className='grid gap-4 border-t border-white/15 py-4 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)]'
 						>
 							<span className='text-xs text-white/60' aria-hidden='true'>
 								{String(index + 1).padStart(2, '0')}
 							</span>
 
-							<p className='wrap-anywhere'>{example.content}</p>
+							<div className='min-w-0 space-y-3'>
+								{Array.isArray(example.content) && (
+									<PortableText
+										value={example.content as PortableTextBlock[]}
+										components={editorialExampleComponents}
+									/>
+								)}
+							</div>
 						</div>
 					))}
 				</div>

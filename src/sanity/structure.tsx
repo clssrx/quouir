@@ -1,4 +1,4 @@
-import { StructureResolver } from 'sanity/structure';
+import type { StructureResolver } from 'sanity/structure';
 
 const EmojiIcon = ({ emoji }: { emoji: string }) => {
 	return <span style={{ fontSize: '1.2rem' }}>{emoji}</span>;
@@ -37,6 +37,16 @@ export const structure: StructureResolver = (S) =>
 				.icon(() => <EmojiIcon emoji='👤' />),
 
 			S.divider(),
+
+			S.listItem()
+				.title('Call e norme editoriali')
+				.icon(() => <EmojiIcon emoji='📄' />)
+				.child(
+					S.document()
+						.schemaType('callEditorialGuidelines')
+						.documentId('callEditorialGuidelines')
+						.title('Call e norme editoriali'),
+				),
 
 			S.listItem()
 				.title('Impostazioni sito')
