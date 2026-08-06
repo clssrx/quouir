@@ -72,6 +72,31 @@ export const siteSettingsType = defineType({
 			of: [simpleTextBlock],
 		}),
 		defineField({
+			name: 'navigationCategories',
+			title: 'Ordine delle categorie nella navbar',
+			description:
+				"Aggiungi le categorie da mostrare e trascinale per cambiarne l'ordine.",
+			type: 'array',
+			of: [
+				defineArrayMember({
+					type: 'reference',
+					to: [{ type: 'category' }],
+				}),
+			],
+
+			options: {
+				sortable: true,
+			},
+
+			validation: (rule) =>
+				rule
+					.required()
+					.min(1)
+					.unique()
+					.error('Inserisci almeno una categoria nella navbar.'),
+		}),
+
+		defineField({
 			name: 'licenseText',
 			title: 'Testo della licenza',
 			description: 'Testo legale o informativo mostrato nel sito.',

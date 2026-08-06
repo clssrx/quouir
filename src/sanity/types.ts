@@ -114,6 +114,13 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type CategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "category";
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -147,6 +154,11 @@ export type SiteSettings = {
     _type: "block";
     _key: string;
   }>;
+  navigationCategories: Array<
+    {
+      _key: string;
+    } & CategoryReference
+  >;
   licenseText: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -412,6 +424,7 @@ export type AllSanitySchemaTypes =
   | SanityFileAssetReference
   | CallEditorialGuidelines
   | SanityImageAssetReference
+  | CategoryReference
   | SiteSettings
   | SanityImageCrop
   | SanityImageHotspot
