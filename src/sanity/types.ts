@@ -230,13 +230,6 @@ export type AuthorReference = {
   [internalGroqTypeReferenceTo]?: "author";
 };
 
-export type CategoryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "category";
-};
-
 export type Post = {
   _id: string;
   _type: "post";
@@ -431,7 +424,6 @@ export type AllSanitySchemaTypes =
   | Author
   | Slug
   | AuthorReference
-  | CategoryReference
   | Post
   | Category
   | SanityImagePaletteSwatch
@@ -573,12 +565,23 @@ export type CALL_EDITORIAL_GUIDELINES_QUERY_RESULT = {
 
 // Source: src/sanity/queries/categories.ts
 // Variable: CATEGORIES_LIST_QUERY
-// Query: *[_type == "category"] | order(title asc) {    _id,    title,    slug  }
+// Query: *[_type == "category"] | order(title asc) {		_id,		title,		slug	}
 export type CATEGORIES_LIST_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: Slug;
 }>;
+
+// Source: src/sanity/queries/categories.ts
+// Variable: NAVIGATION_CATEGORIES_QUERY
+// Query: coalesce(		*[			_type == "siteSettings" &&			_id == "siteSettings"		][0].navigationCategories[]-> {			_id,			title,			slug		},		[]	)
+export type NAVIGATION_CATEGORIES_QUERY_RESULT =
+  | Array<{
+      _id: string;
+      title: string;
+      slug: Slug;
+    }>
+  | Array<never>;
 
 // Source: src/sanity/queries/categories.ts
 // Variable: CATEGORY_BY_SLUG_QUERY
@@ -879,7 +882,8 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '{\n  "author": *[_type == "author" && slug.current == $slug][0] {\n    _id,\n    name,\n    bio,\n    image {\n      ...,\n      alt\n    },\n    slug\n  },\n\n  "posts": *[\n    _type == "post" &&\n    references(*[_type == "author" && slug.current == $slug]._id)\n  ] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    subtitle,\n\n    thumbnailImage {\n      ...,\n      alt\n    },\n\n    image {\n      ...,\n      alt\n    },\n\n    authors[]-> {\n      _id,\n      name,\n      slug\n    },\n\n    category-> {\n      _id,\n      title,\n      slug\n    }\n  }\n}': AUTHOR_QUERY_RESULT;
     '\n\t*[\n\t\t_type == "callEditorialGuidelines" &&\n\t\t_id == "callEditorialGuidelines"\n\t][0] {\n\t\t_id,\n\t\tintroLead,\n\t\tintroSupportingText,\n\t\tsubmissionLabel,\n\t\tsubmissionEmail,\n\t\tsubmissionNote,\n\n\t\tresearchFields,\n\t\tacceptedLanguages,\n\n\t\tcontributionTypes[] {\n\t\t\t_key,\n\t\t\ttitle,\n\t\t\tcontent\n\t\t},\n\n\t\teditorialRules[] {\n\t\t\t_key,\n\t\t\ttext\n\t\t},\n\n\t\tfootnoteExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tbibliographyIntro,\n\n\t\tbibliographyExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tenglishDescription,\n\t\t"englishPdfUrl": englishPdf.asset->url,\n\t\tenglishLinkLabel\n\t}\n': CALL_EDITORIAL_GUIDELINES_QUERY_RESULT;
-    '\n  *[_type == "category"] | order(title asc) {\n    _id,\n    title,\n    slug\n  }\n': CATEGORIES_LIST_QUERY_RESULT;
+    '\n\t*[_type == "category"] | order(title asc) {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORIES_LIST_QUERY_RESULT;
+    '\n\tcoalesce(\n\t\t*[\n\t\t\t_type == "siteSettings" &&\n\t\t\t_id == "siteSettings"\n\t\t][0].navigationCategories[]-> {\n\t\t\t_id,\n\t\t\ttitle,\n\t\t\tslug\n\t\t},\n\t\t[]\n\t)\n': NAVIGATION_CATEGORIES_QUERY_RESULT;
     '\n\t*[_type == "category" && slug.current == $slug][0] {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORY_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "post" &&\n    defined(slug.current)\n  ]\n  | order(publishedAt desc)[0...12]{\n    _id,\n    title,\n    slug,\n    publishedAt,\n    authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n  }\n': POSTS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  subtitle,\n  publishedAt,\n  body,\n\timage {\n      ...,\n      alt\n    },\n   authors[]-> {\n      _id,\n      name,\n      slug,\n\t  },\n}': POST_BY_SLUG_QUERY_RESULT;
