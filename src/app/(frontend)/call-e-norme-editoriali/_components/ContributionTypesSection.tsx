@@ -1,7 +1,48 @@
-import type { ContributionType } from '../_data/callEditorialGuidelines';
+import {
+	PortableText,
+	type PortableTextBlock,
+	type PortableTextComponents,
+} from '@portabletext/react';
+
+import type { CALL_EDITORIAL_GUIDELINES_QUERY_RESULT } from '@/sanity/types';
+
+type CallEditorialGuidelines =
+	NonNullable<CALL_EDITORIAL_GUIDELINES_QUERY_RESULT>;
+
+type ContributionType = NonNullable<
+	CallEditorialGuidelines['contributionTypes']
+>[number];
 
 type ContributionTypesSectionProps = {
 	contributionTypes: ContributionType[];
+};
+
+const contributionComponents: PortableTextComponents = {
+	block: {
+		normal: ({ children }) => (
+			<p className='max-w-2xl leading-relaxed text-white/75'>{children}</p>
+		),
+	},
+
+	list: {
+		bullet: ({ children }) => <ul className='mt-5 space-y-3'>{children}</ul>,
+	},
+
+	listItem: {
+		bullet: ({ children }) => (
+			<li className='border-t border-white/10 pt-3 leading-relaxed text-white/60'>
+				{children}
+			</li>
+		),
+	},
+
+	marks: {
+		strong: ({ children }) => (
+			<strong className='font-semibold text-white'>{children}</strong>
+		),
+
+		em: ({ children }) => <em>{children}</em>,
+	},
 };
 
 export const ContributionTypesSection = ({
@@ -22,12 +63,12 @@ export const ContributionTypesSection = ({
 			</h2>
 
 			<div>
-				{contributionTypes.map((type, index) => {
+				{contributionTypes.map((contributionType, index) => {
 					const headingId = `contribution-type-${index + 1}`;
 
 					return (
 						<section
-							key={type.title}
+							key={contributionType._key}
 							aria-labelledby={headingId}
 							className='grid gap-4 border-t border-white/15 py-6 first:border-t-0 first:pt-0 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-8'
 						>
@@ -41,30 +82,18 @@ export const ContributionTypesSection = ({
 
 								<h3
 									id={headingId}
-									className='mt-2 text-xl font-medium uppercase tracking-[-0.025em]'
+									className='mt-2 text-xl font-medium uppercase tracking-tight'
 								>
-									{type.title}
+									{contributionType.title}
 								</h3>
 							</div>
 
 							<div>
-								{type.description && (
-									<p className='max-w-2xl leading-relaxed text-white/75'>
-										{type.description}
-									</p>
-								)}
-
-								{type.requirements && (
-									<ul className='mt-5 space-y-3'>
-										{type.requirements.map((requirement) => (
-											<li
-												key={requirement}
-												className='border-t border-white/10 pt-3 leading-relaxed text-white/60'
-											>
-												{requirement}
-											</li>
-										))}
-									</ul>
+								{Array.isArray(contributionType.content) && (
+									<PortableText
+										value={contributionType.content as PortableTextBlock[]}
+										components={contributionComponents}
+									/>
 								)}
 							</div>
 						</section>

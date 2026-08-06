@@ -1,4 +1,14 @@
-export const EnglishPdfSection = () => {
+type EnglishPdfSectionProps = {
+	description: string;
+	pdfUrl?: string | null;
+	linkLabel: string;
+};
+
+export const EnglishPdfSection = ({
+	description,
+	pdfUrl,
+	linkLabel,
+}: EnglishPdfSectionProps) => {
 	return (
 		<section
 			aria-labelledby='english-pdf-heading'
@@ -14,18 +24,17 @@ export const EnglishPdfSection = () => {
 			</h2>
 
 			<div className='max-w-2xl'>
-				<p className='leading-relaxed text-white/65'>
-					The call and the editorial standards are available in English by
-					downloading the following PDF.
-				</p>
+				<p className='leading-relaxed text-white/65'>{description}</p>
 
-				<a
-					href='/pdf/call-editorial-standards-en.pdf'
-					className='mt-6 inline-flex max-w-full items-baseline gap-3 border-b border-white/30 pb-1 font-mono text-sm uppercase tracking-[0.06em] transition-colors hover:border-purple-300 hover:text-purple-300 active:border-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
-				>
-					Download PDF
-					<span aria-hidden='true'>↗</span>
-				</a>
+				{pdfUrl && (
+					<a
+						href={pdfUrl}
+						className='mt-6 inline-flex max-w-full items-baseline gap-3 border-b border-white/30 pb-1 font-mono text-sm uppercase tracking-[0.06em] transition-colors hover:border-purple-300 hover:text-purple-300 active:border-purple-300 active:text-purple-300 focus-visible:outline-2 focus-visible:outline-offset-4'
+					>
+						{linkLabel}
+						<span aria-hidden='true'>↗</span>
+					</a>
+				)}
 			</div>
 		</section>
 	);

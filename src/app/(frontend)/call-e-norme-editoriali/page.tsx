@@ -1,10 +1,6 @@
-import {
-	bibliographyExamples,
-	contributionTypes,
-	editorialRules,
-	footnoteExamples,
-	researchFields,
-} from './_data/callEditorialGuidelines';
+import { notFound } from 'next/navigation';
+
+import { getCallEditorialGuidelines } from '@/sanity/queries/callEditorialGuidelines';
 
 import { CallPageHeader } from './_components/CallPageHeader';
 import { ContributionTypesSection } from './_components/ContributionTypesSection';
@@ -13,14 +9,44 @@ import { EnglishPdfSection } from './_components/EnglishPdfSection';
 import { ResearchFieldsSection } from './_components/ResearchFieldsSection';
 import { TextExamplesSection } from './_components/TextExamplesSection';
 
-export default function CallEditorialGuidelinesPage() {
+export default async function CallEditorialGuidelinesPage() {
+	const data = await getCallEditorialGuidelines();
+
+	if (!data) {
+		notFound();
+	}
+
+	const {
+		introLead,
+		introSupportingText,
+		submissionLabel,
+		submissionEmail,
+		submissionNote,
+		researchFields,
+		acceptedLanguages,
+		contributionTypes,
+		editorialRules,
+		footnoteExamples,
+		bibliographyIntro,
+		bibliographyExamples,
+		englishDescription,
+		englishPdfUrl,
+		englishLinkLabel,
+	} = data;
+
 	return (
 		<main
 			className='py-8 md:py-10'
 			aria-labelledby='call-editorial-guidelines-heading'
 		>
 			<article>
-				<CallPageHeader />
+				<CallPageHeader
+					introLead={introLead}
+					introSupportingText={introSupportingText}
+					submissionLabel={submissionLabel}
+					submissionEmail={submissionEmail}
+					submissionNote={submissionNote}
+				/>
 
 				<div className='border-t border-white/15'>
 					<ResearchFieldsSection fields={researchFields} />
@@ -39,7 +65,7 @@ export default function CallEditorialGuidelinesPage() {
 						</h2>
 
 						<p className='text-lg leading-relaxed text-white/80'>
-							Italiano / Inglese / Francese / Spagnolo
+							{acceptedLanguages.join(' / ')}
 						</p>
 					</section>
 
@@ -58,11 +84,15 @@ export default function CallEditorialGuidelinesPage() {
 						number='06'
 						headingId='bibliography-heading'
 						title='Bibliografia'
-						intro='La bibliografia va organizzata come le note a piè di pagina, eccetto per il fatto che il nome deve seguire il cognome; il rientro deve essere sporgente di 0,5 cm; l’interlinea deve essere di 1,5. I riferimenti vanno messi in ordine alfabetico.'
+						intro={bibliographyIntro}
 						examples={bibliographyExamples}
 					/>
 
-					<EnglishPdfSection />
+					<EnglishPdfSection
+						description={englishDescription}
+						pdfUrl={englishPdfUrl}
+						linkLabel={englishLinkLabel}
+					/>
 				</div>
 			</article>
 		</main>
