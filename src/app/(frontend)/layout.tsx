@@ -1,14 +1,14 @@
-import { SanityLive } from '@/sanity/lib/live';
-import { getAllCategories } from '@/sanity/queries/categories';
+import { getNavigationCategories } from '@/sanity/queries/categories';
 import { getLicenseText } from '@/sanity/queries/siteSettings';
-import Navbar from './_components/Navbar';
+
 import { Footer } from './_components/Footer';
+import Navbar from './_components/Navbar';
 
 export default async function FrontendLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	const [categories, licenseText] = await Promise.all([
-		getAllCategories(),
+		getNavigationCategories(),
 		getLicenseText(),
 	]);
 
@@ -31,8 +31,6 @@ export default async function FrontendLayout({
 				>
 					{children}
 				</div>
-
-				<SanityLive />
 
 				<Footer licenseText={licenseText} />
 			</div>

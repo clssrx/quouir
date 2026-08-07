@@ -1,14 +1,38 @@
 import { defineQuery } from 'next-sanity';
-import { CATEGORIES_LIST_QUERY_RESULT } from '../types';
+
 import { client } from '../lib/client';
-import { sanityFetch } from '../lib/live';
+import type {
+	CATEGORIES_LIST_QUERY_RESULT,
+	CATEGORY_BY_SLUG_QUERY_RESULT,
+	NAVIGATION_CATEGORIES_QUERY_RESULT,
+} from '../types';
+
+const fetchOptions = {
+	next: {
+		revalidate: 60,
+	},
+};
 
 export const CATEGORIES_LIST_QUERY = defineQuery(`
-  *[_type == "category"] | order(title asc) {
-    _id,
-    title,
-    slug
-  }
+	*[_type == "category"] | order(title asc) {
+		_id,
+		title,
+		slug
+	}
+`);
+
+export const NAVIGATION_CATEGORIES_QUERY = defineQuery(`
+	coalesce(
+		*[
+			_type == "siteSettings" &&
+			_id == "siteSettings"
+		][0].navigationCategories[]-> {
+			_id,
+			title,
+			slug
+		},
+		[]
+	)
 `);
 
 export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
@@ -19,21 +43,34 @@ export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
 	}
 `);
 
-export async function getAllCategories() {
+export function getAllCategories() {
 	return client.fetch<CATEGORIES_LIST_QUERY_RESULT>(
 		CATEGORIES_LIST_QUERY,
 		{},
-		{
-			next: { revalidate: 60 }, // Revalidate every 60 seconds
-		},
+		fetchOptions,
 	);
 }
 
-export async function getCategoryBySlug(slug: string) {
-	const { data } = await sanityFetch({
-		query: CATEGORY_BY_SLUG_QUERY,
-		params: { slug },
-	});
+export async function getNavigationCategories(): Promise<
+	NonNullable<NAVIGATION_CATEGORIES_QUERY_RESULT>
+> {
+	const categories = await client.fetch<NAVIGATION_CATEGORIES_QUERY_RESULT>(
+		NAVIGATION_CATEGORIES_QUERY,
+		{},
+		{
+			next: {
+				revalidate: 300,
+			},
+		},
+	);
 
-	return data;
+	return categories ?? [];
+}
+
+export function getCategoryBySlug(slug: string) {
+	return client.fetch<CATEGORY_BY_SLUG_QUERY_RESULT>(
+		CATEGORY_BY_SLUG_QUERY,
+		{ slug },
+		fetchOptions,
+	);
 }

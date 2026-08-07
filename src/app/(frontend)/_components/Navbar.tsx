@@ -2,13 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 
-import type { CATEGORIES_LIST_QUERY_RESULT } from '@/sanity/types';
-
+import type { NAVIGATION_CATEGORIES_QUERY_RESULT } from '@/sanity/types';
 import DesktopNavbar from './DesktopNavbar';
 import MobileNavbar from './MobileNavbar';
 
 type NavbarProps = {
-	categories: CATEGORIES_LIST_QUERY_RESULT;
+	categories: NAVIGATION_CATEGORIES_QUERY_RESULT;
 };
 
 export type NavigationItem = {
