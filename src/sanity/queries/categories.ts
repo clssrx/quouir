@@ -9,7 +9,7 @@ import type {
 
 const fetchOptions = {
 	next: {
-		revalidate: 60,
+		revalidate: 300,
 	},
 };
 
@@ -44,11 +44,9 @@ export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
 `);
 
 export function getAllCategories() {
-	return client.fetch<CATEGORIES_LIST_QUERY_RESULT>(
-		CATEGORIES_LIST_QUERY,
-		{},
-		fetchOptions,
-	);
+	return client
+		.withConfig({ useCdn: false })
+		.fetch<CATEGORIES_LIST_QUERY_RESULT>(CATEGORIES_LIST_QUERY, {});
 }
 
 export async function getNavigationCategories(): Promise<
@@ -57,11 +55,7 @@ export async function getNavigationCategories(): Promise<
 	const categories = await client.fetch<NAVIGATION_CATEGORIES_QUERY_RESULT>(
 		NAVIGATION_CATEGORIES_QUERY,
 		{},
-		{
-			next: {
-				revalidate: 300,
-			},
-		},
+		fetchOptions,
 	);
 
 	return categories ?? [];

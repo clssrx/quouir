@@ -1,8 +1,22 @@
 import { defineQuery } from 'next-sanity';
-import { sanityFetch } from '../lib/live';
+
+import { client } from '../lib/client';
+import type {
+	LICENSE_TEXT_QUERY_RESULT,
+	SITE_SETTINGS_QUERY_RESULT,
+} from '../types';
+
+const fetchOptions = {
+	next: {
+		revalidate: 300,
+	},
+};
 
 export const SITE_SETTINGS_QUERY = defineQuery(`
-	*[_type == "siteSettings"][0] {
+	*[
+		_type == "siteSettings" &&
+		_id == "siteSettings"
+	][0] {
 		title,
 		introText,
 		aboutUsText,
@@ -14,21 +28,24 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 `);
 
 export const LICENSE_TEXT_QUERY = defineQuery(`
-	*[_type == "siteSettings"][0].licenseText
+	*[
+		_type == "siteSettings" &&
+		_id == "siteSettings"
+	][0].licenseText
 `);
 
-export async function getSiteSettings() {
-	const { data } = await sanityFetch({
-		query: SITE_SETTINGS_QUERY,
-		params: {},
-	});
-	return data;
+export function getSiteSettings() {
+	return client.fetch<SITE_SETTINGS_QUERY_RESULT>(
+		SITE_SETTINGS_QUERY,
+		{},
+		fetchOptions,
+	);
 }
 
-export async function getLicenseText() {
-	const { data } = await sanityFetch({
-		query: LICENSE_TEXT_QUERY,
-		params: {},
-	});
-	return data;
+export function getLicenseText() {
+	return client.fetch<LICENSE_TEXT_QUERY_RESULT>(
+		LICENSE_TEXT_QUERY,
+		{},
+		fetchOptions,
+	);
 }

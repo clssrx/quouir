@@ -2,12 +2,16 @@ import { defineQuery } from 'next-sanity';
 import {
 	ALL_POSTS_WITH_CATEGORY_QUERY_RESULT,
 	POSTS_BY_CATEGORY_QUERY_RESULT,
-	POSTS_QUERY_RESULT,
 	POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT,
 	POST_BY_SLUG_QUERY_RESULT,
 } from '../types';
-import { sanityFetch } from '../lib/live';
 import { client } from '../lib/client';
+
+const fetchOptions = {
+	next: {
+		revalidate: 300,
+	},
+};
 
 export const POSTS_QUERY = defineQuery(`
   *[
@@ -151,55 +155,46 @@ export const LATEST_POSTS_QUERY = defineQuery(`
 	}
 `);
 
-export async function getLatestPosts() {
-	const { data } = await sanityFetch({
-		query: LATEST_POSTS_QUERY,
-		params: {},
-	});
-
-	return data;
+export function getLatestPosts() {
+	return client.fetch(LATEST_POSTS_QUERY, {}, fetchOptions);
 }
 
-export async function getPostBySlug(
+export function getPostBySlug(
 	slug: string,
 ): Promise<POST_BY_SLUG_QUERY_RESULT | null> {
-	const { data } = await sanityFetch({
-		query: POST_BY_SLUG_QUERY,
-		params: { slug },
-	});
-	return data;
+	return client.fetch<POST_BY_SLUG_QUERY_RESULT>(
+		POST_BY_SLUG_QUERY,
+		{ slug },
+		fetchOptions,
+	);
 }
 
-export async function getPostByCategoryAndSlug(
+export function getPostByCategoryAndSlug(
 	category: string,
 	slug: string,
 ): Promise<POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT | null> {
-	const { data } = await sanityFetch({
-		query: POST_BY_CATEGORY_AND_SLUG_QUERY,
-		params: { category, slug },
-	});
-
-	return data;
+	return client.fetch<POST_BY_CATEGORY_AND_SLUG_QUERY_RESULT>(
+		POST_BY_CATEGORY_AND_SLUG_QUERY,
+		{ category, slug },
+		fetchOptions,
+	);
 }
 
-export async function getPostsByCategory(
+export function getPostsByCategory(
 	category: string,
 ): Promise<POSTS_BY_CATEGORY_QUERY_RESULT> {
-	const { data } = await sanityFetch({
-		query: POSTS_BY_CATEGORY_QUERY,
-		params: { category },
-	});
-	return data;
+	return client.fetch<POSTS_BY_CATEGORY_QUERY_RESULT>(
+		POSTS_BY_CATEGORY_QUERY,
+		{ category },
+		fetchOptions,
+	);
 }
 
-export async function getAllPostsWithCategoryForStaticParams(): Promise<ALL_POSTS_WITH_CATEGORY_QUERY_RESULT> {
-	const data = await client.fetch(
-		ALL_POSTS_WITH_CATEGORY_QUERY,
-		{},
-		{
-			next: { revalidate: 60 },
-		},
-	);
-
-	return data;
+export function getAllPostsWithCategoryForStaticParams(): Promise<ALL_POSTS_WITH_CATEGORY_QUERY_RESULT> {
+	return client
+		.withConfig({ useCdn: false })
+		.fetch<ALL_POSTS_WITH_CATEGORY_QUERY_RESULT>(
+			ALL_POSTS_WITH_CATEGORY_QUERY,
+			{},
+		);
 }
