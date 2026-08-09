@@ -1,6 +1,13 @@
 import { defineQuery } from 'next-sanity';
 
-import { sanityFetch } from '../lib/live';
+import { client } from '../lib/client';
+import type { CALL_EDITORIAL_GUIDELINES_QUERY_RESULT } from '../types';
+
+const fetchOptions = {
+	next: {
+		revalidate: 300,
+	},
+};
 
 export const CALL_EDITORIAL_GUIDELINES_QUERY = defineQuery(`
 	*[
@@ -46,11 +53,10 @@ export const CALL_EDITORIAL_GUIDELINES_QUERY = defineQuery(`
 	}
 `);
 
-export async function getCallEditorialGuidelines() {
-	const { data } = await sanityFetch({
-		query: CALL_EDITORIAL_GUIDELINES_QUERY,
-		params: {},
-	});
-
-	return data;
+export function getCallEditorialGuidelines() {
+	return client.fetch<CALL_EDITORIAL_GUIDELINES_QUERY_RESULT>(
+		CALL_EDITORIAL_GUIDELINES_QUERY,
+		{},
+		fetchOptions,
+	);
 }
