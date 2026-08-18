@@ -28,4 +28,22 @@ test.describe('Accessibility checks', () => {
 			expect(accessibilityScanResults.violations).toEqual([]);
 		});
 	}
+
+	for (const path of ['/miao', '/materiali/miao']) {
+		test(`${path} has no detectable accessibility violations`, async ({
+			page,
+		}) => {
+			await page.goto(path);
+
+			await expect(
+				page.getByRole('heading', {
+					name: "Qui non c'è niente.",
+				}),
+			).toBeVisible();
+
+			const results = await new AxeBuilder({ page }).analyze();
+
+			expect(results.violations).toEqual([]);
+		});
+	}
 });

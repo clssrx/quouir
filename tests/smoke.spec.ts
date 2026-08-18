@@ -139,4 +139,54 @@ test.describe('Mobile navigation', () => {
 			}),
 		).toBeVisible();
 	});
+
+	test('shows the custom 404 for an unknown top-level route', async ({
+		page,
+	}) => {
+		const response = await page.goto('/miao');
+
+		expect(response?.status()).toBe(404);
+
+		await expect(
+			page.getByRole('heading', {
+				name: "Qui non c'è niente.",
+			}),
+		).toBeVisible();
+
+		await expect(
+			page.getByRole('link', {
+				name: /torna alla home/i,
+			}),
+		).toHaveAttribute('href', '/');
+	});
+
+	test('can return home from the global 404', async ({ page }) => {
+		await page.goto('/miao');
+
+		await page
+			.getByRole('link', {
+				name: /torna alla home/i,
+			})
+			.click();
+
+		await expect(page).toHaveURL('/');
+	});
+
+	test('shows the in-site 404 for an unknown post in a valid category', async ({
+		page,
+	}) => {
+		await page.goto('/materiali/miao');
+
+		await expect(
+			page.getByRole('heading', {
+				name: "Qui non c'è niente.",
+			}),
+		).toBeVisible();
+
+		await expect(
+			page.getByRole('link', {
+				name: /torna alla home/i,
+			}),
+		).toHaveAttribute('href', '/');
+	});
 });
