@@ -12,10 +12,20 @@ import type { CategoryPageProps } from '@/types/pages';
 
 import { EmptyCategoryState } from './_components/EmptyCategoryState';
 
-export const dynamicParams = true;
+export const dynamicParams = false;
 export const revalidate = 300;
 
-const STATIC_CATEGORY_ROUTES = ['call-e-norme-editoriali'];
+const RESERVED_ROUTES = new Set(['call-e-norme-editoriali']);
+
+export async function generateStaticParams() {
+	const categories = await getAllCategories();
+
+	return categories
+		.filter((category) => !RESERVED_ROUTES.has(category.slug.current))
+		.map((category) => ({
+			category: category.slug.current,
+		}));
+}
 
 export async function generateMetadata({
 	params,
@@ -33,18 +43,6 @@ export async function generateMetadata({
 	return {
 		title: existingCategory.title,
 	};
-}
-
-export async function generateStaticParams() {
-	const categories = await getAllCategories();
-
-	return categories
-		.filter(
-			(category) => !STATIC_CATEGORY_ROUTES.includes(category.slug.current),
-		)
-		.map((category) => ({
-			category: category.slug.current,
-		}));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
