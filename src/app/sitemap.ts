@@ -5,7 +5,7 @@ import { getAllPostsWithCategoryForStaticParams } from '@/sanity/queries/posts';
 
 const SITE_URL = 'https://www.quouir.com';
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const [categories, posts] = await Promise.all([
