@@ -55,6 +55,19 @@ export const AUTHOR_QUERY = defineQuery(`{
 	}
 }`);
 
+export const ALL_AUTHOR_SLUGS_QUERY = defineQuery(`
+	*[
+		_type == "author" &&
+		defined(slug.current)
+	] {
+		"slug": slug.current
+	}
+`);
+
+export function getAllAuthorsForStaticParams() {
+	return client.withConfig({ useCdn: false }).fetch(ALL_AUTHOR_SLUGS_QUERY);
+}
+
 export function getAuthorBySlug(slug: string): Promise<AUTHOR_QUERY_RESULT> {
 	return client.fetch<AUTHOR_QUERY_RESULT>(
 		AUTHOR_QUERY,
