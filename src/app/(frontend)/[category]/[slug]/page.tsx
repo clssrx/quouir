@@ -16,7 +16,7 @@ import { PostCategoryLink } from './_components/PostCategoryLink';
 import { PostHeader } from './_components/PostHeader';
 import { PostHeroImage } from './_components/PostHeroImage';
 
-export const revalidate = 300;
+export const revalidate = 86400;
 
 export async function generateMetadata({
 	params,

@@ -5,7 +5,7 @@ import type { CALL_EDITORIAL_GUIDELINES_QUERY_RESULT } from '../types';
 
 const fetchOptions = {
 	next: {
-		revalidate: 300,
+		revalidate: 86400,
 	},
 };
 
