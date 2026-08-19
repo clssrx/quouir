@@ -1,10 +1,23 @@
 import { notFound } from 'next/navigation';
 
-import { getAuthorBySlug } from '@/sanity/queries/authors';
+import {
+	getAllAuthorsForStaticParams,
+	getAuthorBySlug,
+} from '@/sanity/queries/authors';
 import type { AUTHOR_QUERY_RESULT } from '@/sanity/types';
 import type { AuthorPageProps } from '@/types/pages';
 
 import { AuthorPostsSection } from './_components/AuthorPostsSection';
+
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+	const authors = await getAllAuthorsForStaticParams();
+
+	return authors.map((author) => ({
+		slug: author.slug,
+	}));
+}
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
 	const { slug } = await params;
