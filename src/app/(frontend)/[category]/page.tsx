@@ -13,7 +13,7 @@ import type { CategoryPageProps } from '@/types/pages';
 import { EmptyCategoryState } from './_components/EmptyCategoryState';
 
 export const dynamicParams = false;
-export const revalidate = 300;
+export const revalidate = 86400;
 
 const RESERVED_ROUTES = new Set(['call-e-norme-editoriali']);
 

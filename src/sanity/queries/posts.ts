@@ -9,7 +9,7 @@ import { client } from '../lib/client';
 
 const fetchOptions = {
 	next: {
-		revalidate: 300,
+		revalidate: 86400,
 	},
 };
 

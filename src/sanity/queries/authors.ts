@@ -5,7 +5,7 @@ import type { AUTHOR_QUERY_RESULT } from '../types';
 
 const fetchOptions = {
 	next: {
-		revalidate: 300,
+		revalidate: 86400,
 	},
 };
 

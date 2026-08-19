@@ -8,7 +8,7 @@ import type {
 
 const fetchOptions = {
 	next: {
-		revalidate: 300,
+		revalidate: 86400,
 	},
 };
 
