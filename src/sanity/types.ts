@@ -489,6 +489,13 @@ export type AUTHOR_QUERY_RESULT = {
   }>;
 };
 
+// Source: src/sanity/queries/authors.ts
+// Variable: ALL_AUTHOR_SLUGS_QUERY
+// Query: *[		_type == "author" &&		defined(slug.current)	] {		"slug": slug.current	}
+export type ALL_AUTHOR_SLUGS_QUERY_RESULT = Array<{
+  slug: string;
+}>;
+
 // Source: src/sanity/queries/callEditorialGuidelines.ts
 // Variable: CALL_EDITORIAL_GUIDELINES_QUERY
 // Query: *[		_type == "callEditorialGuidelines" &&		_id == "callEditorialGuidelines"	][0] {		_id,		introLead,		introSupportingText,		submissionLabel,		submissionEmail,		submissionNote,		researchFields,		acceptedLanguages,		contributionTypes[] {			_key,			title,			content		},		editorialRules[] {			_key,			text		},		footnoteExamples[] {			_key,			content		},		bibliographyIntro,		bibliographyExamples[] {			_key,			content		},		englishDescription,		"englishPdfUrl": englishPdf.asset->url,		englishLinkLabel	}
@@ -881,6 +888,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '{\n\t"author": *[_type == "author" && slug.current == $slug][0] {\n\t\t_id,\n\t\tname,\n\t\tbio,\n\t\timage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\t\tslug\n\t},\n\t"posts": *[\n\t\t_type == "post" &&\n\t\treferences(*[_type == "author" && slug.current == $slug]._id)\n\t] | order(publishedAt desc) {\n\t\t_id,\n\t\ttitle,\n\t\tslug,\n\t\tpublishedAt,\n\t\texcerpt,\n\t\tsubtitle,\n\n\t\tthumbnailImage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\n\t\timage {\n\t\t\t...,\n\t\t\talt\n\t\t},\n\n\t\tauthors[]-> {\n\t\t\t_id,\n\t\t\tname,\n\t\t\tslug\n\t\t},\n\n\t\tcategory-> {\n\t\t\t_id,\n\t\t\ttitle,\n\t\t\tslug\n\t\t}\n\t}\n}': AUTHOR_QUERY_RESULT;
+    '\n\t*[\n\t\t_type == "author" &&\n\t\tdefined(slug.current)\n\t] {\n\t\t"slug": slug.current\n\t}\n': ALL_AUTHOR_SLUGS_QUERY_RESULT;
     '\n\t*[\n\t\t_type == "callEditorialGuidelines" &&\n\t\t_id == "callEditorialGuidelines"\n\t][0] {\n\t\t_id,\n\t\tintroLead,\n\t\tintroSupportingText,\n\t\tsubmissionLabel,\n\t\tsubmissionEmail,\n\t\tsubmissionNote,\n\n\t\tresearchFields,\n\t\tacceptedLanguages,\n\n\t\tcontributionTypes[] {\n\t\t\t_key,\n\t\t\ttitle,\n\t\t\tcontent\n\t\t},\n\n\t\teditorialRules[] {\n\t\t\t_key,\n\t\t\ttext\n\t\t},\n\n\t\tfootnoteExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tbibliographyIntro,\n\n\t\tbibliographyExamples[] {\n\t\t\t_key,\n\t\t\tcontent\n\t\t},\n\n\t\tenglishDescription,\n\t\t"englishPdfUrl": englishPdf.asset->url,\n\t\tenglishLinkLabel\n\t}\n': CALL_EDITORIAL_GUIDELINES_QUERY_RESULT;
     '\n\t*[_type == "category"] | order(title asc) {\n\t\t_id,\n\t\ttitle,\n\t\tslug\n\t}\n': CATEGORIES_LIST_QUERY_RESULT;
     '\n\tcoalesce(\n\t\t*[\n\t\t\t_type == "siteSettings" &&\n\t\t\t_id == "siteSettings"\n\t\t][0].navigationCategories[]-> {\n\t\t\t_id,\n\t\t\ttitle,\n\t\t\tslug\n\t\t},\n\t\t[]\n\t)\n': NAVIGATION_CATEGORIES_QUERY_RESULT;
