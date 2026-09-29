@@ -37,6 +37,7 @@ export const CALL_EDITORIAL_GUIDELINES_QUERY = defineQuery(`
 
 		footnoteExamples[] {
 			_key,
+			kind,
 			content
 		},
 
@@ -44,6 +45,7 @@ export const CALL_EDITORIAL_GUIDELINES_QUERY = defineQuery(`
 
 		bibliographyExamples[] {
 			_key,
+			kind,
 			content
 		},
 
