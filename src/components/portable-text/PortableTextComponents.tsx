@@ -112,4 +112,21 @@ export const portableTextComponents: PortableTextComponents = {
 			);
 		},
 	},
+
+	list: {
+		bullet: ({ children }) => (
+			<ul className='my-6 list-outside list-disc space-y-2 pl-6'>{children}</ul>
+		),
+
+		number: ({ children }) => (
+			<ol className='my-6 list-outside list-decimal space-y-2 pl-6'>
+				{children}
+			</ol>
+		),
+	},
+
+	listItem: {
+		bullet: ({ children }) => <li>{children}</li>,
+		number: ({ children }) => <li>{children}</li>,
+	},
 };

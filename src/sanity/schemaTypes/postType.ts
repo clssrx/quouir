@@ -125,6 +125,11 @@ export const postType = defineType({
 										name: 'href',
 										type: 'url',
 										title: 'URL',
+
+										validation: (rule) =>
+											rule.uri({
+												scheme: ['http', 'https', 'mailto'],
+											}),
 									}),
 								],
 							},

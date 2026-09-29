@@ -4,10 +4,9 @@ import { getCallEditorialGuidelines } from '@/sanity/queries/callEditorialGuidel
 
 import { CallPageHeader } from './_components/CallPageHeader';
 import { ContributionTypesSection } from './_components/ContributionTypesSection';
-import { EditorialRulesSection } from './_components/EditorialRulesSection';
 import { EnglishPdfSection } from './_components/EnglishPdfSection';
 import { ResearchFieldsSection } from './_components/ResearchFieldsSection';
-import { TextExamplesSection } from './_components/TextExamplesSection';
+import { EditorialGuidelinesSection } from './_components/EditorialGuidelinesSection';
 
 export default async function CallEditorialGuidelinesPage() {
 	const data = await getCallEditorialGuidelines();
@@ -71,21 +70,11 @@ export default async function CallEditorialGuidelinesPage() {
 
 					<ContributionTypesSection contributionTypes={contributionTypes} />
 
-					<EditorialRulesSection rules={editorialRules} />
-
-					<TextExamplesSection
-						number='05'
-						headingId='notes-heading'
-						title='Note a piè di pagina'
-						examples={footnoteExamples}
-					/>
-
-					<TextExamplesSection
-						number='06'
-						headingId='bibliography-heading'
-						title='Bibliografia'
-						intro={bibliographyIntro}
-						examples={bibliographyExamples}
+					<EditorialGuidelinesSection
+						rules={editorialRules}
+						footnoteExamples={footnoteExamples}
+						bibliographyIntro={bibliographyIntro}
+						bibliographyExamples={bibliographyExamples}
 					/>
 
 					<EnglishPdfSection

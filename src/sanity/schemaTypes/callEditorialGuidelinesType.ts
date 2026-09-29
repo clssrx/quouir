@@ -145,6 +145,34 @@ const editorialExampleMember = defineArrayMember({
 		}),
 
 		defineField({
+			name: 'kind',
+			title: 'Tipo',
+			description:
+				'Scegli "Titolo di sezione" per elementi come "Monografie" o "Articoli di riviste".',
+
+			type: 'string',
+
+			initialValue: 'example',
+
+			options: {
+				layout: 'radio',
+				list: [
+					{
+						title: 'Esempio',
+						value: 'example',
+					},
+					{
+						title: 'Titolo di sezione',
+						value: 'heading',
+					},
+				],
+			},
+
+			validation: (rule) =>
+				rule.required().error('Scegli il tipo di elemento.'),
+		}),
+
+		defineField({
 			name: 'content',
 			title: 'Contenuto',
 			description:
@@ -161,6 +189,14 @@ const editorialExampleMember = defineArrayMember({
 	preview: {
 		select: {
 			title: 'editorLabel',
+			kind: 'kind',
+		},
+
+		prepare({ title, kind }) {
+			return {
+				title,
+				subtitle: kind === 'heading' ? 'Titolo di sezione' : 'Esempio',
+			};
 		},
 	},
 });
@@ -178,11 +214,7 @@ export const callEditorialGuidelinesType = defineType({
 		},
 		{
 			name: 'guidelines',
-			title: 'Call e norme',
-		},
-		{
-			name: 'examples',
-			title: 'Esempi editoriali',
+			title: 'Norme editoriali',
 		},
 		{
 			name: 'english',
@@ -293,7 +325,7 @@ export const callEditorialGuidelinesType = defineType({
 			name: 'contributionTypes',
 			title: 'Tipologie di contributi',
 			description:
-				'La numerazione sul sito viene generata automaticamente in base all’ordine degli elementi.',
+				'Gli elementi vengono mostrati sul sito nello stesso ordine.',
 
 			type: 'array',
 			group: 'guidelines',
@@ -310,7 +342,7 @@ export const callEditorialGuidelinesType = defineType({
 			name: 'editorialRules',
 			title: 'Norme editoriali',
 			description:
-				'La numerazione sul sito viene generata automaticamente in base all’ordine delle norme.',
+				'Le norme vengono mostrate sul sito come elenco puntato, nello stesso ordine.',
 
 			type: 'array',
 			group: 'guidelines',
@@ -322,12 +354,12 @@ export const callEditorialGuidelinesType = defineType({
 
 		defineField({
 			name: 'footnoteExamples',
-			title: 'Esempi note a piè di pagina',
+			title: 'Note a piè di pagina',
 			description:
-				'La numerazione sul sito viene generata automaticamente in base all’ordine degli esempi.',
+				'Puoi aggiungere esempi e titoli di sezione. Gli elementi vengono mostrati nello stesso ordine.',
 
 			type: 'array',
-			group: 'examples',
+			group: 'guidelines',
 			of: [editorialExampleMember],
 
 			validation: (rule) =>
@@ -339,7 +371,7 @@ export const callEditorialGuidelinesType = defineType({
 			title: 'Introduzione alla bibliografia',
 			type: 'text',
 			rows: 5,
-			group: 'examples',
+			group: 'guidelines',
 
 			validation: (rule) =>
 				rule.required().error('Inserisci le indicazioni per la bibliografia.'),
@@ -347,12 +379,12 @@ export const callEditorialGuidelinesType = defineType({
 
 		defineField({
 			name: 'bibliographyExamples',
-			title: 'Esempi bibliografia',
+			title: 'Bibliografia',
 			description:
-				'La numerazione sul sito viene generata automaticamente in base all’ordine degli esempi.',
+				'Puoi aggiungere esempi e titoli di sezione, come "Monografie" o "Articoli di riviste". Gli elementi vengono mostrati nello stesso ordine.',
 
 			type: 'array',
-			group: 'examples',
+			group: 'guidelines',
 			of: [editorialExampleMember],
 
 			validation: (rule) =>
